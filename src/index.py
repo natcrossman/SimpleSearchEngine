@@ -1,21 +1,41 @@
+## @package index.py
+# Index structure:
+# The Index class contains a list of IndexItems, stored in a dictionary type for easier access
+#
+#   each IndexItem contains the term and a set of PostingItems
+#
+#    each PostingItem contains a document ID and a list of positions that the term occurs
+#    
+#@copyright     All rights are reserved, this code/project is not Open Source or Free
+#@bug           None Documented     
+#@author        Nathaniel Crossman & Adam
+#
 
 
-'''
-
-Index structure:
-
-    The Index class contains a list of IndexItems, stored in a dictionary type for easier access
-
-    each IndexItem contains the term and a set of PostingItems
-
-    each PostingItem contains a document ID and a list of positions that the term occurs
-
-'''
-import util
+"""NEED TO WORK ON """
+import util 
 import doc
+from cran import CranFile
 
+"""OTHER"""
+import json
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+##
+# @brief     
+#
+# @bug       None documented yet   
+#
 
 class Posting:
+    ##
+    #    @param         self
+    #    @param         topicName
+    #    @return        None
+    #    @brief         The constructor. 
+    #    @exception     None documented yet
+    ##
     def __init__(self, docID):
         self.docID = docID
         self.positions = []
@@ -34,8 +54,19 @@ class Posting:
         ''' return the term frequency in the document'''
         #ToDo
 
-
+##
+# @brief     
+#
+# @bug       None documented yet   
+#
 class IndexItem:
+     ##
+    #    @param         self
+    #    @param         topicName
+    #    @return        None
+    #    @brief         The constructor. 
+    #    @exception     None documented yet
+    ##
     def __init__(self, term):
         self.term = term
         self.posting = {} #postings are stored in a python dict for easier index building
@@ -51,9 +82,19 @@ class IndexItem:
         ''' sort by document ID for more efficient merging. For each document also sort the positions'''
         # ToDo
 
-
+##
+# @brief     
+#
+# @bug       None documented yet   
+#
 class InvertedIndex:
-
+    ##
+    #    @param         self
+    #    @param         topicName
+    #    @return        None
+    #    @brief         The constructor. 
+    #    @exception     None documented yet
+    ##
     def __init__(self):
         self.items = {} # list of IndexItems
         self.nDocs = 0  # the number of indexed documents
