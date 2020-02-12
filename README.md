@@ -120,7 +120,7 @@ python batch_eval.py index_file query.text qrels.text n
 where n is the number of randomly selected queries from query.text. The
 output should be the average NDCGs (for n queries) for the boolean model
 and the vector model respectively, and the p-value for the comparison.
-
+<img src="images/NDCG.JPG" width="500" >
 (Extra credit (5%)) You can extend this query evaluation program to
 compare different settings of vector models (i.e., TFIDF scoring methods
 mentioned in Part 2): implement some different query processing methods.
