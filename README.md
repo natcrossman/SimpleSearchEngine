@@ -31,7 +31,7 @@ You can work individually or in a two-person team.
     should use the skeleton code for easier grading.
 
 
-##Part 1: Building Inverted Index
+## Part 1: Building Inverted Index
 
 The preprocessing steps include
 ```
@@ -66,10 +66,10 @@ python index.py cran.all index_file
 It builds the index for the cran.all file and saves the index into the
 index_file.
 
-##Part 2: Query Processing
+## Part 2: Query Processing
 
 The query processing component contains the following steps.
-```
+
   * Query preprocessing, which includes all the steps used for
     preprocessing documents in indexing. In addition, you should also
     use the spelling corrector. Please check the Norvig's implementation
@@ -82,7 +82,7 @@ The query processing component contains the following steps.
   * Process queries with the vector model. Use the standard TFIDF to
     represent the weights in the vector representation. Use the cosine
     similarity for ranking.
-```
+    
 Your standard query processing program should be run as follows
 
 ```
@@ -100,7 +100,7 @@ mentioned in Figure 6.15 at the page 118 of the textbook (or the same
 Figure in slides "scoring_idf.ppt").
 
 
-##Part 3: Evaluation
+## Part 3: Evaluation
 
 Check qrels.text in the Cranfield dataset for evaluating the quality of
 search results. You can use the ndcg_score function in metrics.py to
@@ -115,7 +115,7 @@ to get the p-value for comparison (i.e., whether one ranking result is
 
 ```
 python batch_eval.py index_file query.text qrels.text n
-```	
+```
 
 where n is the number of randomly selected queries from query.text. The
 output should be the average NDCGs (for n queries) for the boolean model
@@ -125,7 +125,9 @@ and the vector model respectively, and the p-value for the comparison.
 compare different settings of vector models (i.e., TFIDF scoring methods
 mentioned in Part 2): implement some different query processing methods.
 Then compare and report the quality of ranking results.
-
+```
+We should do this as it is easy!
+```
 Please test/debug all your programs thoroughly. By designing tests, ask
 yourself questions like
 
@@ -145,7 +147,7 @@ yourself questions like
   * etc.
 
 
-##Deliverables
+## Deliverables
 
 Turn in three files (DO NOT zip them into one zip file) to Pilot: (1) a
 brief documentation about your design, implementation, and tests you
