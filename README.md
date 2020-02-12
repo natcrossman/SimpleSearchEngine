@@ -125,9 +125,14 @@ and the vector model respectively, and the p-value for the comparison.
 compare different settings of vector models (i.e., TFIDF scoring methods
 mentioned in Part 2): implement some different query processing methods.
 Then compare and report the quality of ranking results.
+### Extra Credit
+Since the final exam is kind of written it is hard to determine the exact grade that will be given. Therefore 5% padding seems worth it.
 ```
-We should do this as it is easy!
+We can u se the below formula to do the query for TF-IDF
+
 ```
+<img src="images/TFIDF_for_Query.GIF" width="500" >
+
 Please test/debug all your programs thoroughly. By designing tests, ask
 yourself questions like
 
