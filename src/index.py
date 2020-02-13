@@ -23,15 +23,15 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
 ##
+#
 # @brief     
 #
 # @bug       None documented yet   
 #
-
 class Posting:
     ##
     #    @param         self
-    #    @param         topicName
+    #    @param         docID
     #    @return        None
     #    @brief         The constructor. 
     #    @exception     None documented yet
@@ -39,20 +39,59 @@ class Posting:
     def __init__(self, docID):
         self.docID = docID
         self.positions = []
-
+        self.frequency = 0
+        #We need frequency
+   
+    ##
+    #   @brief         This method append a positions to our array
+    #   @param         self
+    #   @param         pos
+    #   @return        None
+    #   @exception     None
+    ## 
     def append(self, pos):
         self.positions.append(pos)
 
+    ##
+    #   @brief         This method sorts the positions array
+    #   @param         self
+    #   @return        None
+    #   @bug           This need to be tested
+    #   @exception     None
+    ## 
     def sort(self):
         ''' sort positions'''
         self.positions.sort()
 
+    ##
+    #   @brief         This method combines/merges two conditional array
+    #   @param         self
+    #   @param         positions
+    #   @return        None
+    #   @exception     None
+    ## 
     def merge(self, positions):
         self.positions.extend(positions)
-
+    ##
+    #   @brief         This method returns the term freq
+    #   @param         self
+    #   @param         positions
+    #   @return        int frequency
+    #   @exception     None
+    ## 
     def term_freq(self):
-        ''' return the term frequency in the document'''
-        #ToDo
+        return self.frequency
+
+    
+    ##
+    #   @brief         This method increase the increase_term_frequency
+    #   @param         self
+    #   @param         positions
+    #   @return        int frequency
+    #   @exception     None
+    ## 
+    def increment_term_frequency(self):
+        self.frequency += 1
 
 ##
 # @brief     
@@ -133,14 +172,14 @@ class InvertedIndex:
 
 def test():
     ''' test your code thoroughly. put the testing cases here'''
-    print 'Pass'
+    print('Pass')
 
 def indexingCranfield():
     #ToDo: indexing the Cranfield dataset and save the index to a file
     # command line usage: "python index.py cran.all index_file"
     # the index is saved to index_file
 
-    print 'Done'
+    print('Done')
 
 if __name__ == '__main__':
     #test()
