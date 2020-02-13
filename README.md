@@ -63,8 +63,11 @@ follows
 python index.py cran.all index_file
 ```
 
+
 It builds the index for the cran.all file and saves the index into the
 index_file.
+
+<img src="images/indexing.JPG" width="500" >
 
 ## Part 2: Query Processing
 
@@ -131,6 +134,7 @@ Since the final exam is kind of written it is hard to determine the exact grade 
 We can u se the below formula to do the query for TF-IDF
 
 ```
+
 <img src="images/TFIDF_for_Query.GIF" width="500" >
 
 Please test/debug all your programs thoroughly. By designing tests, ask
