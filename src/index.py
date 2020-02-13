@@ -3,7 +3,35 @@
 # The Index class contains a list of IndexItems, stored in a dictionary type for easier access
 # each IndexItem contains the term and a set of PostingItems
 # each PostingItem contains a document ID and a list of positions that the term occurs
-#    
+#
+
+#    Within a document collection, we assume that each document has a unique
+#serial number, known as the document identifier (docID ). During index construction,
+#we can simply assign successive integers to each new document
+#when it is first encountered. 
+#
+#The input to indexing is a list of normalized
+#tokens for each document, which we can equally think of as a list of pairs of
+#SORTING term and docID (NOTE Sort BOTH). The core indexing step is sorting this list
+#so that the terms are alphabetical. Multiple occurrences of the same term from the same
+#document are then merged And we increase TF. Instances of the same term are then grouped,
+#and the result is split into a dictionary and postings.
+#Since a term generally occurs in a number of documents,
+#this data organization already reduces the storage requirements of
+#the index. 
+
+#The dictionary also records some statistics, such as the number of
+#documents which contain each term (the document frequency, which is here
+#also the length of each postings list). This information is not vital for a basic
+#Boolean search engine, but it allows us to improve the efficiency of the search engine at query time, 
+#and it is a statistic later used in many ranked retrieval
+#models. 
+#
+#The postings are secondarily sorted by docID. This provides
+#the basis for efficient query processing. This inverted index structure is essentially
+#without rivals as the most efficient structure for supporting ad hoc
+#text search
+#
 #@copyright     All rights are reserved, this code/project is not Open Source or Free
 #@bug           None Documented     
 #@author        Nathaniel Crossman & Adam
@@ -17,6 +45,8 @@ from cran import CranFile
 
 """OTHER"""
 import json
+import operator
+import collections
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
@@ -43,6 +73,13 @@ class Posting:
     def __init__(self, docID):
         self.docID = docID
         self.positions = []
+        """
+        A Boolean model only records term presence or absence, but often we
+        would like to accumulate evidence, givingmoreweight to documents that
+        have a term several times as opposed to ones that contain it only once. To
+        be able to do this we need term frequency information TERM FREQUENCY (the number of times
+        a term occurs in a document) in postings lists.
+        """
         self.termFrequency = 0 #This is term frequency not document frequency
         #We need frequency
    
@@ -97,6 +134,7 @@ class Posting:
     def increment_term_frequency(self):
         self.termFrequency += 1
 
+
 ##
 # @brief     
 #
@@ -114,16 +152,31 @@ class IndexItem:
         self.term = term
         self.posting = {} #postings are stored in a python dict for easier index building
         self.sorted_postings= [] # may sort them by docID for easier query processing
+        self.sorted_dict ={} #not sure if need
 
     def add(self, docid, pos):
-        ''' add a posting'''
-        if not self.posting.has_key(docid):
+        ''' add a posting, changes my ncc'''
+        key = self.posting.keys() #list of all keys
+        if docid not in key:
             self.posting[docid] = Posting(docid)
         self.posting[docid].append(pos)
 
+        # if not self.posting.has_key(docid):
+        #     self.posting[docid] = Posting(docid)
+        # self.posting[docid].append(pos)
+
     def sort(self):
-        ''' sort by document ID for more efficient merging. For each document also sort the positions'''
-        # ToDo
+        ''' 
+        sort by document ID for more efficient merging. For each document also sort the positions
+        Firt sort all posting positions
+        then sort doc id 
+        also creat new sorted dict. // not sure if need but why not
+        '''
+        for key, postingTemp in self.posting.items():
+            postingTemp.sort()
+        self.sorted_postings = sorted(self.posting.items(), key=operator.itemgetter(0))
+        self.sorted_dict = collections.OrderedDict(self.sorted_postings)
+
 
 ##
 # @brief     

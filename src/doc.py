@@ -31,12 +31,15 @@ class Collection:
     #   @exception     None
     ## 
     def find(self, docID):
-        ''' return a document object ''' 
-        for key, value in self.docs.items():
-            if key in docID:
-                return self.docs[docID]
-            else:
-                return None
+        '''
+         return a document object
+         if key is in doc return doc. 
+        ''' 
+        key = self.docs.keys() #list of all keys
+        if docID  in key:
+            return self.docs[docID]
+        else:
+            return None
 
     # more methods if needed
 
