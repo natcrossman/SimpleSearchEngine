@@ -23,23 +23,20 @@ class Collection:
     def __init__(self):
         self.docs = {} # documents are indexed by docID
 
-    ##
-    #   @brief         This method sorts the positions array
-    #   @param         self
-    #   @return        None
-    #   @bug           This need to be tested as removed dict.has_key() 
-    #   @exception     None
-    ## 
     def find(self, docID):
-        '''
-         return a document object
-         if key is in doc return doc. 
         ''' 
-        key = self.docs.keys() #list of all keys
-        if docID  in key:
+        return a document object
+        fixed to python 3.7
+        '''
+        key = self.docs.keys() 
+        if docID in key:
             return self.docs[docID]
         else:
             return None
 
-    # more methods if needed
+        # if self.docs.has_key(docID):
+        #     return self.docs[docID]
+        # else:
+        #     return None
+
 

@@ -32,8 +32,8 @@ def test():
     '''testing'''
     qrys =  loadCranQry('query.text')
     for q in qrys:
-        print( q, qrys[q].text)
-    print( len(qrys))
+        print (q, qrys[q].text)
+    print (len(qrys))
 
 if __name__ == '__main__':
     test()
