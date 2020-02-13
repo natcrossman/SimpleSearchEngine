@@ -16,9 +16,9 @@ You can work individually or in a two-person team.
 
   * You will need to use the NLTK toolkit <http://www.nltk.org/> for
     stemming. For Ubuntu, it is easy to install
-
+    ```
     sudo pip install -U nltk
-
+    ```
     Install the python pip package first if you have not yet. For other
     platforms, please check the web site for instructions.
   * Download the Cranfield dataset
@@ -29,7 +29,7 @@ You can work individually or in a two-person team.
   * Download the skeleton code
     <http://cecs.wright.edu/~keke.chen/ir/2019sp/prj1/prj1.zip>. You
     should use the skeleton code for easier grading.
-
+ * Project is running Python 3.7
 
 ## Part 1: Building Inverted Index
 
