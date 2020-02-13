@@ -1,9 +1,6 @@
 # Information Retrieval: Simple Search Engine
 
-The primary purpose of this assignment is to get familiar with the basic
-term generation, indexing, and query processing algorithms and use them
-to implement a simple search engine.
-
+The primary purpose of this assignment is to get familiar with the basic term generation, indexing, and query processing algorithms and use them to implement a simple search engine.
 
 ## Getting Started and Prerequisites
 
@@ -40,24 +37,14 @@ The preprocessing steps include
     the file "stopwords" in the directory.
   * stemming. Use a stemmer in NLTK <http://www.nltk.org/howto/stem.html>.
 ```
-These steps are shared by both indexing and query processing. Thus, it's
-better to put these common functions in one place. Check the util.py file.
+These steps are shared by both indexing and query processing. Thus, it's better to put these common functions in one place. Check the util.py file.
+The Cranfield document file has a special format. cran.py has been provided to simplify your work in reading the documents.
 
-The Cranfield document file has a special format. cran.py has been
-provided to simplify your work in reading the documents.
+Once you get a list of terms, use the steps to put the terms in the inverted index and sort the lists correspondingly. Check the files: doc.py and index.py to understand how the classes are organized, and then implement the necessary methods - you are free to add more methods if necessary.
 
-Once you get a list of terms, use the steps to put the terms in the
-inverted index and sort the lists correspondingly. Check the files:
-doc.py and index.py to understand how the classes are organized, and
-then implement the necessary methods - you are free to add more methods
-if necessary.
+Finally, the index should be saved to a file. You can use any serialization method you like (e.g., JSON or any Python built-in libraries). Make sure the index can be saved/loaded correctly.
 
-Finally, the index should be saved to a file. You can use any
-serialization method you like (e.g., JSON or any Python built-in
-libraries). Make sure the index can be saved/loaded correctly.
-
-You should provide the executable indexing program that can be run as
-follows
+You should provide the executable indexing program that can be run as follows 
 
 ```
 python index.py cran.all index_file
@@ -67,7 +54,7 @@ python index.py cran.all index_file
 It builds the index for the cran.all file and saves the index into the
 index_file.
 
-<img src="images/indexing.JPG" width="500" >
+<img src="images/indexing.JPG" width="500" ><br>
 
 ## Part 2: Query Processing
 
@@ -92,16 +79,9 @@ Your standard query processing program should be run as follows
 python query.py index_file model_selection query.text query_id
 ```
 
-where model_selection indicates the Boolean or vector model: 0 -
-Boolean, and 1 - vector, query.text contains the sample queries
-(included in the Cranfield dataset), and query_id is the specific query
-you choose. cranqry.py has been provided for reading the special format
-used by query.text. The output will be a list of document IDs for the
-Boolean model, and the top 3 ranked results for the vector model. For
-vector model, choose one of the TFIDF scoring methods, e.g., lnc.ltc,
-mentioned in Figure 6.15 at the page 118 of the textbook (or the same
-Figure in slides "scoring_idf.ppt").
+where mode_selection has: 0 - Boolean, 1 - vector, 2 - batch evaluation, query.text contains the sample queries (included in the Cranfield dataset), and in mode 0 or 1 qid_or_n is the specific query_id you choose and in mode 2 qid_or_n represent randomly selecting n queries for batch evaluation. cranqry.py has been provided for reading the special format used by query.text. In mode=0 or 1 The output will be a list of document IDs for the Boolean model, and the top 3 ranked results for the vector model. For vector model, choose one of the TFIDF scoring methods, e.g., lnc.ltc, mentioned in Figure 6.15 at the page 118 of the textbook (or the same Figure in slides "scoring_idf.ppt").
 
+For mode=2, it will randomly select n queries, e.g., n=20, process them, and evaluate the total time spent on processing the queries for each model (Boolean and vector) - do not print out query results in processing queries, which will pollute the evaluation of processing time. You should repeat this experiment (mode=2) for 5 times and report the result in a table (or figure). 
 
 ## Part 3: Evaluation
 
@@ -120,22 +100,25 @@ to get the p-value for comparison (i.e., whether one ranking result is
 python batch_eval.py index_file query.text qrels.text n
 ```
 
-where n is the number of randomly selected queries from query.text. The
-output should be the average NDCGs (for n queries) for the boolean model
-and the vector model respectively, and the p-value for the comparison.
-<img src="images/NDCG.JPG" width="500" >
+	
+
+where n is the number of randomly selected queries from query.text. The output should be the average NDCGs (for n queries) for the boolean model and the vector model respectively, and the p-value for the comparison. Repeat your evaluation for 5 times with n=50. Report the result in a table.
+
+<img src="images/NDCG.JPG" width="500" > <br>
+
+### Extra Credit
 (Extra credit (5%)) You can extend this query evaluation program to
 compare different settings of vector models (i.e., TFIDF scoring methods
 mentioned in Part 2): implement some different query processing methods.
-Then compare and report the quality of ranking results.
-### Extra Credit
+Then compare and report the quality of ranking result
+
 Since the final exam is kind of written it is hard to determine the exact grade that will be given. Therefore 5% padding seems worth it.
 ```
 We can u se the below formula to do the query for TF-IDF
 
 ```
 
-<img src="images/TFIDF_for_Query.GIF" width="500" >
+<img src="images/TFIDF_for_Query.GIF" width="500" ><br>
 
 Please test/debug all your programs thoroughly. By designing tests, ask
 yourself questions like
