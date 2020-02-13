@@ -1,10 +1,8 @@
 ## @package index.py
 # Index structure:
 # The Index class contains a list of IndexItems, stored in a dictionary type for easier access
-#
-#   each IndexItem contains the term and a set of PostingItems
-#
-#    each PostingItem contains a document ID and a list of positions that the term occurs
+# each IndexItem contains the term and a set of PostingItems
+# each PostingItem contains a document ID and a list of positions that the term occurs
 #    
 #@copyright     All rights are reserved, this code/project is not Open Source or Free
 #@bug           None Documented     
@@ -23,8 +21,14 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
 ##
-#
-# @brief     
+#This is our posting clas. 
+# @brief The job of this class is to  store the document ID, 
+# the position where the term occurred in the document, 
+# and the frequency of each term in each document.
+# 
+#In Short, Each postings list stores the list of documents
+# in which a term occurs, and may store other information such as the term frequency
+# or the position(s) of the term in each document.
 #
 # @bug       None documented yet   
 #
@@ -39,7 +43,7 @@ class Posting:
     def __init__(self, docID):
         self.docID = docID
         self.positions = []
-        self.frequency = 0
+        self.termFrequency = 0 #This is term frequency not document frequency
         #We need frequency
    
     ##
@@ -64,7 +68,7 @@ class Posting:
         self.positions.sort()
 
     ##
-    #   @brief         This method combines/merges two conditional array
+    #   @brief         This method combines/merges two conditional array.
     #   @param         self
     #   @param         positions
     #   @return        None
@@ -80,7 +84,7 @@ class Posting:
     #   @exception     None
     ## 
     def term_freq(self):
-        return self.frequency
+        return self.termFrequency
 
     
     ##
@@ -91,7 +95,7 @@ class Posting:
     #   @exception     None
     ## 
     def increment_term_frequency(self):
-        self.frequency += 1
+        self.termFrequency += 1
 
 ##
 # @brief     
