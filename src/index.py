@@ -143,7 +143,7 @@ class Posting:
 class IndexItem:
      ##
     #    @param         self
-    #    @param         topicName
+    #    @param         term
     #    @return        None
     #    @brief         The constructor. 
     #    @exception     None documented yet
@@ -153,18 +153,40 @@ class IndexItem:
         self.posting = {} #postings are stored in a python dict for easier index building
         self.sorted_postings= [] # may sort them by docID for easier query processing
         self.sorted_dict ={} #not sure if need
-
+    
+    ##
+    #   @brief         This method adds a term position, for a Document to the postings list.
+    # If this is the first time a document has been added to the posting list,
+    # the method creates a new posting (with docID) 
+    # and then adds this the position the term was in the document.
+    # Otherwise, This method just adds the new position.
+    #
+    #   @param         self
+    #   @param         docid
+    #   @param         pos
+    #   @return        None
+    #   @exception     None
+    ## 
     def add(self, docid, pos):
         ''' add a posting, changes my ncc'''
         key = self.posting.keys() #list of all keys
         if docid not in key:
             self.posting[docid] = Posting(docid)
         self.posting[docid].append(pos)
-
+        #Removed old code, as python 3 does not have has_key.
         # if not self.posting.has_key(docid):
         #     self.posting[docid] = Posting(docid)
         # self.posting[docid].append(pos)
 
+    ##
+    #   @brief         This method sort the posting list by document ID for more efficient merging. 
+    # And also sort each posting positions
+    # 
+    #
+    #   @param         self
+    #   @return        sorted posting list and sorted dict posting list
+    #   @exception     None
+    ## 
     def sort(self):
         ''' 
         sort by document ID for more efficient merging. For each document also sort the positions
@@ -176,6 +198,7 @@ class IndexItem:
             postingTemp.sort()
         self.sorted_postings = sorted(self.posting.items(), key=operator.itemgetter(0))
         self.sorted_dict = collections.OrderedDict(self.sorted_postings)
+        return self.sorted_postings , self.sorted_dict
 
 
 ##
