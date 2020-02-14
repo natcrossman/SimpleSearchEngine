@@ -59,6 +59,7 @@ from nltk.tokenize import word_tokenize
 #In Short, Each postings list stores the list of documents
 # in which a term occurs, and may store other information such as the term frequency
 # or the position(s) of the term in each document.
+# We don't technically need to store the frequency as we can calculate it by looking at the positions
 #
 # @bug       None documented yet   
 #
@@ -73,16 +74,8 @@ class Posting:
     def __init__(self, docID):
         self.docID = docID
         self.positions = []
-        """
-        A Boolean model only records term presence or absence, but often we
-        would like to accumulate evidence, givingmoreweight to documents that
-        have a term several times as opposed to ones that contain it only once. To
-        be able to do this we need term frequency information TERM FREQUENCY (the number of times
-        a term occurs in a document) in postings lists.
-        """
-        self.termFrequency = 0 #This is term frequency not document frequency
-        #We need frequency
-   
+        #  self.termFrequency = 0 not need
+    
     ##
     #   @brief         This method append a positions to our array
     #   @param         self
@@ -114,25 +107,30 @@ class Posting:
     def merge(self, positions):
         self.positions.extend(positions)
     ##
-    #   @brief         This method returns the term freq
+    #   @brief         This method returns the term freq by count the
+    #                  positions this term appeared in a given document.
+    #    Why?: A Boolean model only records term presence or absence, but often we
+    #    would like to accumulate evidence, givingmoreweight to documents that
+    #    have a term several times as opposed to ones that contain it only once. To
+    #    be able to do this we need term frequency information TERM FREQUENCY (the number of times
+    #    a term occurs in a document) in postings lists
     #   @param         self
     #   @param         positions
     #   @return        int frequency
     #   @exception     None
     ## 
     def term_freq(self):
-        return self.termFrequency
+      return  len(self.positions)
 
-    
-    ##
-    #   @brief         This method increase the increase_term_frequency
-    #   @param         self
-    #   @param         positions
-    #   @return        int frequency
-    #   @exception     None
-    ## 
-    def increment_term_frequency(self):
-        self.termFrequency += 1
+    # ##
+    # #   @brief         This method increase the increase_term_frequency
+    # #   @param         self
+    # #   @param         positions
+    # #   @return        int frequency
+    # #   @exception     None
+    # ## 
+    # def increment_term_frequency(self):
+    #     self.termFrequency += 1
 
 
 ##
@@ -221,6 +219,13 @@ class InvertedIndex:
 
     def indexDoc(self, doc): # indexing a Document object
         ''' indexing a docuemnt, using the simple SPIMI algorithm, but no need to store blocks due to the small collection we are handling. Using save/load the whole index instead'''
+        #Need to think how to build in exent indexing
+        #•	So in your index structure you added extra term that signifies certain behavior. 
+        # For example, This extra index for authors would be used when we need to query for a given author.
+        #Otherwise it requires too much work and memory to do it other ways
+        # Remember you're basically adding a new index for authors and then at query time you just need to check that position and see if it's in their.
+ 
+
 
         # ToDo: indexing only title and body; use some functions defined in util.py
         # (1) convert to lower cases,
