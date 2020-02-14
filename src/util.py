@@ -7,6 +7,7 @@
 
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
 import doc
 
 def isStopWord(word):
@@ -33,11 +34,12 @@ class tokens:
         list_token = [t.lower() for t in list_token]
         return list_token
    
-    def stemming(word):
+    def stemming(self, word):
         ''' return the stem, using a NLTK stemmer. check the project description for installing and using it'''
+        stemmer = PorterStemmer()
         return stemmer.stem(word)  
 
-    def isStopWord(word):
+    def isStopWord(self, word):
         ''' using the NLTK functions, return true/false'''
         setOfStopWords = set(stopwords.words('stopwords'))
         if word in setOfStopWords:
