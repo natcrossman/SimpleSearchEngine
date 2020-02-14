@@ -36,7 +36,12 @@ The preprocessing steps include
   * remove the stopwords. A list of stopwords has been provided - check
     the file "stopwords" in the directory.
   * stemming. Use a stemmer in NLTK <http://www.nltk.org/howto/stem.html>.
+  * Build mechanism for query authors, titles, and other such things.
 ```
+Easiest way to do this is using Extent Index. 
+<img src="images/ideaOfExentsIndex.JPG" width="500" ><br>
+
+
 These steps are shared by both indexing and query processing. Thus, it's better to put these common functions in one place. Check the util.py file.
 The Cranfield document file has a special format. cran.py has been provided to simplify your work in reading the documents.
 
@@ -72,6 +77,11 @@ The query processing component contains the following steps.
   * Process queries with the vector model. Use the standard TFIDF to
     represent the weights in the vector representation. Use the cosine
     similarity for ranking.
+  * Query extended index
+    
+ If the data set contains any queries that require us to use author or other significant fields we have to use the extended indexing. 
+<br> 
+<img src="images/usingExtents.JPG" width="500" ><br>   
     
 Your standard query processing program should be run as follows
 
