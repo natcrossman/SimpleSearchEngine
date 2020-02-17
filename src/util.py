@@ -29,7 +29,7 @@ def stemming(word):
 #           
 # @bug       None documented yet   
 #
-class Tokens:
+class Tokenizer:
     ##
     #   @brief         
     #   @note for doc indexing use before doc.title + " " + doc.body
@@ -138,7 +138,4 @@ class Tokens:
     def transpose_document_tokenized_stemmed_spelling(self, doc):
         return self.stemming_list(self.remove_stopwords(self.spell_correction(self.tokenize_text(doc))))
 
-if __name__ == '__main__':
-    p1 = Tokens()
-    print(p1.stemming_list(p1.transpose_document_tokenized_stemmed("This fucking dick had a figth")))
 

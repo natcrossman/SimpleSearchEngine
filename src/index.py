@@ -38,17 +38,16 @@
 #
 
 
-"""NEED TO WORK ON """
-import util 
+"""Internal libraries"""
 import doc
+from util import Tokenizer
 from cran import CranFile
 
-"""OTHER"""
+"""Outside libraries"""
 import json
 import operator
 import collections
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
+
 
 ##
 #This is our posting clas. 
@@ -213,24 +212,71 @@ class InvertedIndex:
     #    @exception     None documented yet
     ##
     def __init__(self):
-        self.items = {} # list of IndexItems
-        self.nDocs = 0  # the number of indexed documents
+        self.__items     = {} # list of IndexItems
+        self.__nDocs     = 0  # the number of indexed documents
+        self.__tokenizer = Tokenizer()
 
-
+    ##
+    #   @brief     This method is designed to index a docuemnt, using the simple SPIMI algorithm, 
+    #              but no need to store blocks due to the small collection we are handling. 
+    #              Using save/load the whole index instead
+    # 
+    #       ToDo: indexing only title and body; use some functions defined in util.py
+    #       (1) convert to lower cases,
+    #       (2) remove stopwords,
+    #       (3) stemming
+    #
+    #   @param         self
+    #   @param         Doc
+    #   @return        None
+    #   @exception     None
+    ## 
     def indexDoc(self, doc): # indexing a Document object
-        ''' indexing a docuemnt, using the simple SPIMI algorithm, but no need to store blocks due to the small collection we are handling. Using save/load the whole index instead'''
-        #Need to think how to build in exent indexing
-        #•	So in your index structure you added extra term that signifies certain behavior. 
-        # For example, This extra index for authors would be used when we need to query for a given author.
-        #Otherwise it requires too much work and memory to do it other ways
-        # Remember you're basically adding a new index for authors and then at query time you just need to check that position and see if it's in their.
- 
+        #Concatenate document title
+        newDoc              = doc.title + " " + doc.body
+        docID               = doc.docID
+        full_stemmed_list   = self.__tokenizer.transpose_document_tokenized_stemmed(newDoc)
+        setOfTerms          = set(full_stemmed_list)
+        
+        #Instead of running Through to distinct list  is there an Better way to do this?
+        # Add all unique terms from a document into index
+        [self.__create_posting(word,docID) for word in setOfTerms]
 
+       
 
-        # ToDo: indexing only title and body; use some functions defined in util.py
-        # (1) convert to lower cases,
-        # (2) remove stopwords,
-        # (3) stemming
+    ##
+    #   @brief    This helper method is designed create a postings list of a document
+    #
+    #   @param         self
+    #   @param         word
+    #   @param         docID
+    #   @return        None
+    #   @exception     None
+    ## 
+    def __create_posting(self, word, docID):
+        #items{key=work,(obj = postinglist{key=docid} = posting(data about doc))}
+        newPosting                          = Posting(docID)
+        self.__items[word]                  = IndexItem(word)
+        self.__items[word].posting[docID]   = newPosting
+
+   ##
+    #   @brief    This helper method is designed create a postings list of a document
+    #
+    #   @param         self
+    #   @param         word
+    #   @param         docID
+    #   @return        None
+    #   @exception     None
+    ## 
+    def __create_add_to_posting(self, word, docID,full_stemmed_list):
+        #items{key=work,(obj = postinglist{key=docid} = posting(data about doc))}
+        position = 1
+        for aWord in full_stemmed_list:
+            self.__items[word].term = word                
+            self.__items[word].add(docID, position)
+            self.termfreq[word] = self.-__items[word].posting[docID].term_freq()
+            #self.items
+            pos += 1
 
 
     def sort(self):
@@ -238,7 +284,7 @@ class InvertedIndex:
         #ToDo
 
     def find(self, term):
-        return self.items[term]
+        return self.__items[term]
 
     def save(self, filename):
         ''' save to disk'''
