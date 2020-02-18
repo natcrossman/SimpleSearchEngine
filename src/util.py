@@ -58,7 +58,7 @@ class Tokenizer:
 
     ##
     #   @brief      This method check to see if a word is a stopword. The Method returns True if the work 
-    #               is a stopword.
+    #               is not a stopword.
     #   @param         self
     #   @param         word
     #   @return        boolean
@@ -66,7 +66,7 @@ class Tokenizer:
     ## 
     def isStopWord(self, word):
         ''' using the list of stopwords from file, return true/false'''
-        if word in self.stopword_list:
+        if word not in self.stopword_list:
             return True
         return False
    

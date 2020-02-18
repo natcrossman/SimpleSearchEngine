@@ -185,7 +185,7 @@ class IndexItem:
     #   @return        sorted posting list and sorted dict posting list
     #   @exception     None
     ## 
-    def sort(self):
+    def return_sorted_posting(self):
         ''' 
         sort by document ID for more efficient merging. For each document also sort the positions
         Firt sort all posting positions
@@ -198,6 +198,28 @@ class IndexItem:
         self.sorted_postings    = sorted(self.posting.items(), key=operator.itemgetter(0))
         self.sorted_dict        = collections.OrderedDict(self.sorted_postings)
         return self.sorted_postings , self.sorted_dict
+
+    ##
+    #   @brief         This method sort the posting list by document ID for more efficient merging. 
+    # And also sort each posting positions
+    # 
+    #
+    #   @param         self
+    #   @return        sorted posting list and sorted dict posting list
+    #   @exception     None
+    ## 
+    def sort(self):
+        ''' 
+        sort by document ID for more efficient merging. For each document also sort the positions
+        Firt sort all posting positions
+        then sort doc id 
+        also creat new sorted dict. // not sure if need but why not
+        '''
+        for key, postingTemp in self.posting.items():
+            postingTemp.sort()
+
+        self.sorted_postings    = sorted(self.posting.items(), key=operator.itemgetter(0))
+        self.posting            = collections.OrderedDict(self.sorted_postings)
 
 
 ##
@@ -248,14 +270,37 @@ class InvertedIndex:
                 newPosting.append(position)
                 self.__items[term]                  = IndexItem(term)
                 self.__items[term].posting[docID]   = newPosting
+        #self.sort() # not need as each posting list is sorted by default. Ths to data
+        #self.sort_terms()
 
-
+    ##
+    #   @brief     This method Sorts all posting list by document ID. 
+    #              NOTE: This method seems redundant as by default all postings list document IDs will be in order. 
+    #                    Since documents are read in in a particular order. 
+    #   @param         self
+    #   @return        None
+    #   @exception     None
+    ## 
     def sort(self):
         ''' sort all posting lists by docID'''
         for term, posting in self.__items.items():
-           print(posting)
+          posting.sort()
         #ToDo
+   
 
+    ##
+    #   @brief     This method sorts all indexing terms in our index 
+    #   @param         self
+    #   @return        None
+    #   @exception     None
+    ## 
+    def sort_terms(self):
+        ''' sort all posting lists by docID'''
+        templist      = sorted(self.__items.items(), key=operator.itemgetter(0))
+        self.__items  = collections.OrderedDict(templist)
+        for term, posting in self.__items.items():
+            print( term)
+            print( posting) 
     def find(self, term):
         return self.__items[term]
 
