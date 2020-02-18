@@ -271,7 +271,7 @@ class InvertedIndex:
                 self.__items[term]                  = IndexItem(term)
                 self.__items[term].posting[docID]   = newPosting
         #self.sort() # not need as each posting list is sorted by default. Ths to data
-        #self.sort_terms()
+        self.sort_terms()
 
     ##
     #   @brief     This method Sorts all posting list by document ID. 
