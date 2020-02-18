@@ -44,6 +44,7 @@ from util import Tokenizer
 from cran import CranFile
 
 """Outside libraries"""
+import sys
 import json
 import operator
 import collections
@@ -71,8 +72,8 @@ class Posting:
     #    @exception     None documented yet
     ##
     def __init__(self, docID):
-        self.docID = docID
-        self.positions = []
+        self.docID      = docID
+        self.positions  = []
         #  self.termFrequency = 0 not need
     
     ##
@@ -146,10 +147,10 @@ class IndexItem:
     #    @exception     None documented yet
     ##
     def __init__(self, term):
-        self.term = term
-        self.posting = {} #postings are stored in a python dict for easier index building
-        self.sorted_postings= [] # may sort them by docID for easier query processing
-        self.sorted_dict ={} #not sure if need
+        self.term               = term
+        self.posting            = {} #postings are stored in a python dict for easier index building
+        self.sorted_postings    = [] # may sort them by docID for easier query processing
+        self.sorted_dict        = {} #not sure if need
     
     ##
     #   @brief         This method adds a term position, for a Document to the postings list.
@@ -193,8 +194,9 @@ class IndexItem:
         '''
         for key, postingTemp in self.posting.items():
             postingTemp.sort()
-        self.sorted_postings = sorted(self.posting.items(), key=operator.itemgetter(0))
-        self.sorted_dict = collections.OrderedDict(self.sorted_postings)
+
+        self.sorted_postings    = sorted(self.posting.items(), key=operator.itemgetter(0))
+        self.sorted_dict        = collections.OrderedDict(self.sorted_postings)
         return self.sorted_postings , self.sorted_dict
 
 
@@ -236,51 +238,22 @@ class InvertedIndex:
         newDoc              = doc.title + " " + doc.body
         docID               = doc.docID
         full_stemmed_list   = self.__tokenizer.transpose_document_tokenized_stemmed(newDoc)
-        setOfTerms          = set(full_stemmed_list)
         
-        #Instead of running Through to distinct list  is there an Better way to do this?
-        # Add all unique terms from a document into index
-        [self.__create_posting(word,docID) for word in setOfTerms]
-
-       
-
-    ##
-    #   @brief    This helper method is designed create a postings list of a document
-    #
-    #   @param         self
-    #   @param         word
-    #   @param         docID
-    #   @return        None
-    #   @exception     None
-    ## 
-    def __create_posting(self, word, docID):
-        #items{key=work,(obj = postinglist{key=docid} = posting(data about doc))}
-        newPosting                          = Posting(docID)
-        self.__items[word]                  = IndexItem(word)
-        self.__items[word].posting[docID]   = newPosting
-
-   ##
-    #   @brief    This helper method is designed create a postings list of a document
-    #
-    #   @param         self
-    #   @param         word
-    #   @param         docID
-    #   @return        None
-    #   @exception     None
-    ## 
-    def __create_add_to_posting(self, word, docID,full_stemmed_list):
-        #items{key=work,(obj = postinglist{key=docid} = posting(data about doc))}
-        position = 1
-        for aWord in full_stemmed_list:
-            self.__items[word].term = word                
-            self.__items[word].add(docID, position)
-            self.termfreq[word] = self.-__items[word].posting[docID].term_freq()
-            #self.items
-            pos += 1
+        for position, term in enumerate(full_stemmed_list):
+            if self.__items.get(term) !=None:
+                self.__items[term].add(docID, position)
+            else:
+                #key does not exists in dict
+                newPosting                          = Posting(docID)
+                newPosting.append(position)
+                self.__items[term]                  = IndexItem(term)
+                self.__items[term].posting[docID]   = newPosting
 
 
     def sort(self):
         ''' sort all posting lists by docID'''
+        for term, posting in self.__items.items():
+           print(posting)
         #ToDo
 
     def find(self, term):
@@ -310,7 +283,13 @@ def indexingCranfield():
     # command line usage: "python index.py cran.all index_file"
     # the index is saved to index_file
 
-    print('Done')
+    #doc = sys.argv[1]
+    filePath = "./CranfieldDataset/cran.all"
+    invertedIndexer = InvertedIndex()
+    data = CranFile(filePath)
+    for doc in data.docs:
+        invertedIndexer.indexDoc(doc)
+
 
 if __name__ == '__main__':
     #test()
