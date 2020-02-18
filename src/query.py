@@ -4,14 +4,16 @@ query processing
 
 '''
 
+import util
+
 class QueryProcessor:
 
     def __init__(self, query, index, collection):
         ''' index is the inverted index; collection is the document collection'''
         self.raw_query = query
-        self.index
+        self.index = index
         self.docs = collection
-
+        
     def preprocessing(self):
         ''' apply the same preprocessing steps used by indexing,
             also use the provided spelling corrector. Note that
@@ -35,7 +37,7 @@ class QueryProcessor:
 
 def test():
     ''' test your code thoroughly. put the testing cases here'''
-    print 'Pass'
+    print('Pass')
 
 def query():
     ''' the main query processing program, using QueryProcessor'''

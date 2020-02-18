@@ -7,18 +7,9 @@
 from nltk.stem.snowball import SnowballStemmer
 from nltk.tokenize import word_tokenize
 from norvig_spell import correction
-from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
 import doc
-
-def isStopWord(word):
-    ''' using the NLTK functions, return true/false'''
-    # ToDo
-
-
-def stemming(word):
-    ''' return the stem, using a NLTK stemmer. check the project description for installing and using it'''
-
 
 ##
 # @brief    This class is designed to take care of all text preprocessing for both indexing inquiry.  
@@ -30,6 +21,14 @@ def stemming(word):
 # @bug       None documented yet   
 #
 class Tokenizer:
+
+    def __init__(self, stopword_list=None):
+        if stopword_list == None:
+            self.stopword_list = set(stopwords.words('english'))
+        else:
+            self.stopword_list=stopword_list
+        self.stemmer = SnowballStemmer('english')
+
     ##
     #   @brief         
     #   @note for doc indexing use before doc.title + " " + doc.body
@@ -55,7 +54,7 @@ class Tokenizer:
     #   @exception     None
     ## 
     def stemming(self, word):
-        return SnowballStemmer("english").stem(word)
+        return self.stemmer.stem(word)
 
     ##
     #   @brief      This method check to see if a word is a stopword. The Method returns True if the work 
@@ -66,10 +65,10 @@ class Tokenizer:
     #   @exception     None
     ## 
     def isStopWord(self, word):
-        ''' using the NLTK functions, return true/false'''
-        setOfStopWords = set(stopwords.words('english'))
-        if word not in setOfStopWords:
+        ''' using the list of stopwords from file, return true/false'''
+        if word in self.stopword_list:
             return True
+        return False
    
     ##
     #   @brief  This method removes all stopwords from a tokenized list       
