@@ -389,7 +389,7 @@ def indexingCranfield():
     # the index is saved to index_file
 
 
-    #filePath = sys.argv[1]
+     #filePath = sys.argv[1]
     #fileName = sys.argv[2]
 
     filePath = "./CranfieldDataset/cran.all"
