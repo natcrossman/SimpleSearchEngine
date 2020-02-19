@@ -405,8 +405,8 @@ def indexingCranfield():
      #filePath = sys.argv[1]
     #fileName = sys.argv[2]
 
-    filePath = "CranfieldDataset/cran.all"
-    fileName = "tempFile"
+    filePath = "src/CranfieldDataset/cran.all"
+    fileName = "src/Data/tempFile"
     invertedIndexer = InvertedIndex()
     data = CranFile(filePath)
     for doc in data.docs:
