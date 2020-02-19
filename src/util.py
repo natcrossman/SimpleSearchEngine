@@ -40,7 +40,7 @@ class Tokenizer:
     def tokenize_text(self, doc):
         list_token = []
         list_token = word_tokenize(doc)
-        list_token = [t.lower() for t in list_token]
+        list_token = [word.lower() for word in list_token if word.isalpha()] # remove punctuation 
         return list_token
  
     ##
