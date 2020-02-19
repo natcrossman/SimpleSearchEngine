@@ -1,0 +1,13 @@
+
+
+
+
+
+{"nDoc" : ####   ,
+'data':
+	{
+	'word1' : {nDoc:#### , posting:{docid1 : [position, position2] , docid2 : [position]}},
+	'word2' : {nDoc:#### , posting:{docid2 : [position2]}},
+	'word3' : {nDoc:#### , posting:{docid1 : [position3]}}
+	}
+}
