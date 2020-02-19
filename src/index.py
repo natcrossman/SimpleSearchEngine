@@ -350,10 +350,13 @@ class InvertedIndex:
         write_stream = open(filename, 'w')
         listTerm = self.sort_terms()
         dictMain = {}
+        listInfo =[]
+
         for term, postingList in listTerm.items():
            dictMain[term] = postingList.posting_list_to_string()
-        
-        write_stream.write(json.dumps(dictMain, indent=2, sort_keys=True))
+        listInfo.append({"nDoc": self.get_total_number_Doc()})
+        listInfo.append({"Data":dictMain})
+        write_stream.write(json.dumps(listInfo, indent=2, sort_keys=True))
         # with open(filename, 'w') as outfile:
         #     json.dump(obj=self.__items, default=self.dumper, fp=outfile, indent=3)
         # self.__items.clear()
@@ -402,7 +405,7 @@ def indexingCranfield():
      #filePath = sys.argv[1]
     #fileName = sys.argv[2]
 
-    filePath = "./CranfieldDataset/cran.all"
+    filePath = "CranfieldDataset/cran.all"
     fileName = "tempFile"
     invertedIndexer = InvertedIndex()
     data = CranFile(filePath)
