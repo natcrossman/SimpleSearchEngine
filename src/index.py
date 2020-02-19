@@ -254,6 +254,16 @@ class InvertedIndex:
         self.__tokenizer = Tokenizer()
 
     ##
+    #   @brief     This method return the total number of doc in our data set
+    #
+    #   @param         self
+    #   @param         Doc
+    #   @return        None
+    #   @exception     None
+    ## 
+    def get_total_number_Doc(self):
+        return self.__nDocs
+    ##
     #   @brief     This method is designed to index a docuemnt, using the simple SPIMI algorithm, 
     #              but no need to store blocks due to the small collection we are handling. 
     #              Using save/load the whole index instead
