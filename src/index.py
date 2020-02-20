@@ -49,6 +49,7 @@ import math
 import json
 import operator
 import collections
+import numpy as np
 
 
 ##
@@ -304,7 +305,6 @@ class InvertedIndex:
                 self.__items[term]                  = IndexItem(term)
                 self.__items[term].set_posting_list(docID, newPosting)
         self.__nDocs += 1
-        #self.sort() # not need as each posting list is sorted by default. Ths to data
   
     ##
     #   @brief     This method Sorts all posting list by document ID. 
@@ -367,9 +367,6 @@ class InvertedIndex:
         listInfo["nDoc"] = self.get_total_number_Doc()
         listInfo["Data"] = dictMain
         write_stream.write(json.dumps(listInfo, indent=3))
-        # with open(filename, 'w') as outfile:
-        #     json.dump(obj=self.__items, default=self.dumper, fp=outfile, indent=3)
-        # self.__items.clear()
 
     def dumper(self, obj):
         try:
@@ -390,56 +387,107 @@ class InvertedIndex:
             return json.load(json_file)
 
 
-    
+
+    ##
+    #   @brief     This method get IDF for  term.
+    #              (Total number of (documents))/(Number of  (documents) containing the word)
+    #
+    #   @param         self
+    #   @param         term
+    #   @return        None
+    #   @exception     None
+    ## 
     def idf(self, term):
         ''' compute the inverted document frequency for a given term'''
         termData = self.__items[term]
-        numberOfTimeTermIsInDoc = 0
         N = self.get_total_number_Doc()
         df = len(termData.get_posting_list())
         idf = round(math.log10(N/(float(df))), 4)
         return idf
       
-        
+    ##
+    #   @brief     This method create TF for doc
+    #              TF = (Frequency of the word in the sentence) / (Total number of words in the sentence)
+    #
+    #   @param         self
+    #   @param         term
+    #   @return        None
+    #   @exception     None
+    ## 
     def idfDict(self):
-        numberOfTimeTermIsInDoc = 0
-        idf = {}
-        N = self.get_total_number_Doc()
+        idf = collections.OrderedDict()
+    
+        for term, postingList in self.sort_terms().items():
+            idf[term] = self.idf(term)
 
-        for term, postingList in self.__items.items():
-            for d, post in postingList.get_posting_list().items():
-                numberOfTimeTermIsInDoc += 1
-
-            idf[term] = math.log10(N/(float(numberOfTimeTermIsInDoc)))
         return idf
-      
-       #TF = (Frequency of the word in the sentence) / (Total number of words in the sentence)
-        # IDF: (Total number of (documents))/(Number of  (documents) containing the word)
 
- 
+    ##
+    #   @brief     This method create TF for add doc
+    #              TF = (Frequency of the word in the sentence) / (Total number of words in the sentence)
+    #
+    #   @param         self
+    #   @param         term
+    #   @return        None
+    #   @exception     None
+    ##   
+    def tf_doc(self):
+        word_tf_values = collections.OrderedDict()
+        for term, postingList in self.sort_terms().items():
+            doc_tf = collections.OrderedDict()
+            for docID, post in postingList.get_posting_list().items():
+                doc_tf[docID] = round(math.log10(1 + post.term_freq()), 4) #log normalize 
+            word_tf_values[term] = doc_tf
+        return word_tf_values
+
+    ##
+    #   @brief     This method create tfidf for all doc
+    #
+    #   @param         self
+    #   @param         term
+    #   @return        None
+    #   @exception     None
+    ##  
+    def tf_idf(self,word_tf_valuesm, idfDict):
+        TFIDF_dict =  collections.defaultdict(list)
+        
+        for term, postingList in self.sort_terms().items():
+            tf_idf = 0.0 
+            for doc , doctf in word_tf_valuesm[term].items():
+                term_tf_idf_doc = {}
+                tf_idf = doctf * idfDict[term]
+                term_tf_idf_doc[term] = tf_idf
+                TFIDF_dict[doc].append(term_tf_idf_doc)
+        return TFIDF_dict  
+            
 
 def test():
     ''' test your code thoroughly. put the testing cases here'''
+
+    
+
     print('Pass')
 
 def indexingCranfield():
     #ToDo: indexing the Cranfield dataset and save the index to a file
     # command line usage: "python index.py cran.all index_file"
     # the index is saved to index_file
-
-
-     #filePath = sys.argv[1]
+    #filePath = sys.argv[1]
     #fileName = sys.argv[2]
 
     filePath = "src/CranfieldDataset/cran.all"
-    fileName = "src/Data/tempFile"
+    fileName = "src/Data/tempFile.json"
     invertedIndexer = InvertedIndex()
     data = CranFile(filePath)
     for doc in data.docs:
         invertedIndexer.indexDoc(doc)
 
     invertedIndexer.save(fileName)
-    print(invertedIndexer.idf("experiment"))
+    
+    word_tf_valuesm = invertedIndexer.tf_doc()
+    idfDict = invertedIndexer.idfDict()
+    TFIDF_dict = invertedIndexer.tf_idf(word_tf_valuesm, idfDict)
+
 
 if __name__ == '__main__':
     #test()
