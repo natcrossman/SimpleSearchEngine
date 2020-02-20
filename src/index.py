@@ -45,6 +45,7 @@ from cran import CranFile
 
 """Outside libraries"""
 import sys
+import math
 import json
 import operator
 import collections
@@ -236,14 +237,13 @@ class IndexItem:
         listOfShit  = {}
         posting  = {}
         numberOfTimeTermIsInDoc = 0
-
         for docID, post in  self.__posting.items():
             docID, positions = post.get_info()
             listOfShit[docID] = positions
-            numberOfTimeTermIsInDoc += post.term_freq()
+            numberOfTimeTermIsInDoc += 1
 
-        posting["nTermInDoc"]   = numberOfTimeTermIsInDoc 
-        posting["posting"]      = listOfShit
+        posting["df"]       = numberOfTimeTermIsInDoc 
+        posting["posting"]  = listOfShit
         return posting
 ##
 # @brief     
@@ -290,7 +290,7 @@ class InvertedIndex:
     ## 
     def indexDoc(self, doc): # indexing a Document object
         #Concatenate document title
-        newDoc              = doc.title + " " + doc.body
+        newDoc              = doc.body
         docID               = doc.docID
         full_stemmed_list   = self.__tokenizer.transpose_document_tokenized_stemmed(newDoc)
         
@@ -305,10 +305,7 @@ class InvertedIndex:
                 self.__items[term].set_posting_list(docID, newPosting)
         self.__nDocs += 1
         #self.sort() # not need as each posting list is sorted by default. Ths to data
-        # if self.__nDocs == 2:
-        #     self.save("dfd")
-        #     self.load("dfd")
-        
+  
     ##
     #   @brief     This method Sorts all posting list by document ID. 
     #              NOTE: This method seems redundant as by default all postings list document IDs will be in order. 
@@ -363,7 +360,9 @@ class InvertedIndex:
         listInfo = {}
 
         for term, postingList in listTerm.items():
-           dictMain[term] = postingList.posting_list_to_string()
+            dictTemp = postingList.posting_list_to_string()
+            dictTemp["idf"] = self.idf(term)
+            dictMain[term] = dictTemp
 
         listInfo["nDoc"] = self.get_total_number_Doc()
         listInfo["Data"] = dictMain
@@ -396,12 +395,26 @@ class InvertedIndex:
         ''' compute the inverted document frequency for a given term'''
         termData = self.__items[term]
         numberOfTimeTermIsInDoc = 0
-        for d, post in termData.get_posting_list():
-                 numberOfTimeTermIsInDoc += post.term_freq()
-        return self.get_total_number_Doc()/ numberOfTimeTermIsInDoc
+        N = self.get_total_number_Doc()
+        df = len(termData.get_posting_list())
+        idf = round(math.log10(N/(float(df))), 4)
+        return idf
       
-       
-        # IDF = (Total number of documents / Number of documents with word t in it)
+        
+    def idfDict(self):
+        numberOfTimeTermIsInDoc = 0
+        idf = {}
+        N = self.get_total_number_Doc()
+
+        for term, postingList in self.__items.items():
+            for d, post in postingList.get_posting_list().items():
+                numberOfTimeTermIsInDoc += 1
+
+            idf[term] = math.log10(N/(float(numberOfTimeTermIsInDoc)))
+        return idf
+      
+       #TF = (Frequency of the word in the sentence) / (Total number of words in the sentence)
+        # IDF: (Total number of (documents))/(Number of  (documents) containing the word)
 
  
 
@@ -426,6 +439,7 @@ def indexingCranfield():
         invertedIndexer.indexDoc(doc)
 
     invertedIndexer.save(fileName)
+    print(invertedIndexer.idf("experiment"))
 
 if __name__ == '__main__':
     #test()
