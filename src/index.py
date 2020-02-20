@@ -394,11 +394,13 @@ class InvertedIndex:
     
     def idf(self, term):
         ''' compute the inverted document frequency for a given term'''
-
-
-        # TF (Number of time the word occurs in the text) / (Total number of words in text)
-        #ToDo: return the IDF of the term
-
+        termData = self.__items[term]
+        numberOfTimeTermIsInDoc = 0
+        for d, post in termData.get_posting_list():
+                 numberOfTimeTermIsInDoc += post.term_freq()
+        return self.get_total_number_Doc()/ numberOfTimeTermIsInDoc
+      
+       
         # IDF = (Total number of documents / Number of documents with word t in it)
 
  
