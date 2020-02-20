@@ -128,8 +128,8 @@ class Posting:
     #   @return        int frequency
     #   @exception     None
     ## 
-    def to_Json(self):
-        return {self.__docID: self.__positions}
+    def get_info(self):
+        return (self.__docID, self.__positions)
   
 
 ##
@@ -231,10 +231,20 @@ class IndexItem:
     #   @exception     None
     ## 
     def posting_list_to_string(self):
-        listOfShit = []
+        docID       = int
+        positions   = []
+        listOfShit  = {}
+        posting  = {}
+        numberOfTimeTermIsInDoc = 0
+
         for docID, post in  self.__posting.items():
-            listOfShit.append(post.to_Json())
-        return listOfShit
+            docID, positions = post.get_info()
+            listOfShit[docID] = positions
+            numberOfTimeTermIsInDoc += post.term_freq()
+
+        posting["nTermInDoc"]   = numberOfTimeTermIsInDoc 
+        posting["posting"]      = listOfShit
+        return posting
 ##
 # @brief     
 #
@@ -350,13 +360,14 @@ class InvertedIndex:
         write_stream = open(filename, 'w')
         listTerm = self.sort_terms()
         dictMain = {}
-        listInfo =[]
+        listInfo = {}
 
         for term, postingList in listTerm.items():
            dictMain[term] = postingList.posting_list_to_string()
-        listInfo.append({"nDoc": self.get_total_number_Doc()})
-        listInfo.append({"Data":dictMain})
-        write_stream.write(json.dumps(listInfo, indent=2, sort_keys=True))
+
+        listInfo["nDoc"] = self.get_total_number_Doc()
+        listInfo["Data"] = dictMain
+        write_stream.write(json.dumps(listInfo, indent=3))
         # with open(filename, 'w') as outfile:
         #     json.dump(obj=self.__items, default=self.dumper, fp=outfile, indent=3)
         # self.__items.clear()
@@ -413,7 +424,6 @@ def indexingCranfield():
         invertedIndexer.indexDoc(doc)
 
     invertedIndexer.save(fileName)
-    print(invertedIndexer.load(fileName))
 
 if __name__ == '__main__':
     #test()
