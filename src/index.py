@@ -52,6 +52,7 @@ import collections
 import numpy as np
 import os.path
 from os import path
+import pickle
 
 ##
 #This is our posting clas. 
@@ -489,7 +490,44 @@ class InvertedIndex:
                 term_tf_idf_doc[term] = tf_idf
                 TFIDF_dict[doc].append(term_tf_idf_doc)
         return TFIDF_dict  
-            
+
+    
+        ##
+    
+    ##
+    #   @brief     This method Saves the current state of the InvertedIndex
+    #
+    #   @param         self
+    #   @param         filename
+    #   @return        None
+    #   @exception     AttributeError,  pickle.PickleError
+    ##          
+    def storeData(self, filename):
+        
+        try: 
+            fileP = open(filename, "wb") 
+            pickle.dump(self, fileP) # serialize class object
+        except (AttributeError, pickle.PickleError):
+            print("Error pickle.dump InvertedIndex ")
+        fileP.close()
+    
+    ##
+    #   @brief     This method Loads the saved InvertedIndex
+    #
+    #   @param         self
+    #   @param         filename
+    #   @return        invertedIndexer
+    #   @exception     (pickle.UnpicklingError, ImportError, EOFError, IndexError, TypeError)
+    ##  
+    def loadData(self, filename): 
+        try:
+            fileP = open(filename ,"rb")
+            invertedIndexer = pickle.load(fileP)
+        except (pickle.UnpicklingError, ImportError, EOFError, IndexError, TypeError):
+            print("Error pickle.load InvertedIndex ")
+            fileP.close()
+        return invertedIndexer
+
 
 def test():
     ''' test your code thoroughly. put the testing cases here'''
@@ -532,8 +570,10 @@ def indexingCranfield():
     for doc in data.docs:
         invertedIndexer.indexDoc(doc)
 
-    invertedIndexer.save(fileName)
-    
+    #invertedIndexer.save(fileName)
+    invertedIndexer.storeData(fileName)
+    sssd = invertedIndexer.loadData(fileName)
+   
     #word_tf_values = invertedIndexer.tf_doc()
     #idfDict = invertedIndexer.idfDict()
     #TFIDF_dict = invertedIndexer.tf_idf(word_tf_valuesm, idfDict)
@@ -541,8 +581,8 @@ def indexingCranfield():
    
 
 if __name__ == '__main__':
-    test()
-    #indexingCranfield()
+    #test()
+    indexingCranfield()
     
 
 
