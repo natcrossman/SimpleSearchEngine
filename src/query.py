@@ -4,7 +4,20 @@ query processing
 
 '''
 
-import util
+
+"""Internal libraries"""
+import doc
+from util import Tokenizer
+from cran import CranFile
+from util import Tokenizer
+from cranqry import loadCranQry
+
+"""Outside libraries"""
+import json
+import math
+import sys
+import os
+
 
 class QueryProcessor:
 
@@ -13,7 +26,7 @@ class QueryProcessor:
         self.raw_query = query
         self.index = index
         self.docs = collection
-        self.tokenizer = util.Tokenizer()
+        self.tokenizer = Tokenizer()
         self.processed_query = self.preprocessing(self.raw_query)
 
     def preprocessing(self,raw_query):
@@ -31,6 +44,9 @@ class QueryProcessor:
             postings.sort(key=len) # notice it is still smart to order by size 
             return reduce(set.intersection,postings) 
         '''
+        with open(self.index) as json_file:
+            dictData = json.load(json_file)
+
 
         #### This may need to change based on how index is implemented ####
         #### Postings should be a list of lists which contain only document ids ####
