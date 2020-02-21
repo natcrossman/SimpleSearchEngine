@@ -155,6 +155,7 @@ class IndexItem:
 
     def set_posting_list(self, docID, posting):
         self.__posting[docID] = posting
+    
     def get_posting_list(self):
         return self.__posting
 
@@ -215,12 +216,6 @@ class IndexItem:
     #   @exception     None
     ## 
     def sort(self):
-        ''' 
-        sort by document ID for more efficient merging. For each document also sort the positions
-        Firt sort all posting positions
-        then sort doc id 
-        also creat new sorted dict. // not sure if need but why not
-        '''
         for key, postingTemp in self.__posting.items():
             postingTemp.sort()
 
@@ -274,6 +269,18 @@ class InvertedIndex:
     ## 
     def get_total_number_Doc(self):
         return self.__nDocs
+    
+    ##
+    #   @brief     This method return the total number of doc in our data set
+    #
+    #   @param         self
+    #   @param         Doc
+    #   @return        None
+    #   @exception     None
+    ## 
+    def get_items_inverted(self):
+        return self.__items
+
     ##
     #   @brief     This method is designed to index a docuemnt, using the simple SPIMI algorithm, 
     #              but no need to store blocks due to the small collection we are handling. 
@@ -306,6 +313,7 @@ class InvertedIndex:
                 self.__items[term].set_posting_list(docID, newPosting)
         self.__nDocs += 1
   
+
     ##
     #   @brief     This method Sorts all posting list by document ID. 
     #              NOTE: This method seems redundant as by default all postings list document IDs will be in order. 
@@ -318,7 +326,7 @@ class InvertedIndex:
         ''' sort all posting lists by docID'''
         for term, posting in self.__items.items():
           posting.sort()
-        #ToDo
+  
    
 
     ##
@@ -337,12 +345,26 @@ class InvertedIndex:
     #   @brief     This method finds a term in the indexing and returns its posting list
     #
     #   @param         self
-    #   @return        None
+    #   @return        postingList
     #   @exception     None
     ## 
     def find(self, term):
         return self.__items[term]
 
+
+    ##
+    #   @brief     This method to dumper for json
+    #
+    #   @param         self
+    #   @param         filename
+    #   @return        None
+    #   @exception     None
+    ## 
+    def dumper(self, obj):
+        try:
+            return obj.toJSON()
+        except:
+            return obj.__dict__
 
     ##
     #   @brief     This method Serializes the inverted index to a json format and 
@@ -366,13 +388,12 @@ class InvertedIndex:
 
         listInfo["nDoc"] = self.get_total_number_Doc()
         listInfo["Data"] = dictMain
-        write_stream.write(json.dumps(listInfo, indent=3))
-
-    def dumper(self, obj):
-        try:
-            return obj.toJSON()
-        except:
-            return obj.__dict__
+        try: 
+            write_stream.write(json.dumps(listInfo, indent=3))
+        except ValueError as e: 
+             print ("Is not valid json")
+   
+   
 
     ##
     #   @brief     This method deserializes a json file in a object by reallocating the self.__items
@@ -383,9 +404,11 @@ class InvertedIndex:
     #   @exception     None
     ## 
     def load(self, filename):
-        with open(filename) as json_file:
-            return json.load(json_file)
-
+        try: 
+            with open(filename) as json_file:
+                return json.load(json_file)
+        except ValueError as e: 
+            print ("Is not valid json") 
 
 
     ##
@@ -463,15 +486,36 @@ class InvertedIndex:
 
 def test():
     ''' test your code thoroughly. put the testing cases here'''
-
     
+    filePath = "src/CranfieldDataset/cran.all"
+    fileName = "src/Data/tempFile.json"
+    invertedIndexer = InvertedIndex()
+    data = CranFile(filePath)
+    for doc in data.docs:
+        invertedIndexer.indexDoc(doc)
 
-    print('Pass')
+    invertedIndexer.save(fileName)
+    
+    #TF-IDF TEST
+    TEMP = invertedIndexer.idf("experiment")
+    Temp1 = invertedIndexer.idf("opportun")
+    t = str(TEMP)
+    t2 = str(Temp1)
+    assert t == "0.6198"  ," Wrong tf-idf."
+    assert t2 == "2.8451" ," Wrong tf-idf."
+
+    assert len(invertedIndexer.find("experiment").get_posting_list()) == 336, "Worng Lenght for experiment term find does not work."
+    assert invertedIndexer.get_total_number_Doc() == 1400, "Worng total nubmer of Doc in Corpus"
+
+    assert invertedIndexer.get_total_number_Doc() == 1400, "Worng total nubmer of Doc in Corpus"
+   
+    
 
 def indexingCranfield():
     #ToDo: indexing the Cranfield dataset and save the index to a file
     # command line usage: "python index.py cran.all index_file"
     # the index is saved to index_file
+
     #filePath = sys.argv[1]
     #fileName = sys.argv[2]
 
@@ -484,13 +528,15 @@ def indexingCranfield():
 
     invertedIndexer.save(fileName)
     
-    word_tf_valuesm = invertedIndexer.tf_doc()
-    idfDict = invertedIndexer.idfDict()
-    TFIDF_dict = invertedIndexer.tf_idf(word_tf_valuesm, idfDict)
-
+    #word_tf_values = invertedIndexer.tf_doc()
+    #idfDict = invertedIndexer.idfDict()
+    #TFIDF_dict = invertedIndexer.tf_idf(word_tf_valuesm, idfDict)
+    
+   
 
 if __name__ == '__main__':
-    #test()
-    indexingCranfield()
+    test()
+    #indexingCranfield()
+    
 
 
