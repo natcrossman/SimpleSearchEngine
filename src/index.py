@@ -50,7 +50,8 @@ import json
 import operator
 import collections
 import numpy as np
-
+import os.path
+from os import path
 
 ##
 #This is our posting clas. 
@@ -216,6 +217,12 @@ class IndexItem:
     #   @exception     None
     ## 
     def sort(self):
+        ''' 
+        sort by document ID for more efficient merging. For each document also sort the positions
+        Firt sort all posting positions
+        then sort doc id 
+        also creat new sorted dict. // not sure if need but why not
+        '''
         for key, postingTemp in self.__posting.items():
             postingTemp.sort()
 
@@ -494,7 +501,7 @@ def test():
     for doc in data.docs:
         invertedIndexer.indexDoc(doc)
 
-    invertedIndexer.save(fileName)
+    
     
     #TF-IDF TEST
     TEMP = invertedIndexer.idf("experiment")
@@ -507,9 +514,8 @@ def test():
     assert len(invertedIndexer.find("experiment").get_posting_list()) == 336, "Worng Lenght for experiment term find does not work."
     assert invertedIndexer.get_total_number_Doc() == 1400, "Worng total nubmer of Doc in Corpus"
 
-    assert invertedIndexer.get_total_number_Doc() == 1400, "Worng total nubmer of Doc in Corpus"
-   
-    
+    invertedIndexer.save(fileName)
+    assert path.exists(fileName), "error in saving json data."
 
 def indexingCranfield():
     #ToDo: indexing the Cranfield dataset and save the index to a file
