@@ -78,7 +78,7 @@ class QueryProcessor:
         #### This may need to change based on how index is implemented ####
         #### Postings should be a list of lists which contains document ids and position ####
         postings = [self.index[w] for w in self.processed_query]
-        
+        return {}
 
 
 
