@@ -99,12 +99,12 @@ def eval():
         yScore          = []
         for qID, listOfDocId in boolQueryDict.items():
             for docID in listOfDocId:
-                yTrue.append(1)
+                yScore.append(1)
                 if docID in dictQrelsText[qID]:
-                    yScore.append(1)
+                    yTrue.append(1)
                 else:
-                    yScore.append(0)
-        yScore.sort(reverse=True)    
+                    yTrue.append(0)
+        #yScore.sort(reverse=True)    
         NDCGScoreBool.append(metrics.ndcg_score(yTrue[:10], yScore[:10], 10, "exponential"))
 
 
@@ -118,7 +118,7 @@ def eval():
                      yTrue.append(1)
                 else:
                      yTrue.append(0)
-        yScore.sort(reverse=True) 
+        #yScore.sort(reverse=True) 
         NDCGScoreVector.append(metrics.ndcg_score(yTrue[:10], yScore[:10], 10, "exponential"))
 
     vectorAvg = avg(NDCGScoreVector)
