@@ -583,23 +583,18 @@ def indexingCranfield():
     #filePath = sys.argv[1]
     #fileName = sys.argv[2]
 
-    # filePath = "src/CranfieldDataset/cran.all"
-    # fileName = "src/Data/tempFile"
-    filePath = "./CranfieldDataset/cran.all"
-    fileName = "./Data/tempFile"
+    filePath = "src/CranfieldDataset/cran.all"
+    fileName = "src/Data/tempFile"
+    #filePath = "./CranfieldDataset/cran.all"
+    #fileName = "./Data/tempFile"
+   
     invertedIndexer = InvertedIndex()
     data = CranFile(filePath)
     for doc in data.docs:
         invertedIndexer.indexDoc(doc)
 
-    #invertedIndexer.save(fileName)
-    #invertedIndexer.storeData(fileName)
-    #sssd = invertedIndexer.loadData(fileName)
-   
-    #word_tf_values = invertedIndexer.tf_doc()
-    #idfDict = invertedIndexer.idfDict()
-    #TFIDF_dict = invertedIndexer.tf_idf(word_tf_valuesm, idfDict)
-    
+    invertedIndexer.save(fileName)
+ 
    
 
 if __name__ == '__main__':
