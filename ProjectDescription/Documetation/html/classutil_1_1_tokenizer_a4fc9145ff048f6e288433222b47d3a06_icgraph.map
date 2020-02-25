@@ -1,0 +1,6 @@
+<map id="util.Tokenizer.stemming" name="util.Tokenizer.stemming">
+<area shape="rect" id="node1" title="This method return the stem worked using the SnowballStemmer NLTK stemmer." alt="" coords="496,50,656,77"/>
+<area shape="rect" id="node2" href="$classutil_1_1_tokenizer.html#aa54577ccc43be0ad8fc446e7087dd99c" title="This method will properly stand in entire tokenized list." alt="" coords="264,50,448,77"/>
+<area shape="rect" id="node3" href="$classutil_1_1_tokenizer.html#a77a80e2330b99eab2bb9290f12eb73ea" title="This method receives a document and turns each word into a token." alt="" coords="5,5,216,47"/>
+<area shape="rect" id="node4" href="$classutil_1_1_tokenizer.html#ab51be094bd88ca6386046c36a9157dff" title="This method receives a document and turns each word into a token, fixes spelling mistakes,..." alt="" coords="5,71,216,127"/>
+</map>

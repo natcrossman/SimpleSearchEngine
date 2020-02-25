@@ -1,0 +1,4 @@
+<map id="batch_eval.getResultsFrom_QrelsFile" name="batch_eval.getResultsFrom_QrelsFile">
+<area shape="rect" id="node1" title="This method gets the appropriate results for the randomly chosen queries." alt="" coords="163,5,341,47"/>
+<area shape="rect" id="node2" href="$namespacebatch__eval.html#ad9b96e6dfe72a685f3e689aa446ce786" title="Right now this method is used as the driver for the evaluation program." alt="" coords="5,13,115,39"/>
+</map>

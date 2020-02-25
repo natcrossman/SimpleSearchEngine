@@ -1,0 +1,8 @@
+<map id="util.Tokenizer.transpose_document_tokenized_stemmed" name="util.Tokenizer.transpose_document_tokenized_stemmed">
+<area shape="rect" id="node1" title="This method receives a document and turns each word into a token." alt="" coords="5,57,216,98"/>
+<area shape="rect" id="node2" href="$classutil_1_1_tokenizer.html#aa54577ccc43be0ad8fc446e7087dd99c" title="This method will properly stand in entire tokenized list." alt="" coords="264,5,448,32"/>
+<area shape="rect" id="node4" href="$classutil_1_1_tokenizer.html#aeffc71e5194dff177a1831564b38a379" title="This method removes all stopwords from a tokenized list." alt="" coords="284,57,428,98"/>
+<area shape="rect" id="node6" href="$classutil_1_1_tokenizer.html#aeec2ecba621123bea8deca2e0951d470" title=" " alt="" coords="265,123,447,149"/>
+<area shape="rect" id="node3" href="$classutil_1_1_tokenizer.html#a4fc9145ff048f6e288433222b47d3a06" title="This method return the stem worked using the SnowballStemmer NLTK stemmer." alt="" coords="501,5,661,32"/>
+<area shape="rect" id="node5" href="$classutil_1_1_tokenizer.html#a5eb5132d3f26a13f814ffe7fa8341bbc" title="This method check to see if a word is a stopword." alt="" coords="496,64,667,91"/>
+</map>

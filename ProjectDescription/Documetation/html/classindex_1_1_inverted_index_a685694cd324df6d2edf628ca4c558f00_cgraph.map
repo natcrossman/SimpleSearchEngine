@@ -1,0 +1,4 @@
+<map id="index.InvertedIndex.idf" name="index.InvertedIndex.idf">
+<area shape="rect" id="node1" title="This method get IDF for term by compute the inverted document frequency for a given term." alt="" coords="5,13,155,39"/>
+<area shape="rect" id="node2" href="$classindex_1_1_inverted_index.html#af577351bc6352cf59083e127c137e1f6" title="This method return the total number of doc in our data set." alt="" coords="203,5,357,47"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="util.Tokenizer.remove_stopwords" name="util.Tokenizer.remove_stopwords">
+<area shape="rect" id="node1" title="This method removes all stopwords from a tokenized list." alt="" coords="264,43,408,84"/>
+<area shape="rect" id="node2" href="$classutil_1_1_tokenizer.html#a77a80e2330b99eab2bb9290f12eb73ea" title="This method receives a document and turns each word into a token." alt="" coords="5,5,216,47"/>
+<area shape="rect" id="node3" href="$classutil_1_1_tokenizer.html#ab51be094bd88ca6386046c36a9157dff" title="This method receives a document and turns each word into a token, fixes spelling mistakes,..." alt="" coords="5,71,216,127"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="util.Tokenizer.stemming_list" name="util.Tokenizer.stemming_list">
+<area shape="rect" id="node1" title="This method will properly stand in entire tokenized list." alt="" coords="5,5,189,32"/>
+<area shape="rect" id="node2" href="$classutil_1_1_tokenizer.html#a4fc9145ff048f6e288433222b47d3a06" title="This method return the stem worked using the SnowballStemmer NLTK stemmer." alt="" coords="237,5,397,32"/>
+</map>

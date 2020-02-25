@@ -1,0 +1,5 @@
+<map id="index.InvertedIndex.idf" name="index.InvertedIndex.idf">
+<area shape="rect" id="node1" title="This method get IDF for term by compute the inverted document frequency for a given term." alt="" coords="225,31,375,57"/>
+<area shape="rect" id="node2" href="$classindex_1_1_inverted_index.html#aadd3b8d2fe34339faffb09c284bc6936" title="This method Serializes the inverted index to a json format and clears the Memory that holds this dict..." alt="" coords="10,5,173,32"/>
+<area shape="rect" id="node3" href="$classindex_1_1_inverted_index.html#a44491126e4ebedcc8d2dd8cc3aaa8759" title="This method create IDF for doc." alt="" coords="5,56,177,83"/>
+</map>
