@@ -25,16 +25,35 @@ import os
 import collections
 from statistics import mean
 
-#get avg NDCG values
+##
+#   @brief         This method return the Average for NDCGS values
+#   @param         listOfNDCG
+#   @return        None
+#   @exception     None
+## 
 def avg(listOfNDCG):
     return mean(listOfNDCG)
 
+##
+#   @brief         This method reads a file and return a array
+#   @param         fileName
+#   @return        lines:list
+#   @exception     None
+## 
 def readFile(fileName):
     fileObj = open(fileName, "r")
     lines = fileObj.readlines()
     return lines
 
-# return a dict of qID and text
+
+##
+#   @brief         This method generates a list of random queries to be an analyzed.
+#                  The number of queries to be gotten is determined by the numberOfQueries value the user enters
+#   @param         queryFile
+#   @param         numberOfQueries
+#   @return        dictOfQueryID: {qID:text,qID:text }
+#   @exception     None
+## 
 def getRandomQuery(queryFile,numberOfQueries):
     dictOfQueryID = {}
     dictQuery = random.sample(queryFile.items(), k=numberOfQueries)
@@ -43,7 +62,14 @@ def getRandomQuery(queryFile,numberOfQueries):
 
     return dictOfQueryID
 
-
+##
+#   @brief         This method gets the appropriate results for the randomly chosen queries.
+#                  The outcome of this query is a dictionary of results used to compare our Querying process
+#   @param         listOfQueryRelsMaping
+#   @param         dictOfQuery
+#   @return        dictOfResult: {qID:[DocID,DocID] }
+#   @exception     None
+## 
 def getResultsFrom_QrelsFile(listOfQueryRelsMaping,dictOfQuery):
     dictOfResult = collections.defaultdict(list)
     for query in listOfQueryRelsMaping:
@@ -52,7 +78,15 @@ def getResultsFrom_QrelsFile(listOfQueryRelsMaping,dictOfQuery):
             dictOfResult[data[0]].append(data[1]) 
     return dictOfResult
 
-        
+##
+#   @brief         Right now this method is used as the driver for the evaluation program.
+#                  It initializes all necessary variables and calls all appropriate actions to get the results 
+#                  of query and evaluation.
+#
+#   @return        None
+#   @exception     None
+#   @bug           This has not been Thoroughly tested yet. Only use synthetic data need your cope
+##         
 def eval():
     k               = 10 # k the number of top k pairs of (docID, similarity) to get from vectorQuery
     indexFile       = sys.argv[1]
@@ -136,6 +170,15 @@ def eval():
 
     print('Done')
 
+##
+#   @brief         This is needed for testing
+#
+#   @return        None
+#   @exception     None
+#   @bug           
+##  
+def test():
+    pass
 
 if __name__ == '__main__':
     eval()

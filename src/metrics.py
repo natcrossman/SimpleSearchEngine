@@ -4,6 +4,7 @@ by Mathieu Blondel
 '''
 
 import numpy as np
+import math
 
 def dcg_score(y_true, y_score, k=10, gains="exponential"):
     """Discounted cumulative gain (DCG) at rank k

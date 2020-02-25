@@ -78,7 +78,6 @@ class Posting:
     def __init__(self, docID):
         self.__docID      = docID
         self.__positions  = []
-        #  self.termFrequency = 0 not need
     
     ##
     #   @brief         This method append a positions to our array
@@ -120,16 +119,16 @@ class Posting:
     #    a term occurs in a document) in postings lists
     #   @param         self
     #   @param         positions
-    #   @return        int frequency
+    #   @return        tf:int
     #   @exception     None
     ## 
     def term_freq(self):
       return  len(self.__positions)
 
     ##
-    #   @brief         This method 
+    #   @brief         This method used for Json
     #   @param         self
-    #   @return        int frequency
+    #   @return        (self.__docID, self.__positions)
     #   @exception     None
     ## 
     def get_info(self):
@@ -137,7 +136,7 @@ class Posting:
   
 
 ##
-# @brief     
+# @brief     Tested
 #
 # @bug       None documented yet   
 #
@@ -155,9 +154,21 @@ class IndexItem:
         self.__sorted_postings  = [] # may sort them by docID for easier query processing
         self.__sorted_dict      = {} #not sure if need
 
+    ##
+    #   @brief         This method sets the posting list
+    #   @param         self
+    #   @return        None
+    #   @exception     None
+    ## 
     def set_posting_list(self, docID, posting):
         self.__posting[docID] = posting
     
+    ##
+    #   @brief         This method return the posting list
+    #   @param         self
+    #   @return        None
+    #   @exception     None
+    ## 
     def get_posting_list(self):
         return self.__posting
 
@@ -175,7 +186,6 @@ class IndexItem:
     #   @exception     None
     ## 
     def add(self, docid, pos):
-        ''' add a posting, changes my ncc'''
         key = self.__posting.keys() #list of all keys
         if docid not in key:
             self.__posting[docid] = Posting(docid)
@@ -187,7 +197,7 @@ class IndexItem:
 
     ##
     #   @brief         This method sort the posting list by document ID for more efficient merging. 
-    # And also sort each posting positions
+    #                  And also sort each posting positions
     # 
     #
     #   @param         self
@@ -195,12 +205,6 @@ class IndexItem:
     #   @exception     None
     ## 
     def return_sorted_posting(self):
-        ''' 
-        sort by document ID for more efficient merging. For each document also sort the positions
-        Firt sort all posting positions
-        then sort doc id 
-        also creat new sorted dict. // not sure if need but why not
-        '''
         for key, postingTemp in self.__posting.items():
             postingTemp.sort()
 
@@ -210,29 +214,28 @@ class IndexItem:
 
     ##
     #   @brief         This method sort the posting list by document ID for more efficient merging. 
-    # And also sort each posting positions
+    #                  And also sort each posting positions.
+    #     sort by document ID for more efficient merging. For each document also sort the positions
+    #     Firt sort all posting positions
+    #     then sort doc id 
+    #     also creat new sorted dict. // not sure if need but why not
     # 
     #
     #   @param         self
-    #   @return        sorted posting list and sorted dict posting list
+    #   @return        Noe
     #   @exception     None
     ## 
     def sort(self):
-        ''' 
-        sort by document ID for more efficient merging. For each document also sort the positions
-        Firt sort all posting positions
-        then sort doc id 
-        also creat new sorted dict. // not sure if need but why not
-        '''
         for key, postingTemp in self.__posting.items():
             postingTemp.sort()
 
         self.__sorted_postings    = sorted(self.__posting.items(), key=operator.itemgetter(0))
         self.__posting            = collections.OrderedDict(self.__sorted_postings)
+    
     ##
-    #   @brief         This method prints a post to strng
+    #   @brief         This Method transforms the postings data into a dictionary format to be converted to Json
     #   @param         self
-    #   @return        int frequency
+    #   @return        posting: dict
     #   @exception     None
     ## 
     def posting_list_to_string(self):
@@ -272,7 +275,7 @@ class InvertedIndex:
     #
     #   @param         self
     #   @param         Doc
-    #   @return        None
+    #   @return        int
     #   @exception     None
     ## 
     def get_total_number_Doc(self):
@@ -283,7 +286,7 @@ class InvertedIndex:
     #
     #   @param         self
     #   @param         Doc
-    #   @return        None
+    #   @return        items: dict
     #   @exception     None
     ## 
     def get_items_inverted(self):
@@ -341,7 +344,7 @@ class InvertedIndex:
     #   @brief     This method sorts all indexing terms in our index 
     #
     #   @param         self
-    #   @return        None
+    #   @return        OrderedDict
     #   @exception     None
     ## 
     def sort_terms(self):
@@ -353,7 +356,8 @@ class InvertedIndex:
     #   @brief     This method finds a term in the indexing and returns its posting list
     #
     #   @param         self
-    #   @return        postingList
+    #   @param         term
+    #   @return        postingList:dict
     #   @exception     None
     ## 
     def find(self, term):
@@ -364,8 +368,8 @@ class InvertedIndex:
     #   @brief     This method to dumper for json
     #
     #   @param         self
-    #   @param         filename
-    #   @return        None
+    #   @param         obj
+    #   @return        toJSON or dict
     #   @exception     None
     ## 
     def dumper(self, obj):
@@ -380,7 +384,7 @@ class InvertedIndex:
     #
     #   @param         self
     #   @param         filename
-    #   @return        None
+    #   @return        ValueError
     #   @exception     None
     ## 
     def save(self, filename):
@@ -400,16 +404,15 @@ class InvertedIndex:
             write_stream.write(json.dumps(listInfo, indent=3))
         except ValueError as e: 
              print ("Is not valid json")
-   
-   
+       
 
     ##
     #   @brief     This method deserializes a json file in a object by reallocating the self.__items
     #
     #   @param         self
     #   @param         filename
-    #   @return        None
-    #   @exception     None
+    #   @return        json: dict
+    #   @exception     ValueError
     ## 
     def load(self, filename):
         try: 
@@ -420,16 +423,16 @@ class InvertedIndex:
 
 
     ##
-    #   @brief     This method get IDF for  term.
-    #              (Total number of (documents))/(Number of  (documents) containing the word)
+    #   @brief     This method get IDF for  term by compute the inverted document frequency for a given term.
+    #               We used this IDF = (Total number of (documents))/(Number of  (documents) containing the word)
     #
     #   @param         self
     #   @param         term
-    #   @return        None
+    #   @return        idf:int
     #   @exception     None
     ## 
     def idf(self, term):
-        ''' compute the inverted document frequency for a given term'''
+        ''' '''
         termData = self.__items[term]
         N = self.get_total_number_Doc()
         df = len(termData.get_posting_list())
@@ -437,12 +440,10 @@ class InvertedIndex:
         return idf
       
     ##
-    #   @brief     This method create TF for doc
-    #              TF = (Frequency of the word in the sentence) / (Total number of words in the sentence)
+    #   @brief     This method create IDF for doc
     #
     #   @param         self
-    #   @param         term
-    #   @return        None
+    #   @return        idf: {term: {docID:idf}}
     #   @exception     None
     ## 
     def idfDict(self):
@@ -455,11 +456,11 @@ class InvertedIndex:
 
     ##
     #   @brief     This method create TF for add doc
-    #              TF = (Frequency of the word in the sentence) / (Total number of words in the sentence)
-    #
+    #   There are different ways to represent TF we used tf = log(1+tf) 
+    #   Another way is TF = (Frequency of the word in the sentence) / (Total number of words in the sentence)
+    #   
     #   @param         self
-    #   @param         term
-    #   @return        None
+    #   @return        word_tf_values: {term: {docID: tf, docID: tf }}  
     #   @exception     None
     ##   
     def tf_doc(self):
@@ -472,11 +473,12 @@ class InvertedIndex:
         return word_tf_values
 
     ##
-    #   @brief     This method create tfidf for all doc
-    #
+    #   @brief     This method create tfidf for all doc. 
+    #              It structure is of the form {docID: {term: tf-idf,term: tf-idf }}    
     #   @param         self
-    #   @param         term
-    #   @return        None
+    #   @param         word_tf_valuesm
+    #   @param         idfDict    
+    #   @return        TFIDF_dict:{docID: {term: tf-idf,term: tf-idf }}  
     #   @exception     None
     ##  
     def tf_idf(self,word_tf_valuesm, idfDict):
@@ -528,7 +530,14 @@ class InvertedIndex:
             fileP.close()
         return invertedIndexer
 
-
+##
+#   @brief     This method Is used for tasting this Python script
+#   Most testing was done in the debugger or ipython.  
+# Small synthetic data sets were used and verified
+#
+#   @return        None
+#   @exception     None
+## 
 def test():
     ''' test your code thoroughly. put the testing cases here'''
     
@@ -555,6 +564,12 @@ def test():
     invertedIndexer.save(fileName)
     assert path.exists(fileName), "error in saving json data."
 
+
+##
+#   @brief     This method is the driver program for launching the Python script
+#   @return        None
+#   @exception     None
+##  
 def indexingCranfield():
     #ToDo: indexing the Cranfield dataset and save the index to a file
     # command line usage: "python index.py cran.all index_file"
@@ -571,8 +586,8 @@ def indexingCranfield():
         invertedIndexer.indexDoc(doc)
 
     #invertedIndexer.save(fileName)
-    invertedIndexer.storeData(fileName)
-    sssd = invertedIndexer.loadData(fileName)
+    #invertedIndexer.storeData(fileName)
+    #sssd = invertedIndexer.loadData(fileName)
    
     #word_tf_values = invertedIndexer.tf_doc()
     #idfDict = invertedIndexer.idfDict()
