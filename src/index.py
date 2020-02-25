@@ -78,6 +78,7 @@ class Posting:
     def __init__(self, docID):
         self.__docID      = docID
         self.__positions  = []
+        #  self.termFrequency = 0 not need
     
     ##
     #   @brief         This method append a positions to our array
@@ -543,8 +544,6 @@ def test():
     
     filePath = "src/CranfieldDataset/cran.all"
     fileName = "src/Data/tempFile.json"
-    # filePath = "./CranfieldDataset/cran.all"
-    # fileName = "./Data/tempFile.json"
     invertedIndexer = InvertedIndex()
     data = CranFile(filePath)
     for doc in data.docs:
@@ -582,8 +581,6 @@ def indexingCranfield():
 
     filePath = "src/CranfieldDataset/cran.all"
     fileName = "src/Data/tempFile"
-    # filePath = "./CranfieldDataset/cran.all"
-    # fileName = "./Data/tempFile.json"
     invertedIndexer = InvertedIndex()
     data = CranFile(filePath)
     for doc in data.docs:

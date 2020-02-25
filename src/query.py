@@ -25,7 +25,7 @@ class QueryProcessor:
         ''' index is the inverted index; collection is the document collection'''
         self.raw_query = query
         self.index = InvertedIndex()
-        self.index = self.index.loadData(index_file)
+        self.index = self.index.loadData(index)
         # self.docs = collection
         self.tokenizer = Tokenizer()
         self.processed_query = self.preprocessing(self.raw_query)
