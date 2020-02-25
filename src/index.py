@@ -434,6 +434,8 @@ class InvertedIndex:
     ## 
     def idf(self, term):
         ''' '''
+        if not term in self.__items:
+            return 0
         termData = self.__items[term]
         N = self.get_total_number_Doc()
         df = len(termData.get_posting_list())
@@ -542,8 +544,10 @@ class InvertedIndex:
 def test():
     ''' test your code thoroughly. put the testing cases here'''
     
-    filePath = "src/CranfieldDataset/cran.all"
-    fileName = "src/Data/tempFile.json"
+    # filePath = "src/CranfieldDataset/cran.all"
+    # fileName = "src/Data/tempFile.json"    
+    filePath = "./CranfieldDataset/cran.all"
+    fileName = "./Data/tempFile.json"
     invertedIndexer = InvertedIndex()
     data = CranFile(filePath)
     for doc in data.docs:
@@ -579,8 +583,10 @@ def indexingCranfield():
     #filePath = sys.argv[1]
     #fileName = sys.argv[2]
 
-    filePath = "src/CranfieldDataset/cran.all"
-    fileName = "src/Data/tempFile"
+    # filePath = "src/CranfieldDataset/cran.all"
+    # fileName = "src/Data/tempFile"
+    filePath = "./CranfieldDataset/cran.all"
+    fileName = "./Data/tempFile"
     invertedIndexer = InvertedIndex()
     data = CranFile(filePath)
     for doc in data.docs:
