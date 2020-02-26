@@ -162,7 +162,7 @@ def eval():
             else:
                     yTrue.append(0)
         yTrue.sort(reverse=True) 
-        score = metrics.ndcg_score(yTrue[:10], yScore[:10], 10, "exponential")
+        score = metrics.ndcg_score(yTrue, yScore, 10, "exponential")
         if math.isnan(score):     
             NDCGScoreVector.append(0)
         else:
