@@ -57,12 +57,10 @@ def readFile(fileName):
 def getRandomQuery(queryFile,numberOfQueries):
     dictOfQueryID = {}
     dictQuery = random.sample(queryFile.items(), k=numberOfQueries)
-    #dictOfQueryID["226"]
-    #dictQuery = random.sample(queryFile.items(), k=numberOfQueries)
-    for queryTuple in queryFile["204"]:
+    for queryTuple in dictQuery:
         dictOfQueryID[queryTuple[1].qid] = queryTuple[1].text
-   
-    return queryFile["142"]
+
+    return  {queryFile["204"].qid:queryFile["204"].text} #dictOfQueryID
 
 
 ##
