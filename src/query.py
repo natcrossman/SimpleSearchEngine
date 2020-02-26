@@ -241,6 +241,35 @@ def query():
     # for booleanQuery, the program will print the total number of documents and the list of docuement IDs
     # for vectorQuery, the program will output the top 3 most similar documents
 
+        
+    indexFile       = "src/Data/tempFile"
+    model_selection = "1"
+    queryText       = 'src/CranfieldDataset/query.text'
+    query_id        = "204"
+    docCollection   = CranFile('src/CranfieldDataset/cran.all')
+    #indexFile       = sys.argv[1]
+    #model_selection = sys.argv[2]
+    #queryText       = sys.argv[3]
+    #query_id        = sys.argv[4]
+    queryTest = ""
+    queryFile   = loadCranQry(queryText)
+
+    #Data Need
+    queryTuple = queryFile[query_id]
+
+    if query_id == queryTuple.qid:
+        queryTest = queryTuple.text
+
+    queryProcessor = QueryProcessor(queryTest,indexFile,docCollection.docs)
+    if model_selection == "0":
+        docIDs = queryProcessor.booleanQuery()
+        print("Boolean")
+        print("Total number of documents is:", str(len(docIDs)) + "\nThier DocIDs our:" + str(docIDs))
+
+    elif model_selection == "1":
+        print("Vector")
+        print(queryProcessor.vectorQuery(3))
+
 
 if __name__ == '__main__':
     #test()
