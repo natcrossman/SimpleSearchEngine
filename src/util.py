@@ -10,6 +10,7 @@ from norvig_spell import correction
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 import doc
+import re
 
 ##
 # @brief    This class is designed to take care of all text preprocessing for both indexing inquiry.  
@@ -39,7 +40,8 @@ class Tokenizer:
     ## 
     def tokenize_text(self, doc):
         list_token = []
-        list_token = word_tokenize(doc)
+        #list_token = word_tokenize(doc)
+        list_token = re.split(r"[\s-]+", doc)
         list_token = [word.lower() for word in list_token if word.isalpha()] # remove punctuation 
         return list_token
  

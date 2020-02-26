@@ -14,7 +14,7 @@ import metrics
 import query
 from scipy import stats
 from query import QueryProcessor
-from index import InvertedIndex
+from index import Posting, InvertedIndex, IndexItem
 import doc
 from cranqry import loadCranQry
 from cran import CranFile
@@ -57,10 +57,13 @@ def readFile(fileName):
 def getRandomQuery(queryFile,numberOfQueries):
     dictOfQueryID = {}
     dictQuery = random.sample(queryFile.items(), k=numberOfQueries)
-    for queryTuple in dictQuery:
+    #dictOfQueryID["226"]
+    #dictQuery = random.sample(queryFile.items(), k=numberOfQueries)
+    for queryTuple in queryFile["204"]:
         dictOfQueryID[queryTuple[1].qid] = queryTuple[1].text
+   
+    return queryFile["142"]
 
-    return dictOfQueryID
 
 ##
 #   @brief         This method gets the appropriate results for the randomly chosen queries.
@@ -89,16 +92,22 @@ def getResultsFrom_QrelsFile(listOfQueryRelsMaping,dictOfQuery):
 ##         
 def eval():
     k               = 10 # k the number of top k pairs of (docID, similarity) to get from vectorQuery
-    indexFile       = sys.argv[1]
-    queryText       = sys.argv[2]
-    qrelsText       = sys.argv[3]
+    #indexFile       = sys.argv[1]v "src/Data/tempFile"
+    indexFile       = "src/Data/tempFile"
+    queryText       = 'src/CranfieldDataset/query.text'
+    qrelsText       = 'src/CranfieldDataset/qrels.text'
+    #queryText       = sys.argv[2]
+    #qrelsText       = sys.argv[3]
+
+
     dictOfQuery     = {}
     dictQrelsText   = {}
     boolQueryDict   = {}
     vectorQueryDict = {}
     docCollection   = CranFile('src/CranfieldDataset/cran.all')
     NDCGScoreBool   = []
-    numberOfQueries = sys.argv[4]
+    #numberOfQueries = sys.argv[4]
+    numberOfQueries = 100
     NDCGScoreVector = []
     
 
@@ -123,42 +132,43 @@ def eval():
         queryProcessor = QueryProcessor(queryText,indexFile,docCollection.docs) # need 
 
         docIDs = queryProcessor.booleanQuery() # data would need to be like this [12, 14, 78, 141, 486, 746, 172, 573, 1003]
-        boolQueryDict[qid] = docIDs
+        # boolQueryDict[qid] = docIDs
 
-        dictOfDocIDAndSimilarity = queryProcessor.vectorQuery(k) # data need to look like k=3 [[625,0.8737006126353902],[401,0.8697643788341478],[943,0.8424991316663082]]
-        vectorQueryDict[qid] = dictOfDocIDAndSimilarity
-
+        #dictOfDocIDAndSimilarity = queryProcessor.vectorQuery(k) # data need to look like k=3 [[625,0.8737006126353902],[401,0.8697643788341478],[943,0.8424991316663082]]
+        # vectorQueryDict[qid] = dictOfDocIDAndSimilarity
+        print(docIDs, "**", qid, "--")
+       
         #For Boolean part
         yTrue           = []
         yScore          = []
-        for qID, listOfDocId in boolQueryDict.items():
-            for docID in listOfDocId:
-                yScore.append(1)
-                if docID in dictQrelsText[qID]:
-                    yTrue.append(1)
-                else:
-                    yTrue.append(0)
-        #yScore.sort(reverse=True)    
-        NDCGScoreBool.append(metrics.ndcg_score(yTrue[:10], yScore[:10], 10, "exponential"))
+        for docID in docIDs:
+            yScore.append(1)
+            if docID in dictQrelsText[qid]:
+                yTrue.append(1)
+            else:
+                yTrue.append(0)
+        yTrue.sort(reverse=True)     
+        NDCGScoreBool.append(metrics.ndcg_score(yTrue, yScore, 10, "exponential"))
 
 
         #For Vector part
-        yTrue           = []
-        yScore          = []
-        for qID, listOfDocId_and_score in vectorQueryDict.items():
-            for docIdAndScore in listOfDocId_and_score:
-                yScore.append(float(docIdAndScore[1]))
-                if docID in dictQrelsText[qID]:
-                     yTrue.append(1)
-                else:
-                     yTrue.append(0)
-        #yScore.sort(reverse=True) 
-        NDCGScoreVector.append(metrics.ndcg_score(yTrue[:10], yScore[:10], 10, "exponential"))
+    #     yTrue           = []
+    #     yScore          = []
+    #     for qID, listOfDocId_and_score in vectorQueryDict.items():
+    #         for docIdAndScore in listOfDocId_and_score:
+    #             yScore.append(float(docIdAndScore[1]))
+    #             if docID in dictQrelsText[qID]:
+    #                  yTrue.append(1)
+    #             else:
+    #                  yTrue.append(0)
+    #     yTrue.sort(reverse=True) 
+    #     NDCGScoreVector.append(metrics.ndcg_score(yTrue[:10], yScore[:10], 10, "exponential"))
 
-    vectorAvg = avg(NDCGScoreVector)
+    # vectorAvg = avg(NDCGScoreVector)
+    print(NDCGScoreBool)
     BoolAvg = avg(NDCGScoreBool)
 
-    PVALUETHING = stats.ttest_ind(BoolAvg,vectorAvg)
+    #PVALUETHING = stats.ttest_ind(BoolAvg,vectorAvg)
 
     #loop through vectorQueryDict add 0 or 1 to yScore and add 1 to yTrue
     #NDCG_Score = metrics.ndcg_score(yScore[:10], yTrue[:10], 10, "exponential")

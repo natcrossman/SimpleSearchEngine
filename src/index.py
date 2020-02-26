@@ -80,6 +80,9 @@ class Posting:
         self.__positions  = []
         #  self.termFrequency = 0 not need
     
+    def get_docID(self):
+        return self.__docID 
+
     ##
     #   @brief         This method append a positions to our array
     #   @param         self
@@ -405,7 +408,7 @@ class InvertedIndex:
             write_stream.write(json.dumps(listInfo, indent=3))
         except ValueError as e: 
              print ("Is not valid json")
-       
+        write_stream.close()
 
     ##
     #   @brief     This method deserializes a json file in a object by reallocating the self.__items
@@ -528,9 +531,10 @@ class InvertedIndex:
         try:
             fileP = open(filename ,"rb")
             invertedIndexer = pickle.load(fileP)
-        except (pickle.UnpicklingError, ImportError, EOFError, IndexError, TypeError):
+        except (pickle.UnpicklingError, ImportError, EOFError, IndexError, TypeError) as err:
+            print(err)
             print("Error pickle.load InvertedIndex ")
-            fileP.close()
+        fileP.close()
         return invertedIndexer
 
 ##
@@ -593,7 +597,7 @@ def indexingCranfield():
     for doc in data.docs:
         invertedIndexer.indexDoc(doc)
 
-    invertedIndexer.save(fileName)
+    invertedIndexer.storeData(fileName)
  
    
 
