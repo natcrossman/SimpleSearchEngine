@@ -35,12 +35,12 @@ class QueryProcessor:
     #                   for the evaluation used the load query instead
     #    @exception     None documented yet
     ##
-    def __init__(self, query, index, collection):
+    def __init__(self, query, index_file, collection):
         ''' index is the inverted index; collection is the document collection'''
         self.raw_query = query
         self.index = InvertedIndex()
-        self.index = self.index.loadData(index)
-        #self.docs = collection
+        self.index = self.index.loadData(index_file)
+        self.docs = collection
         self.tokenizer = Tokenizer()
         if self.raw_query:
             self.processed_query = self.preprocessing(self.raw_query)
@@ -87,22 +87,27 @@ class QueryProcessor:
             docs.sort(key=len) # notice it is still smart to order by size 
             return reduce(set.intersection,docs) 
         '''
+
+        ## checks that all of our query words are in the index, if not return [] ##
+        for w in self.processed_query:
+            if not w in self.index.get_items_inverted():
+                return []
+
+        ## checks if we only have 1 term in the query and returns its posting list if we do ##
+        if len(self.processed_query) == 1:
+            return list(self.index.get_items_inverted()[processed_query[0]].get_posting_list().keys())
+
+
         ### NCC change if a term in a quiry does not appear in our inverted index Forget/Discount term 
         #### document_ids is a list of lists containing only document ids ####
-        document_ids = [list(self.index.get_items_inverted()[w].get_posting_list().keys()) for w in self.processed_query if w in self.index.get_items_inverted()  ]
+        document_ids = [list(self.index.get_items_inverted()[w].get_posting_list().keys()) for w in self.processed_query]
 
         # by sorting so that we start with the shortest list of documents we get a potential speed up
         document_ids.sort(key=len)
         results= document_ids[0]
 
-        #checks if we only have 1 term in the query
-        if len(self.processed_query) == 1:
-            return results
-
-        #checks if we have a term that does not appear in any of the documents, in which case we will not return any documents
-        if len(results) == 0:
-            return results
-
+        ## iterates through each query word and does the intersection of docids from its posting list with all those before it ##
+        ## could be done faster if index was implemented as set or some other hash data structure
         for p in document_ids[1:]:
             intermediate=[]
             i,j = 0,0
@@ -230,6 +235,79 @@ class QueryProcessor:
 #needed
 def test():
     ''' test your code thoroughly. put the testing cases here'''
+
+    ## BOOLEAN TESTS
+    ## BTEST 1: 1 word query in index & no stopwords
+
+    ## BTEST 2: 1 word query NOT in index & no stopwords
+
+    ## BTEST 3: 1 word query of stopword
+
+    ## BTEST 4: multiword query of in index & no stopwords & all unique
+
+    ## BTEST 5: multiword query of NOT in index & no stopwords & all unique
+
+    ## BTEST 6: multiword query of in index &  & NOT in index & no stopwords & all unique
+
+    ## BTEST 7: multiword query ALL stopwords & all unique
+
+    ## BTEST 8: multiword query of in index & stopwords & all unique
+
+    ## BTEST 9: query consisting of NOT not in index & stopwords & all unique
+
+    ## BTEST 10: multiword query of in index & NOT in index & stopwords & all unique
+
+    ## BTEST 11: multiword query of in index & no stopwords & duplicates
+
+    ## BTEST 12: multiword query of NOT in index & no stopwords & duplicates
+
+    ## BTEST 13: multiword query of in index &  & NOT in index & no stopwords & duplicates
+
+    ## BTEST 14: multiword query ALL stopwords & duplicates
+
+    ## BTEST 15: multiword query of in index & stopwords & duplicates
+
+    ## BTEST 16: query consisting of NOT in index & stopwords & dupicates
+
+    ## BTEST 17: multiword query of in index & NOT in index & stopwords & duplicates
+
+
+    ## VECTOR TESTS
+    ## VTEST 1: 1 word query in index & no stopwords
+
+    ## VTEST 2: 1 word query NOT in index & no stopwords
+
+    ## VTEST 3: 1 word query of stopword
+
+    ## VTEST 4: multiword query of in index & no stopwords & all unique
+
+    ## VTEST 5: multiword query of NOT in index & no stopwords & all unique
+
+    ## VTEST 6: multiword query of in index &  & NOT in index & no stopwords & all unique
+
+    ## VTEST 7: multiword query ALL stopwords & all unique
+
+    ## VTEST 8: multiword query of in index & stopwords & all unique
+
+    ## VTEST 9: query consisting of NOT not in index & stopwords & all unique
+
+    ## VTEST 10: multiword query of in index & NOT in index & stopwords & all unique
+
+    ## VTEST 11: multiword query of in index & no stopwords & duplicates
+
+    ## VTEST 12: multiword query of NOT in index & no stopwords & duplicates
+
+    ## VTEST 13: multiword query of in index &  & NOT in index & no stopwords & duplicates
+
+    ## VTEST 14: multiword query ALL stopwords & duplicates
+
+    ## VTEST 15: multiword query of in index & stopwords & duplicates
+
+    ## VTEST 16: query consisting of NOT in index & stopwords & dupicates
+
+    ## VTEST 17: multiword query of in index & NOT in index & stopwords & duplicates
+
+
     print('Pass')
 
 #needed
