@@ -11,6 +11,10 @@ from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 import doc
 import re
+import string
+
+
+from nltk.tokenize import RegexpTokenizer
 
 ##
 # @brief    This class is designed to take care of all text preprocessing for both indexing inquiry.  
@@ -31,18 +35,24 @@ class Tokenizer:
         self.stemmer = SnowballStemmer('english')
 
     ##
-    #   @brief         
+    #   @brief  
+    # OHTER: Was tried.       
+    # list_token_just = word_tokenize(doc)
+    # list_token = list(filter(lambda list_token_just: list_token_just not in string.punctuation, list_token_just))
+    # list_token = re.split(r"[\s-]+", doc)
     #   @note for doc indexing use before doc.title + " " + doc.body
     #   @param         self
     #   @param         doc
     #   @return        list_token list
+    #   bug            fixed this was returning bad tokens
     #   @exception     None
     ## 
     def tokenize_text(self, doc):
         list_token = []
-        #list_token = word_tokenize(doc)
-        list_token = re.split(r"[\s-]+", doc)
-        list_token = [word.lower() for word in list_token if word.isalpha()] # remove punctuation 
+        tokenizer = RegexpTokenizer(r'\w+')
+        list_token = tokenizer.tokenize(doc)
+        list_token = list_token = [word.lower() for word in list_token] 
+        print(list_token)
         return list_token
  
     ##

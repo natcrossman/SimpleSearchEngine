@@ -40,51 +40,52 @@ class QueryProcessor:
             removal and stemming (why?)'''
         return self.tokenizer.transpose_document_tokenized_stemmed_spelling(raw_query)
 
-#    def booleanQuery(self):
-#         ''' boolean query processing; note that a query like "A B C" is transformed to "A AND B AND C" for retrieving posting lists and merge them'''
-#         ''' This method would likely be faster due to the use of  hashes, but I wanted to do what was shown in the slides
-#             from functools import reduce
-#             docs = [set(self.index[w]) for w in self.processed_query]
-#             docs.sort(key=len) # notice it is still smart to order by size 
-#             return reduce(set.intersection,docs) 
-#         '''
-#         #### document_ids is a list of lists containing only document ids ####
-#         document_ids = [list(self.index.get_items_inverted()[w].get_posting_list().keys()) if w in self.index.get_items_inverted() else [] for w in self.processed_query ]
-        
-#         # by sorting so that we start with the shortest list of documents we get a potential speed up
-#         document_ids.sort(key=len)
-#         results= document_ids[0]
+    def booleanQuery(self):
+        ''' boolean query processing; note that a query like "A B C" is transformed to "A AND B AND C" for retrieving posting lists and merge them'''
+        ''' This method would likely be faster due to the use of  hashes, but I wanted to do what was shown in the slides
+            from functools import reduce
+            docs = [set(self.index[w]) for w in self.processed_query]
+            docs.sort(key=len) # notice it is still smart to order by size 
+            return reduce(set.intersection,docs) 
+        '''
+        ### NCC change if a term in a quiry does not appear in our inverted index Forget/Discount term 
+        #### document_ids is a list of lists containing only document ids ####
+        document_ids = [list(self.index.get_items_inverted()[w].get_posting_list().keys()) for w in self.processed_query if w in self.index.get_items_inverted()  ]
+        print("q", self.processed_query)
+        # by sorting so that we start with the shortest list of documents we get a potential speed up
+        document_ids.sort(key=len)
+        results= document_ids[0]
 
-#         #checks if we only have 1 term in the query
-#         if len(self.processed_query) == 1:
-#             return results
+        #checks if we only have 1 term in the query
+        if len(self.processed_query) == 1:
+            return results
 
-#         #checks if we have a term that does not appear in any of the documents, in which case we will not return any documents
-#         if len(results) == 0:
-#             return results
+        #checks if we have a term that does not appear in any of the documents, in which case we will not return any documents
+        if len(results) == 0:
+            return results
 
-#         for p in document_ids[1:]:
-#             intermediate=[]
-#             i,j = 0,0
-#             while i < len(results) and j < len(p): 
-#                 if results[i] < p[j]: 
-#                     i += 1
-#                 elif results[i] > p[j]: 
-#                     j+= 1
-#                 else: 
-#                     intermediate.append(p[j]) 
-#                     j += 1
-#                     i += 1
-#             results = intermediate
+        for p in document_ids[1:]:
+            intermediate=[]
+            i,j = 0,0
+            while i < len(results) and j < len(p): 
+                if int(results[i]) < int(p[j]): 
+                    i += 1
+                elif int(results[i]) > int(p[j]): 
+                    j+= 1
+                else: 
+                    intermediate.append(p[j]) 
+                    j += 1
+                    i += 1
+            results = intermediate
             
-#             ## checks if we have already found terms totally disjoint from one another
-#             if len(results) == 0:
-#                 return results
+            ## checks if we have already found terms totally disjoint from one another
+            if len(results) == 0:
+                return results
 
-#         return results
+        return results
 
 
-
+    #This works but not mine.. need to remove
     def __get__docIds(self, term):
             postings = self.__get__postings(term) 
             if postings is not None:
@@ -105,10 +106,11 @@ class QueryProcessor:
             print("Term {} not found in index.\nException: {}".format(term, e))
         return postings
 
-    def booleanQuery(self):
+    def booleanQuery_1(self):
         ''' boolean query processing; note that a query like "A B C" is transformed to "A AND B AND C" for retrieving posting lists and merge them'''
         # ToDo: return a list of docIDs
         q_tokens = self.processed_query
+        print("q", self.processed_query)
         common_docs = None
         for qtoken in q_tokens:
             try:
@@ -119,8 +121,11 @@ class QueryProcessor:
             except Exception as e:
                 print("error occured while querying, cause: ", e)
         ranked_results =  sorted(common_docs)
+        
         return ranked_results
 
+
+  
 
 
     def cosine_similarity(self,vec1,vec2):

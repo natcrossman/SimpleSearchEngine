@@ -60,7 +60,7 @@ def getRandomQuery(queryFile,numberOfQueries):
     for queryTuple in dictQuery:
         dictOfQueryID[queryTuple[1].qid] = queryTuple[1].text
 
-    return  {queryFile["204"].qid:queryFile["204"].text} #dictOfQueryID
+    return dictOfQueryID #{queryFile["226"].qid:queryFile["226"].text} testing
 
 
 ##
@@ -131,18 +131,21 @@ def eval():
 
         docIDs = queryProcessor.booleanQuery() # data would need to be like this [12, 14, 78, 141, 486, 746, 172, 573, 1003]
         # boolQueryDict[qid] = docIDs
-
+        docIDs_1 = queryProcessor.booleanQuery_1()
         #dictOfDocIDAndSimilarity = queryProcessor.vectorQuery(k) # data need to look like k=3 [[625,0.8737006126353902],[401,0.8697643788341478],[943,0.8424991316663082]]
         # vectorQueryDict[qid] = dictOfDocIDAndSimilarity
         print(docIDs, "**", qid, "--")
-       
+        print(docIDs_1, "**", qid, "--")
         #For Boolean part
         yTrue           = []
         yScore          = []
         for docID in docIDs:
             yScore.append(1)
+            print("\n")
+            print("is in ", dictQrelsText[qid], "$$$$")
             if docID in dictQrelsText[qid]:
                 yTrue.append(1)
+                print("yes")
             else:
                 yTrue.append(0)
         yTrue.sort(reverse=True)     
