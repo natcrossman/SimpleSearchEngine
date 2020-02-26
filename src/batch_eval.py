@@ -157,7 +157,7 @@ def eval():
       
         for docIdAndScore in dictOfDocIDAndSimilarity:
             yScore.append(float(docIdAndScore[1]))
-            if docID in dictQrelsText[qID]:
+            if docIdAndScore[0] in dictQrelsText[qid]:
                     yTrue.append(1)
             else:
                     yTrue.append(0)
@@ -175,7 +175,7 @@ def eval():
     
     PVALUETHING = stats.ttest_ind(BoolAvg,vectorAvg)
     print(PVALUETHING)
-    
+
     #loop through vectorQueryDict add 0 or 1 to yScore and add 1 to yTrue
     #NDCG_Score = metrics.ndcg_score(yScore[:10], yTrue[:10], 10, "exponential")
     #once done looping and get score need to do avg numberOfQueries
