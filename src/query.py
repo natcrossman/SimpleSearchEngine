@@ -95,7 +95,7 @@ class QueryProcessor:
 
         ## checks if we only have 1 term in the query and returns its posting list if we do ##
         if len(self.processed_query) == 1:
-            return list(self.index.get_items_inverted()[processed_query[0]].get_posting_list().keys())
+            return list(self.index.get_items_inverted()[self.processed_query[0]].get_posting_list().keys())
 
 
         ### NCC change if a term in a quiry does not appear in our inverted index Forget/Discount term 
