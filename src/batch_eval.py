@@ -61,7 +61,7 @@ def getRandomQuery(queryFile,numberOfQueries):
     for queryTuple in dictQuery:
         dictOfQueryID[queryTuple[1].qid] = queryTuple[1].text
 
-    return {queryFile["226"].qid:queryFile["226"].text} # dictOfQueryID #{queryFile["226"].qid:queryFile["226"].text} testing
+    return  dictOfQueryID #{queryFile["226"].qid:queryFile["226"].text} {queryFile["204"].qid:queryFile["204"].text}
 
 
 ##
@@ -122,13 +122,15 @@ def eval():
     queryProcessor = QueryProcessor("",indexFile,docCollection.docs) # This is an extremely expensive process\
     end = timer()
     print("Time for creating QueryProcessor:" , end - start) 
+
+    start = timer()
     for qid, queryText in dictOfQuery.items():
-        
+        print("QID:",qid)
         start = timer()
         queryProcessor.loadQuery(queryText)
         end = timer()
         print("Time for Load:" , end - start) 
-        print(dictQrelsText[qid])
+        print("qrels: ",dictQrelsText[qid])
 
         start = timer()
         docIDs = queryProcessor.booleanQuery() # data would need to be like this [12, 14, 78, 141, 486, 746, 172, 573, 1003]
@@ -142,8 +144,8 @@ def eval():
         #vectorQueryDict[qid] = dictOfDocIDAndSimilarity
         end = timer()
         print("Time for vectorQuery:", end - start) 
-        print(docIDs)
-       
+        print("booleanQuery:", docIDs)
+
         #For Boolean part
         start = timer()
         yTrue           = []
@@ -167,12 +169,11 @@ def eval():
         start = timer()
         yTrue           = []
         yScore          = []
-        print(dictOfDocIDAndSimilarity.keys())
+        print("vectorQuery:",dictOfDocIDAndSimilarity.keys())
         for docID, Score in dictOfDocIDAndSimilarity.items():
             yScore.append(float(Score))
             if docID in dictQrelsText[qid]:
                     yTrue.append(1)
-                    print("yes")
             else:
                     yTrue.append(0)
         yTrue.sort(reverse=True) 
@@ -184,14 +185,16 @@ def eval():
         end = timer()
         print("Time for  Vector ndcg:", end - start) 
 
-
+  
     vectorAvg = avg(NDCGScoreVector)
     BoolAvg = avg(NDCGScoreBool)
     print(BoolAvg,vectorAvg)
-    print(vectorAvg)
-
-    PVALUETHING = stats.ttest_ind(BoolAvg,vectorAvg)
-    print(PVALUETHING)
+   
+    end = timer()
+    print("\n\nTime for running 100 queries:" , end - start) 
+    #p_va = stats.ttest_ind(vectorAvg,BoolAvg)
+    p_va = stats.wilcoxon(vectorAvg,BoolAvg)
+    #print(PVALUETHING)
 
     #loop through vectorQueryDict add 0 or 1 to yScore and add 1 to yTrue
     #NDCG_Score = metrics.ndcg_score(yScore[:10], yTrue[:10], 10, "exponential")
