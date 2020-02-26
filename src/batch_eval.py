@@ -118,40 +118,34 @@ def eval():
     dictOfQuery = getRandomQuery(queryFile,numberOfQueries)
     dictQrelsText =  getResultsFrom_QrelsFile(listOfQueryRelsMaping, dictOfQuery)
 
-
-
-    #Loads queryFile and create dict of random N querys (dict = {Qid:text})
-    
-
-    #Load invertedIndexer Object from file Not sure if need?
-    # invertedTempIndexer = InvertedIndex()
-    # invertedIndexer = invertedTempIndexer.loadData(indexFile)
-    queryProcessor = QueryProcessor("",indexFile,docCollection.docs) # This is an extremely expensive process
+    start = timer()
+    queryProcessor = QueryProcessor("",indexFile,docCollection.docs) # This is an extremely expensive process\
+    end = timer()
+    print("Time for creating QueryProcessor:" , end - start) 
     for qid, queryText in dictOfQuery.items():
         
         start = timer()
         queryProcessor.loadQuery(queryText)
         end = timer()
-        print(end - start) 
+        print("Time for Load:" , end - start) 
         print(dictQrelsText[qid])
 
         start = timer()
         docIDs = queryProcessor.booleanQuery() # data would need to be like this [12, 14, 78, 141, 486, 746, 172, 573, 1003]
         #docIDs_1 = queryProcessor.booleanQuery_1()
         end = timer()
-        print(end - start) 
+        print("Time for booleanQuery:" , end - start) 
 
         
         start = timer()
         dictOfDocIDAndSimilarity = queryProcessor.vectorQuery(k) # data need to look like k=3 [[625,0.8737006126353902],[401,0.8697643788341478],[943,0.8424991316663082]]
         #vectorQueryDict[qid] = dictOfDocIDAndSimilarity
         end = timer()
-        print(end - start) 
-        
-        
+        print("Time for vectorQuery:", end - start) 
         print(docIDs)
        
         #For Boolean part
+        start = timer()
         yTrue           = []
         yScore          = []
         for docID in docIDs:
@@ -166,8 +160,11 @@ def eval():
             NDCGScoreBool.append(0)
         else:
             NDCGScoreBool.append(score)
+        end = timer()
+        print("Time for  Boolean ndcg:", end - start) 
 
         #For Vector part
+        start = timer()
         yTrue           = []
         yScore          = []
         print(dictOfDocIDAndSimilarity.keys())
@@ -184,6 +181,9 @@ def eval():
             NDCGScoreVector.append(0)
         else:
             NDCGScoreVector.append(score)
+        end = timer()
+        print("Time for  Vector ndcg:", end - start) 
+
 
     vectorAvg = avg(NDCGScoreVector)
     BoolAvg = avg(NDCGScoreBool)
