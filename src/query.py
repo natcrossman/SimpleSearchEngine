@@ -51,7 +51,7 @@ class QueryProcessor:
         ### NCC change if a term in a quiry does not appear in our inverted index Forget/Discount term 
         #### document_ids is a list of lists containing only document ids ####
         document_ids = [list(self.index.get_items_inverted()[w].get_posting_list().keys()) for w in self.processed_query if w in self.index.get_items_inverted()  ]
-        print("q", self.processed_query)
+
         # by sorting so that we start with the shortest list of documents we get a potential speed up
         document_ids.sort(key=len)
         results= document_ids[0]
@@ -110,7 +110,6 @@ class QueryProcessor:
         ''' boolean query processing; note that a query like "A B C" is transformed to "A AND B AND C" for retrieving posting lists and merge them'''
         # ToDo: return a list of docIDs
         q_tokens = self.processed_query
-        print("q", self.processed_query)
         common_docs = None
         for qtoken in q_tokens:
             try:

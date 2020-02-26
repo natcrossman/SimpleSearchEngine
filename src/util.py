@@ -52,7 +52,6 @@ class Tokenizer:
         tokenizer = RegexpTokenizer(r'\w+')
         list_token = tokenizer.tokenize(doc)
         list_token = list_token = [word.lower() for word in list_token] 
-        print(list_token)
         return list_token
  
     ##

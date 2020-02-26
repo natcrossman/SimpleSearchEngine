@@ -130,22 +130,18 @@ def eval():
         queryProcessor = QueryProcessor(queryText,indexFile,docCollection.docs) # need 
 
         docIDs = queryProcessor.booleanQuery() # data would need to be like this [12, 14, 78, 141, 486, 746, 172, 573, 1003]
-        # boolQueryDict[qid] = docIDs
-        docIDs_1 = queryProcessor.booleanQuery_1()
-        #dictOfDocIDAndSimilarity = queryProcessor.vectorQuery(k) # data need to look like k=3 [[625,0.8737006126353902],[401,0.8697643788341478],[943,0.8424991316663082]]
-        # vectorQueryDict[qid] = dictOfDocIDAndSimilarity
-        print(docIDs, "**", qid, "--")
-        print(docIDs_1, "**", qid, "--")
+        #docIDs_1 = queryProcessor.booleanQuery_1()
+
+        dictOfDocIDAndSimilarity = queryProcessor.vectorQuery(k) # data need to look like k=3 [[625,0.8737006126353902],[401,0.8697643788341478],[943,0.8424991316663082]]
+        #vectorQueryDict[qid] = dictOfDocIDAndSimilarity
+
         #For Boolean part
         yTrue           = []
         yScore          = []
         for docID in docIDs:
             yScore.append(1)
-            print("\n")
-            print("is in ", dictQrelsText[qid], "$$$$")
             if docID in dictQrelsText[qid]:
                 yTrue.append(1)
-                print("yes")
             else:
                 yTrue.append(0)
         yTrue.sort(reverse=True)   
@@ -156,24 +152,30 @@ def eval():
             NDCGScoreBool.append(score)
 
         #For Vector part
-    #     yTrue           = []
-    #     yScore          = []
-    #     for qID, listOfDocId_and_score in vectorQueryDict.items():
-    #         for docIdAndScore in listOfDocId_and_score:
-    #             yScore.append(float(docIdAndScore[1]))
-    #             if docID in dictQrelsText[qID]:
-    #                  yTrue.append(1)
-    #             else:
-    #                  yTrue.append(0)
-    #     yTrue.sort(reverse=True) 
-    #     NDCGScoreVector.append(metrics.ndcg_score(yTrue[:10], yScore[:10], 10, "exponential"))
+        yTrue           = []
+        yScore          = []
+      
+        for docIdAndScore in dictOfDocIDAndSimilarity:
+            yScore.append(float(docIdAndScore[1]))
+            if docID in dictQrelsText[qID]:
+                    yTrue.append(1)
+            else:
+                    yTrue.append(0)
+        yTrue.sort(reverse=True) 
+        score = metrics.ndcg_score(yTrue[:10], yScore[:10], 10, "exponential")
+        if math.isnan(score):     
+            NDCGScoreVector.append(0)
+        else:
+            NDCGScoreVector.append(score)
 
-    # vectorAvg = avg(NDCGScoreVector)
+    vectorAvg = avg(NDCGScoreVector)
     print(NDCGScoreBool)
     BoolAvg = avg(NDCGScoreBool)
-
-    #PVALUETHING = stats.ttest_ind(BoolAvg,vectorAvg)
-
+    print(BoolAvg,vectorAvg)
+    
+    PVALUETHING = stats.ttest_ind(BoolAvg,vectorAvg)
+    print(PVALUETHING)
+    
     #loop through vectorQueryDict add 0 or 1 to yScore and add 1 to yTrue
     #NDCG_Score = metrics.ndcg_score(yScore[:10], yTrue[:10], 10, "exponential")
     #once done looping and get score need to do avg numberOfQueries
