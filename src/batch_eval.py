@@ -21,7 +21,7 @@ from cran import CranFile
 import random 
 import sys
 import os
-
+import math
 import collections
 from statistics import mean
 
@@ -148,9 +148,12 @@ def eval():
                 print("yes")
             else:
                 yTrue.append(0)
-        yTrue.sort(reverse=True)     
-        NDCGScoreBool.append(metrics.ndcg_score(yTrue, yScore, 10, "exponential"))
-
+        yTrue.sort(reverse=True)   
+        score = metrics.ndcg_score(yTrue, yScore, 10, "exponential")
+        if math.isnan(score):     
+            NDCGScoreBool.append(0)
+        else:
+            NDCGScoreBool.append(score)
 
         #For Vector part
     #     yTrue           = []
