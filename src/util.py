@@ -21,7 +21,8 @@ from nltk.tokenize import RegexpTokenizer
 #           please don't change the return types. 
 #           You may add any message you need or modify the method for query indexing as desired but the 
 #           base implementation should remain constant. 
-#
+#           
+# Could improve important performance by Optimizing removal of stopwords and stemming.. But not significant enough to query about
 #           
 # @bug       None documented yet   
 #
@@ -53,7 +54,27 @@ class Tokenizer:
         list_token = tokenizer.tokenize(doc)
         list_token = list_token = [word.lower() for word in list_token] 
         return list_token
- 
+    
+    ##
+    #   @brief  This method is used for tokenizer queries. 
+    #   The reason I created an extra method, that does the exact same thing as the previous tokenizer method,
+    #   is for the small performance gain doing spell correction  inside this method gives me.
+    #   Previously we called a separate method that took the completely tokenized list and then did spell correction on each term..
+    #   This is not very good, O(n+M) 
+    #   @note for doc indexing use before doc.title + " " + doc.body
+    #   @param         self
+    #   @param         doc
+    #   @return        list_token list
+    #   bug            fixed this was returning bad tokens
+    #   @exception     None
+    ## 
+    def tokenize_text_for_q(self, doc):
+        list_token = []
+        tokenizer = RegexpTokenizer(r'\w+')
+        list_token = tokenizer.tokenize(doc)
+        list_token = list_token = [correction(word.lower()) for word in list_token] 
+        return list_token
+
     ##
     #   @brief      This method return the stem worked using the SnowballStemmer NLTK stemmer. 
     #               We are using the SnowballStemmer as it is better than the original 'porter' stemmer.
@@ -107,8 +128,10 @@ class Tokenizer:
 
     ##
     #   @brief   This method will spell correct all token words
-    #   @bug  The spell correction function doesn't necessarily seem to work as expected. 
-    #           It changes even correctly spelled words.
+    #   @bug     The spell correction function doesn't necessarily seem to work as expected. 
+    #            It changes even correctly spelled words. Best results seem to come from using the 
+    #            dictionary as the base text for the spoke correction algorithm. 
+    #            Tried other documents with no bettering success.
     #
     #   @param         self
     #   @param         list_token
@@ -146,6 +169,6 @@ class Tokenizer:
     #   @exception     None
     ## 
     def transpose_document_tokenized_stemmed_spelling(self, doc):
-        return self.stemming_list(self.remove_stopwords(self.spell_correction(self.tokenize_text(doc))))
+        return self.stemming_list(self.remove_stopwords(self.tokenize_text_for_q(doc)))
 
 

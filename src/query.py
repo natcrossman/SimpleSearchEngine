@@ -21,9 +21,20 @@ import sys
 import os
 import numpy as np
 
-
 class QueryProcessor:
-
+    ##
+    # 
+    #    @param         self
+    #    @param         query
+    #    @param         index
+    #    @param         collection
+    #    @return        None
+    #    @brief         The constructor.  
+    #                   This process is extremely expensive because it loads the entire pickle object into memory.
+    #                   If we are only executing this for one query it is fine but if we are doing it 
+    #                   for the evaluation used the load query instead
+    #    @exception     None documented yet
+    ##
     def __init__(self, query, index, collection):
         ''' index is the inverted index; collection is the document collection'''
         self.raw_query = query
@@ -31,8 +42,28 @@ class QueryProcessor:
         self.index = self.index.loadData(index)
         #self.docs = collection
         self.tokenizer = Tokenizer()
+        if self.raw_query:
+            self.processed_query = self.preprocessing(self.raw_query)
+
+    
+    ##
+    #   @brief         This method is used to load the next query for evaluation
+    #   @param         self
+    #   @param         query
+    #   @return        None
+    #   @exception     None
+    ## 
+    def loadQuery(self,query):
+        self.raw_query = query
         self.processed_query = self.preprocessing(self.raw_query)
 
+    ##
+    #   @brief         This method is used to load the next query for evaluation
+    #   @param         self
+    #   @param         raw_query
+    #   @return        None
+    #   @exception     None
+    ## 
     def preprocessing(self,raw_query):
         ''' apply the same preprocessing steps used by indexing,
             also use the provided spelling corrector. Note that
@@ -40,6 +71,14 @@ class QueryProcessor:
             removal and stemming (why?)'''
         return self.tokenizer.transpose_document_tokenized_stemmed_spelling(raw_query)
 
+    
+    ##
+    #   @brief         This method does the boolean query processing
+    #   @param         self
+    #   @return        results:list[docID]
+    #   @bug           Fixed
+    #   @exception     None
+    ## 
     def booleanQuery(self):
         ''' boolean query processing; note that a query like "A B C" is transformed to "A AND B AND C" for retrieving posting lists and merge them'''
         ''' This method would likely be faster due to the use of  hashes, but I wanted to do what was shown in the slides
@@ -105,7 +144,6 @@ class QueryProcessor:
         except KeyError as e:
             print("Term {} not found in index.\nException: {}".format(term, e))
         return postings
-
     def booleanQuery_1(self):
         ''' boolean query processing; note that a query like "A B C" is transformed to "A AND B AND C" for retrieving posting lists and merge them'''
         # ToDo: return a list of docIDs
@@ -126,7 +164,14 @@ class QueryProcessor:
 
   
 
-
+    ##
+    #   @brief         This method compute cosine similarity for two vectors
+    #   @param         self
+    #   @param         vec1
+    #   @param         vec2
+    #   @return        score cosine: int
+    #   @exception     None
+    ## 
     def cosine_similarity(self,vec1,vec2):
         # "compute cosine similarity: (vec1*vec2)/(||vec1||*||vec2||)"
         AA, AB, BB = 0, 0, 0
@@ -136,7 +181,15 @@ class QueryProcessor:
             BB += y*y    
             AB += x*y
         return AB/math.sqrt(AA*BB)
-            
+     
+    ##
+    #   @brief         This method compute vector model
+    #   @param         self
+    #   @param         k
+    #   @return        cosines: dict{docID: score}
+    #   @bug           Fixed
+    #   @exception     None
+    ## 
     def vectorQuery(self, k):
         ''' vector query processing, using the cosine similarity. '''
         #ToDo: return top k pairs of (docID, similarity), ranked by their cosine similarity with the query in the descending order
@@ -151,18 +204,20 @@ class QueryProcessor:
 
         #Calculates tfs of relevant words
         query_term_counter = Counter(self.processed_query)
-        query_tf_vector = [math.log10(query_term_counter[w]+1) for w in query_words] 
+        query_tf_vector = [round(math.log10(query_term_counter[w]+1),4) for w in query_words] 
 
+        ### NCC change if a term in a quiry does not appear in our inverted index Forget/Discount term 
         #### postings should be a list of lists which contains word postings
-        postings = [self.index.get_items_inverted()[w].get_posting_list() if w in self.index.get_items_inverted() else dict() for w in query_words ]
 
+        postings = [self.index.get_items_inverted()[w].get_posting_list() for w in query_words if w in self.index.get_items_inverted() ]
+      
         document_ids = set().union(*postings)
         document_tfs = {d:[0]*len(query_words) for d in document_ids}
 
         for inx, term in enumerate(postings):
             for document_id, posting in term.items():
                 document_tfs[document_id][inx] = math.log10(posting.term_freq()+1)
-        
+       
         query_tfidf = np.multiply(query_tf_vector , idfs)
 
         cosines = Counter({d: self.cosine_similarity(query_tfidf,np.multiply(d_tf , idfs)) for d,d_tf in document_tfs.items() })
@@ -172,11 +227,12 @@ class QueryProcessor:
     
 
 
-
+#needed
 def test():
     ''' test your code thoroughly. put the testing cases here'''
     print('Pass')
 
+#needed
 def query():
     ''' the main query processing program, using QueryProcessor'''
 
