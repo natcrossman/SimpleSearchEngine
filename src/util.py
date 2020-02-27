@@ -73,7 +73,7 @@ class Tokenizer:
         list_token = []
         tokenizer = RegexpTokenizer(r'\w+')
         list_token = tokenizer.tokenize(doc)
-        list_token = list_token = [correction(word.lower()) if word not in self.known_words else word.lower() for word in list_token] 
+        list_token = [correction(word.lower()) if word not in self.known_words else word.lower() for word in list_token] 
         return list_token
 
     ##

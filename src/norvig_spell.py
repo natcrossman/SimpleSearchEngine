@@ -27,6 +27,8 @@ def correction(word):
     if word in dd: 
         return "is"
     else:
+        if word == 'sexperi':
+            import pdb; pdb.set_trace()
         return max(candidates(word), key=P)
         
 def candidates(word):
