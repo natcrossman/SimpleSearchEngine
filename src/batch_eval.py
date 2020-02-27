@@ -127,9 +127,10 @@ def eval():
     queryProcessor = QueryProcessor("",indexFile,docCollection.docs) # This is an extremely expensive process\
     end = timer()
     print("Time for creating QueryProcessor:" , end - start) 
-
+    countDoc = 0
     start = timer()
     for qid, queryText in dictOfQuery.items():
+        countDoc +=1
         print("QID:",qid)
         start = timer()
         queryProcessor.loadQuery(queryText)
@@ -162,7 +163,7 @@ def eval():
             else:
                 yTrue.append(0)
         yTrue.sort(reverse=True)   
-        score = metrics.ndcg_score(yScore,yTrue, 10, "exponential")
+        score = metrics.ndcg_score(yTrue,yScore, 10, "exponential")
         if math.isnan(score):     
             NDCGScoreBool.append(0)
         else:
@@ -182,7 +183,7 @@ def eval():
             else:
                     yTrue.append(0)
         yTrue.sort(reverse=True) 
-        score = metrics.ndcg_score(yTrue, yScore, 10, "exponential")
+        score = metrics.ndcg_score(yTrue,yScore, 10, "exponential")
         if math.isnan(score):     
             NDCGScoreVector.append(0)
         else:
@@ -195,7 +196,7 @@ def eval():
     BoolAvg = avg(NDCGScoreBool)
     print("Avg:", BoolAvg,vectorAvg)
     end = timer()
-    print("\n\nTime for running 100 queries:" , end - start) 
+    print("\n\nTime for running ",countDoc ," queries:" , end - start) 
 
     p_va_ttest = stats.ttest_ind(NDCGScoreBool,NDCGScoreVector)
     p_va_wilcoxon = stats.wilcoxon(NDCGScoreBool,NDCGScoreVector)
