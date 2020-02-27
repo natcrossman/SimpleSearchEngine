@@ -91,7 +91,6 @@ class QueryProcessor:
         ## checks that all of our query words are in the index, if not return [] ##
         for w in self.processed_query:
             if not w in self.index.get_items_inverted():
-                print(w, "fuck")
                 return []
 
         ## checks if we only have 1 term in the query and returns its posting list if we do ##
@@ -100,7 +99,7 @@ class QueryProcessor:
 
         #### document_ids is a list of lists containing only document ids ####
         document_ids = [list(self.index.get_items_inverted()[w].get_posting_list().keys()) for w in self.processed_query]
-
+    
         # by sorting so that we start with the shortest list of documents we get a potential speed up
         document_ids.sort(key=len)
         results= document_ids[0]
@@ -128,42 +127,42 @@ class QueryProcessor:
         return results
 
 
-    #This works but not mine.. need to remove
-    def __get__docIds(self, term):
-            postings = self.__get__postings(term) 
-            if postings is not None:
-                return set([posting.get_docID() for _, posting in postings.items()])
-            else:
-                print("Warning: missing term {} in index.".format(term))
-                # raise Exception("term not found!!")
-                # pass
-    def __get__postings(self, term):
-        postings = None
-        try:
-            # if term in self.index.items:
-            postings = self.index.get_items_inverted()[term].get_posting_list()
-            # else:
-            #     postings = self.index.items[correction(term)].posting
-            #     print("spell corrected from {} to {}".format(term, correction(term)))
-        except KeyError as e:
-            print("Term {} not found in index.\nException: {}".format(term, e))
-        return postings
-    def booleanQuery_1(self):
-        ''' boolean query processing; note that a query like "A B C" is transformed to "A AND B AND C" for retrieving posting lists and merge them'''
-        # ToDo: return a list of docIDs
-        q_tokens = self.processed_query
-        common_docs = None
-        for qtoken in q_tokens:
-            try:
-                if common_docs is None:
-                    common_docs = self.__get__docIds(qtoken)
-                else:
-                    common_docs = common_docs.intersection(self.__get__docIds(qtoken))
-            except Exception as e:
-                print("error occured while querying, cause: ", e)
-        ranked_results =  sorted(common_docs)
+    # #This works but not mine.. need to remove
+    # def __get__docIds(self, term):
+    #         postings = self.__get__postings(term) 
+    #         if postings is not None:
+    #             return set([posting.get_docID() for _, posting in postings.items()])
+    #         else:
+    #             print("Warning: missing term {} in index.".format(term))
+    #             # raise Exception("term not found!!")
+    #             # pass
+    # def __get__postings(self, term):
+    #     postings = None
+    #     try:
+    #         # if term in self.index.items:
+    #         postings = self.index.get_items_inverted()[term].get_posting_list()
+    #         # else:
+    #         #     postings = self.index.items[correction(term)].posting
+    #         #     print("spell corrected from {} to {}".format(term, correction(term)))
+    #     except KeyError as e:
+    #         print("Term {} not found in index.\nException: {}".format(term, e))
+    #     return postings
+    # def booleanQuery_1(self):
+    #     ''' boolean query processing; note that a query like "A B C" is transformed to "A AND B AND C" for retrieving posting lists and merge them'''
+    #     # ToDo: return a list of docIDs
+    #     q_tokens = self.processed_query
+    #     common_docs = None
+    #     for qtoken in q_tokens:
+    #         try:
+    #             if common_docs is None:
+    #                 common_docs = self.__get__docIds(qtoken)
+    #             else:
+    #                 common_docs = common_docs.intersection(self.__get__docIds(qtoken))
+    #         except Exception as e:
+    #             print("error occured while querying, cause: ", e)
+    #     ranked_results =  sorted(common_docs)
         
-        return ranked_results
+    #     return ranked_results
 
 
   
@@ -328,7 +327,7 @@ def query():
     indexFile       = "src/Data/tempFile"
     model_selection = "1"
     queryText       = 'src/CranfieldDataset/query.text'
-    query_id        = "170"
+    query_id        = "226"
     docCollection   = CranFile('src/CranfieldDataset/cran.all')
     #indexFile       = sys.argv[1]
     #model_selection = sys.argv[2]
@@ -344,7 +343,7 @@ def query():
         queryTest = queryTuple.text
 
     queryProcessor = QueryProcessor(queryTest,indexFile,docCollection.docs)
-    if model_selection == "0":
+    if model_selection == "1":
         docIDs = queryProcessor.booleanQuery()
         print("Boolean")
         print("Total number of documents is:", str(len(docIDs)) + "\nThier DocIDs our:" + str(docIDs))

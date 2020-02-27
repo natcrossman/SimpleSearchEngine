@@ -61,8 +61,14 @@ def getRandomQuery(queryFile,numberOfQueries):
     for k, queryTuple in queryFile.items():
         dictOfQueryID[k] = queryTuple.text
 
-    return dictOfQueryID #{queryFile["226"].qid:queryFile["226"].text} #{queryFile["204"].qid:queryFile["204"].text} 
-    #return {queryFile["226"].qid:queryFile["226"].text} 
+    #return dictOfQueryID #{queryFile["226"].qid:queryFile["226"].text} #{queryFile["204"].qid:queryFile["204"].text} 
+    return {queryFile["226"].qid:queryFile["226"].text} 
+
+def getAllDataItems(queryFile):
+    dictOfQueryID = {}
+    for k, queryTuple in queryFile.items():
+        dictOfQueryID[k] = queryTuple.text
+    return dictOfQueryID 
 ##
 #   @brief         This method gets the appropriate results for the randomly chosen queries.
 #                  The outcome of this query is a dictionary of results used to compare our Querying process
@@ -89,7 +95,7 @@ def getResultsFrom_QrelsFile(listOfQueryRelsMaping,dictOfQuery):
 #   @bug           This has not been Thoroughly tested yet. Only use synthetic data need your cope
 ##         
 def eval():
-    k               = 20 # k the number of top k pairs of (docID, similarity) to get from vectorQuery
+    k               = 10 # k the number of top k pairs of (docID, similarity) to get from vectorQuery
     #indexFile       = sys.argv[1]v "src/Data/tempFile"
     indexFile       = "src/Data/tempFile"
     queryText       = 'src/CranfieldDataset/query.text'
@@ -113,7 +119,8 @@ def eval():
     queryFile   = loadCranQry(queryText)
 
     #Data Need
-    dictOfQuery = getRandomQuery(queryFile,numberOfQueries)
+    #dictOfQuery = getRandomQuery(queryFile,numberOfQueries)
+    dictOfQuery = getAllDataItems(queryFile)
     dictQrelsText =  getResultsFrom_QrelsFile(listOfQueryRelsMaping, dictOfQuery)
 
     start = timer()
@@ -155,7 +162,7 @@ def eval():
             else:
                 yTrue.append(0)
         yTrue.sort(reverse=True)   
-        score = metrics.ndcg_score(yTrue, yScore, 10, "exponential")
+        score = metrics.ndcg_score(yScore,yTrue, 10, "exponential")
         if math.isnan(score):     
             NDCGScoreBool.append(0)
         else:
