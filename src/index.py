@@ -584,11 +584,11 @@ def indexingCranfield():
     # command line usage: "python index.py cran.all index_file"
     # the index is saved to index_file
 
-    #filePath = sys.argv[1]
-    #fileName = sys.argv[2]
+    filePath = sys.argv[1]
+    fileName = sys.argv[2]
 
-    filePath = "src/CranfieldDataset/cran.all"
-    fileName = "src/Data/tempFile"
+    #filePath = "src/CranfieldDataset/cran.all"
+    #fileName = "src/Data/tempFile"
     #filePath = "./CranfieldDataset/cran.all"
     #fileName = "./Data/tempFile"
    
@@ -598,7 +598,7 @@ def indexingCranfield():
         invertedIndexer.indexDoc(doc)
 
     invertedIndexer.storeData(fileName)
-
+    print("Done")
    
 
 if __name__ == '__main__':

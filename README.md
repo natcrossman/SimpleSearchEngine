@@ -52,7 +52,7 @@ Finally, the index should be saved to a file. You can use any serialization meth
 You should provide the executable indexing program that can be run as follows 
 
 ```
-python index.py cran.all index_file
+python index.py CranfieldDataset/cran.all Data/tempFile
 ```
 
 
