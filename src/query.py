@@ -325,7 +325,7 @@ def query():
 
         
     indexFile       = "src/Data/tempFile"
-    model_selection = "1"
+    model_selection = "0"
     queryText       = 'src/CranfieldDataset/query.text'
     query_id        = "226"
     docCollection   = CranFile('src/CranfieldDataset/cran.all')
@@ -343,7 +343,7 @@ def query():
         queryTest = queryTuple.text
 
     queryProcessor = QueryProcessor(queryTest,indexFile,docCollection.docs)
-    if model_selection == "1":
+    if model_selection == "0":
         docIDs = queryProcessor.booleanQuery()
         print("Boolean")
         print("Total number of documents is:", str(len(docIDs)) + "\nThier DocIDs our:" + str(docIDs))
