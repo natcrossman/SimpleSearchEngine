@@ -8568,7 +8568,8 @@ to 20 and were designed for exit mach numbers from 1.0 to 3.2 .
 pressure ratios up to 30 were tested for both a cold (air) and a hot
 numbers of 1.91 and 3.12 .
   in general, base pressure increased for increasing values of
-boat-tail angle, nozzle angle, jet temperature, and jet total pressure and
+
+  -tail angle, nozzle angle, jet temperature, and jet total pressure and
 for decreasing values of base-to-jet diameter ratio, jet mach number,
 and free-stream mach number .  the addition of tail surfaces produced
 only small changes in base pressure .

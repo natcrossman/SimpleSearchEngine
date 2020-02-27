@@ -91,14 +91,13 @@ class QueryProcessor:
         ## checks that all of our query words are in the index, if not return [] ##
         for w in self.processed_query:
             if not w in self.index.get_items_inverted():
+                print(w, "fuck")
                 return []
 
         ## checks if we only have 1 term in the query and returns its posting list if we do ##
         if len(self.processed_query) == 1:
             return list(self.index.get_items_inverted()[self.processed_query[0]].get_posting_list().keys())
 
-
-        ### NCC change if a term in a quiry does not appear in our inverted index Forget/Discount term 
         #### document_ids is a list of lists containing only document ids ####
         document_ids = [list(self.index.get_items_inverted()[w].get_posting_list().keys()) for w in self.processed_query]
 
@@ -199,7 +198,7 @@ class QueryProcessor:
         ''' vector query processing, using the cosine similarity. '''
         #ToDo: return top k pairs of (docID, similarity), ranked by their cosine similarity with the query in the descending order
         # You can use term frequency or TFIDF to construct the vectors
-        
+        print("tokens:", self.processed_query)
         query_words = list(set(self.processed_query))
         idfs= [self.index.idf(w) for w in query_words]
 
@@ -222,12 +221,18 @@ class QueryProcessor:
         for inx, term in enumerate(postings):
             for document_id, posting in term.items():
                 document_tfs[document_id][inx] = math.log10(posting.term_freq()+1)
-       
+                # tf = posting.term_freq()
+                # if tf > 0 :
+                #     tf = 1 + math.log10(tf)
+                # else:
+                #     tf = 0
+                # document_tfs[document_id][inx] = tf
+
         query_tfidf = np.multiply(query_tf_vector , idfs)
 
         cosines = Counter({d: self.cosine_similarity(query_tfidf,np.multiply(d_tf , idfs)) for d,d_tf in document_tfs.items() })
-
-        return dict(sorted(cosines.items(), key = itemgetter(1), reverse = True)[:k])
+        # this has to be a list as dict are not sorted...
+        return list(sorted(cosines.items(), key = itemgetter(1), reverse = True)[:k])
 
     
 
@@ -323,7 +328,7 @@ def query():
     indexFile       = "src/Data/tempFile"
     model_selection = "1"
     queryText       = 'src/CranfieldDataset/query.text'
-    query_id        = "204"
+    query_id        = "170"
     docCollection   = CranFile('src/CranfieldDataset/cran.all')
     #indexFile       = sys.argv[1]
     #model_selection = sys.argv[2]

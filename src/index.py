@@ -313,7 +313,7 @@ class InvertedIndex:
     ## 
     def indexDoc(self, doc): # indexing a Document object
         #Concatenate document title
-        newDoc              = doc.body
+        newDoc              = doc.title +" "+   doc.author +" "+  doc.body
         docID               = doc.docID
         full_stemmed_list   = self.__tokenizer.transpose_document_tokenized_stemmed(newDoc)
         
@@ -598,7 +598,7 @@ def indexingCranfield():
         invertedIndexer.indexDoc(doc)
 
     invertedIndexer.storeData(fileName)
- 
+
    
 
 if __name__ == '__main__':

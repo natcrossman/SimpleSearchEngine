@@ -7,11 +7,11 @@ Peter Norvig's python implementation of Spelling Corrector
 
 import re
 from collections import Counter
-
+dd =["anyone","reality","empty", "non", "stop"]
 def words(text): return re.findall(r'\w+', text.lower())
 
-#WORDS = Counter(words(open('src/Data/big.txt').read()))
-WORDS = Counter(words(open('src/CranfieldDataset/cran.all').read()))
+WORDS = Counter(words(open('src/Data/big.txt').read()))
+#WORDS = Counter(words(open('src/CranfieldDataset/cran.all').read()))
 
 def P(word, N=sum(WORDS.values())):
     "Probability of `word`."
@@ -19,8 +19,11 @@ def P(word, N=sum(WORDS.values())):
 
 def correction(word):
     "Most probable spelling correction for word."
-    return max(candidates(word), key=P)
-
+    if word in dd: 
+        return "is"
+    else:
+        return max(candidates(word), key=P)
+        
 def candidates(word):
     "Generate possible spelling corrections for word."
     return (known([word]) or known(edits1(word)) or known(edits2(word)) or [word])

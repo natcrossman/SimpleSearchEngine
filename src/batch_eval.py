@@ -58,12 +58,11 @@ def readFile(fileName):
 def getRandomQuery(queryFile,numberOfQueries):
     dictOfQueryID = {}
     dictQuery = random.sample(queryFile.items(), k=numberOfQueries)
-    for queryTuple in dictQuery:
-        dictOfQueryID[queryTuple[1].qid] = queryTuple[1].text
+    for k, queryTuple in queryFile.items():
+        dictOfQueryID[k] = queryTuple.text
 
-    return  dictOfQueryID #{queryFile["226"].qid:queryFile["226"].text} {queryFile["204"].qid:queryFile["204"].text}
-
-
+    return dictOfQueryID #{queryFile["226"].qid:queryFile["226"].text} #{queryFile["204"].qid:queryFile["204"].text} 
+    #return {queryFile["226"].qid:queryFile["226"].text} 
 ##
 #   @brief         This method gets the appropriate results for the randomly chosen queries.
 #                  The outcome of this query is a dictionary of results used to compare our Querying process
@@ -90,7 +89,7 @@ def getResultsFrom_QrelsFile(listOfQueryRelsMaping,dictOfQuery):
 #   @bug           This has not been Thoroughly tested yet. Only use synthetic data need your cope
 ##         
 def eval():
-    k               = 10 # k the number of top k pairs of (docID, similarity) to get from vectorQuery
+    k               = 20 # k the number of top k pairs of (docID, similarity) to get from vectorQuery
     #indexFile       = sys.argv[1]v "src/Data/tempFile"
     indexFile       = "src/Data/tempFile"
     queryText       = 'src/CranfieldDataset/query.text'
@@ -101,12 +100,11 @@ def eval():
 
     dictOfQuery     = {}
     dictQrelsText   = {}
-    boolQueryDict   = {}
-    vectorQueryDict = {}
+
     docCollection   = CranFile('src/CranfieldDataset/cran.all')
     NDCGScoreBool   = []
     #numberOfQueries = sys.argv[4]
-    numberOfQueries = 100
+    numberOfQueries = 220
     NDCGScoreVector = []
     
 
@@ -140,7 +138,7 @@ def eval():
 
         
         start = timer()
-        dictOfDocIDAndSimilarity = queryProcessor.vectorQuery(k) # data need to look like k=3 [[625,0.8737006126353902],[401,0.8697643788341478],[943,0.8424991316663082]]
+        listOfDocIDAndSimilarity = queryProcessor.vectorQuery(k) # data need to look like k=3 [[625,0.8737006126353902],[401,0.8697643788341478],[943,0.8424991316663082]]
         #vectorQueryDict[qid] = dictOfDocIDAndSimilarity
         end = timer()
         print("Time for vectorQuery:", end - start) 
@@ -169,10 +167,10 @@ def eval():
         start = timer()
         yTrue           = []
         yScore          = []
-        print("vectorQuery:",dictOfDocIDAndSimilarity.keys())
-        for docID, Score in dictOfDocIDAndSimilarity.items():
-            yScore.append(float(Score))
-            if docID in dictQrelsText[qid]:
+        print("vectorQuery:",listOfDocIDAndSimilarity)
+        for docID_Score in listOfDocIDAndSimilarity:
+            yScore.append(float(docID_Score[1]))
+            if docID_Score[0] in dictQrelsText[qid]:
                     yTrue.append(1)
             else:
                     yTrue.append(0)
@@ -188,22 +186,16 @@ def eval():
   
     vectorAvg = avg(NDCGScoreVector)
     BoolAvg = avg(NDCGScoreBool)
-    print(BoolAvg,vectorAvg)
-   
+    print("Avg:", BoolAvg,vectorAvg)
     end = timer()
     print("\n\nTime for running 100 queries:" , end - start) 
-    #p_va = stats.ttest_ind(vectorAvg,BoolAvg)
-    p_va = stats.wilcoxon(vectorAvg,BoolAvg)
-    #print(PVALUETHING)
 
-    #loop through vectorQueryDict add 0 or 1 to yScore and add 1 to yTrue
-    #NDCG_Score = metrics.ndcg_score(yScore[:10], yTrue[:10], 10, "exponential")
-    #once done looping and get score need to do avg numberOfQueries
+    p_va_ttest = stats.ttest_ind(NDCGScoreBool,NDCGScoreVector)
+    p_va_wilcoxon = stats.wilcoxon(NDCGScoreBool,NDCGScoreVector)
+    
 
-    #loop through vectorQueryDict add 0 or 1 to yScore and add 1 to yTrue
-    #NDCG_Score = metrics.ndcg_score(yScore[:10], yTrue[:10], 10, "exponential")
-    #once done looping and get score need to do avg NDCGScoreVector
-
+    print("T-Test P-value: ",p_va_ttest)
+    print("Wilcoxon P-value: ",p_va_wilcoxon)
     print('Done')
 
 ##
@@ -219,3 +211,9 @@ def test():
 if __name__ == '__main__':
     eval()
 
+     # tf = posting.term_freq()
+                # if tf > 0 :
+                #     tf = 1 + math.log10(tf)
+                # else:
+                #     tf = 0
+                # document_tfs[document_id][inx] = tf
