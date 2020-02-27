@@ -125,47 +125,6 @@ class QueryProcessor:
 
         return results
 
-
-    # #This works but not mine.. need to remove
-    # def __get__docIds(self, term):
-    #         postings = self.__get__postings(term) 
-    #         if postings is not None:
-    #             return set([posting.get_docID() for _, posting in postings.items()])
-    #         else:
-    #             print("Warning: missing term {} in index.".format(term))
-    #             # raise Exception("term not found!!")
-    #             # pass
-    # def __get__postings(self, term):
-    #     postings = None
-    #     try:
-    #         # if term in self.index.items:
-    #         postings = self.index.get_items_inverted()[term].get_posting_list()
-    #         # else:
-    #         #     postings = self.index.items[correction(term)].posting
-    #         #     print("spell corrected from {} to {}".format(term, correction(term)))
-    #     except KeyError as e:
-    #         print("Term {} not found in index.\nException: {}".format(term, e))
-    #     return postings
-    # def booleanQuery_1(self):
-    #     ''' boolean query processing; note that a query like "A B C" is transformed to "A AND B AND C" for retrieving posting lists and merge them'''
-    #     # ToDo: return a list of docIDs
-    #     q_tokens = self.processed_query
-    #     common_docs = None
-    #     for qtoken in q_tokens:
-    #         try:
-    #             if common_docs is None:
-    #                 common_docs = self.__get__docIds(qtoken)
-    #             else:
-    #                 common_docs = common_docs.intersection(self.__get__docIds(qtoken))
-    #         except Exception as e:
-    #             print("error occured while querying, cause: ", e)
-    #     ranked_results =  sorted(common_docs)
-        
-    #     return ranked_results
-
-
-  
-
     ##
     #   @brief         This method compute cosine similarity for two vectors
     #   @param         self
@@ -196,7 +155,6 @@ class QueryProcessor:
         ''' vector query processing, using the cosine similarity. '''
         #ToDo: return top k pairs of (docID, similarity), ranked by their cosine similarity with the query in the descending order
         # You can use term frequency or TFIDF to construct the vectors
-        print("tokens:", self.processed_query)
         query_words = list(set(self.processed_query))
         idfs= [self.index.idf(w) for w in query_words]
 
