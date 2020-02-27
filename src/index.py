@@ -592,9 +592,10 @@ def test():
     invertedIndexer.storeData(fileNameO)
     assert path.exists(fileNameO), "error in saving json data."
     Temp = invertedIndexer.loadData(fileNameO)
-    idfScore = Temp.invertedIndexer.idf("experiment")
+    idfScore = Temp.idf("experiment")
     assert str(idfScore) == "0.6172"  ," Error in Load the picle file."
 
+    print("test Passed")
 ##
 #   @brief     This method is the driver program for launching the Python script
 #   @return        None
