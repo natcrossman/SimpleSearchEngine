@@ -7,6 +7,8 @@ Peter Norvig's python implementation of Spelling Corrector
 
 import re
 from collections import Counter
+# augmented with additional stopwords from : https://www.ranks.nl/stopwords
+# get better results
 dd =["anyone","reality","empty", "non", "stop"]
 def words(text): return re.findall(r'\w+', text.lower())
 
