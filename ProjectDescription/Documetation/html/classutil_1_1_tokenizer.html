@@ -545,7 +545,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>This method is used for tokenizer queries. </p>
-<p>The reason I created an extra method, that does the exact same thing as the previous tokenizer method, is for the small performance gain doing spell correction inside this method gives me. Previously we called a separate method that took the completely tokenized list and then did spell correction on each term.. This is not very good, O(n+M) </p><dl class="section note"><dt>Note</dt><dd>for doc indexing use before doc.title + " " + doc.body </dd></dl>
+<p>The reason I created an extra method, that does the exact same thing as the previous tokenizer method, is for the small performance gain doing spell correction inside this method gives me. Previously we called a separate method that took the completely tokenized list and then did spell correction on each term.. This is not very good, O(n+M) </p><dl class="section note"><dt>Note</dt><dd>for doc indexing use before doc.title + " " + doc.body because of the limited size of our corpus, spelling correction results in slight boost with a larger corpus you would not do this, especially due to the simplicity of the spelling correction </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">self</td><td></td></tr>
