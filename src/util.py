@@ -28,11 +28,12 @@ from nltk.tokenize import RegexpTokenizer
 #
 class Tokenizer:
 
-    def __init__(self, stopword_list=None):
+    def __init__(self, stopword_list=None, known_words={}):
         if stopword_list == None:
             self.stopword_list = set(stopwords.words('english'))
         else:
             self.stopword_list=stopword_list
+        self.known_words=known_words
         self.stemmer = SnowballStemmer('english')
 
     ##
@@ -72,7 +73,7 @@ class Tokenizer:
         list_token = []
         tokenizer = RegexpTokenizer(r'\w+')
         list_token = tokenizer.tokenize(doc)
-        list_token = list_token = [correction(word.lower()) for word in list_token] 
+        list_token = list_token = [correction(word.lower()) if word not in self.known_words else word.lower() for word in list_token] 
         return list_token
 
     ##

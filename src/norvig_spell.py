@@ -10,8 +10,16 @@ from collections import Counter
 dd =["anyone","reality","empty", "non", "stop"]
 def words(text): return re.findall(r'\w+', text.lower())
 
-WORDS = Counter(words(open('src/Data/big.txt').read()))
+<<<<<<< HEAD
+WORDS = Counter(words(open('Data/big.txt').read()))
 #WORDS = Counter(words(open('src/CranfieldDataset/cran.all').read()))
+=======
+#WORDS = Counter(words(open('src/Data/big.txt').read()))
+#WORDS = Counter(words(open('./Data/big.txt').read()))
+
+# WORDS = Counter(words(open('src/CranfieldDataset/cran.all').read()))
+WORDS = Counter(words(open('./CranfieldDataset/cran.all').read()))
+>>>>>>> 56995ee9506ca0b2fad0e3f1c029e2cb925dd5b1
 
 def P(word, N=sum(WORDS.values())):
     "Probability of `word`."
