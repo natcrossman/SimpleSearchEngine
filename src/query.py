@@ -6,7 +6,6 @@ query processing
 
 
 """Internal libraries"""
-from util import Tokenizer
 from cran import CranFile
 from util import Tokenizer
 from cranqry import loadCranQry
@@ -240,179 +239,190 @@ class QueryProcessor:
 def test():
     ''' test your code thoroughly. put the testing cases here'''
 
-    indexFile       = "src/Data/tempFile"
+    # indexFile       = "src/Data/tempFile"
+    indexFile       = "./Data/tempFile"
 
     qp = QueryProcessor('',indexFile,None)
 
     test_queries=[
-        "experimental",
+        "bifurc",
         "dog",
         "the",
-        "experimental investigation",
+        "downwash investig slipstream",
         "dog cat",
-        "experimental dog",
+        "bifurc dog",
         "the in",
-        "experimental the",
+        "experiment the",
         "dog the",
-        "experimental dog the",
-        "experimental experimental experimental investigation",
+        "experiment dog the",
+        "investig experiment experiment",
         "dog dog cat cat",
         "the the the the the the of of of",
-        "experimental investigation experimental dog dog",
-        "the experimental the experimental the investigation",
+        "investig experiment experiment dog dog",
+        "investig experiment experiment the the the",
         "the dog the cat the rhino",
-        "the experimental dog investigation of the cat",
-        "the experimentl dog investigation of the cat"
+        "the experiment dog investig of the cat",
+        "experiment",
+        "experimentl",
+        "investig investig investig investig investig investig investig investig investig investig investig investig investig investig experiment",
+
 
     ]
     print("Boolean Tests")
-    
+    import pdb;pdb.set_trace()
     ## BOOLEAN TESTS
     ## BTEST 1: 1 word query in index & no stopwords
     qp.loadQuery(test_queries[0])
-    print(qp.booleanQuery())
+    assert len({'957','1232'}.difference(set(qp.booleanQuery()))) == 0
 
     ## BTEST 2: 1 word query NOT in index & no stopwords
     qp.loadQuery(test_queries[1])
-    print(qp.booleanQuery())
+    assert len(qp.booleanQuery()) == 0
 
     ## BTEST 3: 1 word query of stopword
     qp.loadQuery(test_queries[2])
-    print(qp.booleanQuery())
+    assert len(qp.booleanQuery()) == 0 and len(qp.processed_query) == 0
 
     ## BTEST 4: multiword query of in index & no stopwords & all unique
     qp.loadQuery(test_queries[3])
-    print(qp.booleanQuery())
+    (qp.booleanQuery())
 
     ## BTEST 5: multiword query of NOT in index & no stopwords & all unique
     qp.loadQuery(test_queries[4])
-    print(qp.booleanQuery())
+    (qp.booleanQuery())
 
     ## BTEST 6: multiword query of in index &  & NOT in index & no stopwords & all unique
     qp.loadQuery(test_queries[5])
-    print(qp.booleanQuery())
+    (qp.booleanQuery())
 
     ## BTEST 7: multiword query ALL stopwords & all unique
     qp.loadQuery(test_queries[6])
-    print(qp.booleanQuery())
+    (qp.booleanQuery())
 
     ## BTEST 8: multiword query of in index & stopwords & all unique
     qp.loadQuery(test_queries[7])
-    print(qp.booleanQuery())
+    (qp.booleanQuery())
 
     ## BTEST 9: query consisting of NOT in index & stopwords & all unique
     qp.loadQuery(test_queries[8])
-    print(qp.booleanQuery())
+    (qp.booleanQuery())
 
     ## BTEST 10: multiword query of in index & NOT in index & stopwords & all unique
     qp.loadQuery(test_queries[9])
-    print(qp.booleanQuery())
+    (qp.booleanQuery())
 
     ## BTEST 11: multiword query of in index & no stopwords & duplicates
     qp.loadQuery(test_queries[10])
-    print(qp.booleanQuery())
+    (qp.booleanQuery())
 
     ## BTEST 12: multiword query of NOT in index & no stopwords & duplicates
     qp.loadQuery(test_queries[11])
-    print(qp.booleanQuery())
+    (qp.booleanQuery())
 
     ## BTEST 13: multiword query ALL stopwords & duplicates
     qp.loadQuery(test_queries[12])
-    print(qp.booleanQuery())
+    (qp.booleanQuery())
 
     ## BTEST 14: multiword query of in index & NOT in index & no stopwords & duplicates
     qp.loadQuery(test_queries[13])
-    print(qp.booleanQuery())
-
-    ## BTEST 15: multiword query of in index & stopwords & duplicates
-    qp.loadQuery(14)
-    print(qp.booleanQuery())
-
-    ## BTEST 16: query consisting of NOT in index & stopwords & dupicates
-    qp.loadQuery(test_queries[15])
-    print(qp.booleanQuery())
-
-    ## BTEST 17: multiword query of in index & NOT in index & stopwords & duplicates
-    qp.loadQuery(test_queries[16])
-    print(qp.booleanQuery())
-
-    ## BTEST 18: misspelled word
-    qp.loadQuery(test_queries[17])
-    print(qp.booleanQuery())
-
-    print("Vector Tests")
-    ## VECTOR TESTS
-    ## BTEST 1: 1 word query in index & no stopwords
-    qp.loadQuery(test_queries[0])
-    print(qp.vectorQuery(3))
-
-    ## BTEST 2: 1 word query NOT in index & no stopwords
-    qp.loadQuery(test_queries[1])
-    print(qp.vectorQuery(3))
-
-    ## BTEST 3: 1 word query of stopword
-    qp.loadQuery(test_queries[2])
-    print(qp.vectorQuery(3))
-
-    ## BTEST 4: multiword query of in index & no stopwords & all unique
-    qp.loadQuery(test_queries[3])
-    print(qp.vectorQuery(3))
-
-    ## BTEST 5: multiword query of NOT in index & no stopwords & all unique
-    qp.loadQuery(test_queries[4])
-    print(qp.vectorQuery(3))
-
-    ## BTEST 6: multiword query of in index &  & NOT in index & no stopwords & all unique
-    qp.loadQuery(test_queries[5])
-    print(qp.vectorQuery(3))
-
-    ## BTEST 7: multiword query ALL stopwords & all unique
-    qp.loadQuery(test_queries[6])
-    print(qp.vectorQuery(3))
-
-    ## BTEST 8: multiword query of in index & stopwords & all unique
-    qp.loadQuery(test_queries[7])
-    print(qp.vectorQuery(3))
-
-    ## BTEST 9: query consisting of NOT in index & stopwords & all unique
-    qp.loadQuery(test_queries[8])
-    print(qp.vectorQuery(3))
-
-    ## BTEST 10: multiword query of in index & NOT in index & stopwords & all unique
-    qp.loadQuery(test_queries[9])
-    print(qp.vectorQuery(3))
-
-    ## BTEST 11: multiword query of in index & no stopwords & duplicates
-    qp.loadQuery(test_queries[10])
-    print(qp.vectorQuery(3))
-
-    ## BTEST 12: multiword query of NOT in index & no stopwords & duplicates
-    qp.loadQuery(test_queries[11])
-    print(qp.vectorQuery(3))
-
-    ## BTEST 13: multiword query ALL stopwords & duplicates
-    qp.loadQuery(test_queries[12])
-    print(qp.vectorQuery(3))
-
-    ## BTEST 14: multiword query of in index & NOT in index & no stopwords & duplicates
-    qp.loadQuery(test_queries[13])
-    print(qp.vectorQuery(3))
+    (qp.booleanQuery())
 
     ## BTEST 15: multiword query of in index & stopwords & duplicates
     qp.loadQuery(test_queries[14])
-    print(qp.vectorQuery(3))
+    (qp.booleanQuery())
 
     ## BTEST 16: query consisting of NOT in index & stopwords & dupicates
     qp.loadQuery(test_queries[15])
-    print(qp.vectorQuery(3))
+    (qp.booleanQuery())
 
     ## BTEST 17: multiword query of in index & NOT in index & stopwords & duplicates
     qp.loadQuery(test_queries[16])
-    print(qp.vectorQuery(3))
+    (qp.booleanQuery())
 
     ## BTEST 18: misspelled word
     qp.loadQuery(test_queries[17])
-    print(qp.vectorQuery(3))
+    (qp.booleanQuery())
+
+    ## BTEST 18: word stemming
+    qp.loadQuery(test_queries[18])
+    (qp.booleanQuery())
+
+    ## VECTOR TESTS
+    ## BTEST 1: 1 word query in index & no stopwords
+    qp.loadQuery(test_queries[0])
+    (qp.vectorQuery(3))
+
+    ## BTEST 2: 1 word query NOT in index & no stopwords
+    qp.loadQuery(test_queries[1])
+    (qp.vectorQuery(3))
+
+    ## BTEST 3: 1 word query of stopword
+    qp.loadQuery(test_queries[2])
+    (qp.vectorQuery(3))
+
+    ## BTEST 4: multiword query of in index & no stopwords & all unique
+    qp.loadQuery(test_queries[3])
+    (qp.vectorQuery(3))
+
+    ## BTEST 5: multiword query of NOT in index & no stopwords & all unique
+    qp.loadQuery(test_queries[4])
+    (qp.vectorQuery(3))
+
+    ## BTEST 6: multiword query of in index &  & NOT in index & no stopwords & all unique
+    qp.loadQuery(test_queries[5])
+    (qp.vectorQuery(3))
+
+    ## BTEST 7: multiword query ALL stopwords & all unique
+    qp.loadQuery(test_queries[6])
+    (qp.vectorQuery(3))
+
+    ## BTEST 8: multiword query of in index & stopwords & all unique
+    qp.loadQuery(test_queries[7])
+    (qp.vectorQuery(3))
+
+    ## BTEST 9: query consisting of NOT in index & stopwords & all unique
+    qp.loadQuery(test_queries[8])
+    (qp.vectorQuery(3))
+
+    ## BTEST 10: multiword query of in index & NOT in index & stopwords & all unique
+    qp.loadQuery(test_queries[9])
+    (qp.vectorQuery(3))
+
+    ## BTEST 11: multiword query of in index & no stopwords & duplicates
+    qp.loadQuery(test_queries[10])
+    (qp.vectorQuery(3))
+
+    ## BTEST 12: multiword query of NOT in index & no stopwords & duplicates
+    qp.loadQuery(test_queries[11])
+    (qp.vectorQuery(3))
+
+    ## BTEST 13: multiword query ALL stopwords & duplicates
+    qp.loadQuery(test_queries[12])
+    (qp.vectorQuery(3))
+
+    ## BTEST 14: multiword query of in index & NOT in index & no stopwords & duplicates
+    qp.loadQuery(test_queries[13])
+    (qp.vectorQuery(3))
+
+    ## BTEST 15: multiword query of in index & stopwords & duplicates
+    qp.loadQuery(test_queries[14])
+    (qp.vectorQuery(3))
+
+    ## BTEST 16: query consisting of NOT in index & stopwords & dupicates
+    qp.loadQuery(test_queries[15])
+    (qp.vectorQuery(3))
+
+    ## BTEST 17: multiword query of in index & NOT in index & stopwords & duplicates
+    qp.loadQuery(test_queries[16])
+    (qp.vectorQuery(3))
+
+    ## BTEST 18: misspelled word
+    qp.loadQuery(test_queries[17])
+    (qp.vectorQuery(3))
+
+    ## BTEST 19: word stemming
+    qp.loadQuery(test_queries[18])
+    (qp.vectorQuery(3))
 
     print('Pass')
 
@@ -456,5 +466,5 @@ def query():
 
 
 if __name__ == '__main__':
-    #test()
-    query()
+    test()
+    #query()
