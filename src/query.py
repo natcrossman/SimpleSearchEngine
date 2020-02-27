@@ -41,7 +41,7 @@ class QueryProcessor:
         self.index = InvertedIndex()
         self.index = self.index.loadData(index_file)
         self.docs = collection
-        self.tokenizer = Tokenizer()
+        self.tokenizer = Tokenizer(known_words=set(self.index.get_items_inverted().keys()))
         if self.raw_query:
             self.processed_query = self.preprocessing(self.raw_query)
 
