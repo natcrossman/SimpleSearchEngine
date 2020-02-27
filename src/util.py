@@ -63,6 +63,8 @@ class Tokenizer:
     #   Previously we called a separate method that took the completely tokenized list and then did spell correction on each term..
     #   This is not very good, O(n+M) 
     #   @note for doc indexing use before doc.title + " " + doc.body
+    #   because of the limited size of our corpus, spelling correction results in slight boost
+    #   with a larger corpus you would not do this, especially due to the simplicity of the spelling correction
     #   @param         self
     #   @param         doc
     #   @return        list_token list
@@ -73,6 +75,8 @@ class Tokenizer:
         list_token = []
         tokenizer = RegexpTokenizer(r'\w+')
         list_token = tokenizer.tokenize(doc)
+        # because of the limited size of our corpus, spelling correction results in slight boost
+        # with a larger corpus you would not do this, especially due to the simplicity of the spelling correction
         list_token = list_token = [correction(word.lower()) if word not in self.known_words else word.lower() for word in list_token] 
         return list_token
 
