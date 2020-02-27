@@ -547,33 +547,55 @@ class InvertedIndex:
 ## 
 def test():
     ''' test your code thoroughly. put the testing cases here'''
-    
-    # filePath = "src/CranfieldDataset/cran.all"
-    # fileName = "src/Data/tempFile.json"    
-    filePath = "./CranfieldDataset/cran.all"
-    fileName = "./Data/tempFile.json"
+    dictTest_experiment = {'1': 3, '11': 1, '12': 1, '16': 1, '17': 1, '19': 1, '25': 1, '29': 1, '30': 2, '35': 1, '37': 1, '41': 1, '42': 1, '43': 1, '47': 1, '52': 2, '53': 1, '58': 1, '69': 1, '70': 1, '74': 2, '78': 2, '84': 3, '99': 2, '101': 1, '103': 1, '112': 1, '115': 1, '121': 1, '123': 3, '131': 1, '137': 1, '140': 1, '142': 1, '154': 1, '156': 1, '167': 1, '168': 1, '170': 1, '171': 2, '173': 2, '176': 1, '179': 2, '183': 1, '184': 1, '186': 3, '187': 1, '188': 1, '189': 2, '191': 1, '195': 3, '197': 2, '202': 1, '203': 1, '206': 2, '207': 2, 
+    '212': 1, '216': 1, '220': 1, '222': 1, '225': 2, '227': 1, '230': 1, '234': 4, '245': 1, '251': 1, '256': 3, '257': 1, '262': 1, '271': 3, '273': 1, '277': 1, '282': 1, '283': 1, '286': 1, '287': 1, '289': 1, '294': 1, '295': 1, '304': 1, '307': 1, '329': 2, '330': 2, '334': 2, '338': 1, '339': 2, '344': 3, '345': 1, '346': 3, '347': 1, '354': 1, '360': 1, '369': 1, '370': 1, '372': 3, '377': 1, '397': 1, '409': 1, '411': 2, '413': 2, '418': 1, '420': 2, '421': 1, '423': 2, '427': 1, '433': 1, '435': 1, '439': 1, '441': 2, '442': 3, '443': 1, '453': 1, '455': 2, '462': 1, '464': 1, '467': 1, '484': 3, '494': 2, '496': 1, '497': 2, '498': 1, '501': 1, '503': 1, 
+    '504': 1, '505': 1, '511': 1, '517': 1, '518': 2, '519': 1, '520': 2, '522': 3, '536': 1, '540': 1, '544': 3, '549': 2, '552': 2, '553': 1, '558': 2, '563': 1, '567': 1, '569': 2, '572': 4, '588': 1, '595': 1, '600': 1, '606': 1, '610': 1, '632': 1, '634': 1, '635': 1, '636': 1, '644': 1, '645': 1, '649': 1, '658': 1, '662': 2, '663': 2, '666': 2, '670': 1, '675': 1, '678': 1, '679': 1, '685': 3, '688': 4, '689': 2, '694': 1, '704': 2, '712': 1, '713': 1, '717': 1, '720': 1, '725': 1, '728': 1, '729': 1, '739': 1, '740': 1, '743': 1, '753': 1, '760': 3, '764': 1, '766': 4, '767': 3, '772': 3, '781': 2, '790': 1, '801': 3, '802': 1, '806': 1, '816': 2, '820': 1, 
+    '823': 2, '825': 1, '827': 2, '829': 1, '830': 1, '836': 5, '844': 1, '845': 2, '846': 1, '847': 2, '856': 4, '857': 3, '858': 3, '863': 2, '866': 2, '867': 1, '869': 1, '878': 2, '881': 1, '887': 1, '891': 2, '907': 1, '911': 2, '912': 2, '923': 1, '924': 1, '927': 3, '928': 3, '932': 2, '935': 2, '946': 2, '950': 4, '951': 1, '954': 2, '955': 1, '959': 1, '961': 1, '964': 1, '965': 1, '973': 1, '974': 1, '984': 2, '986': 4, '996': 1, '997': 4, '999': 1, '1006': 1, '1008': 1, '1016': 1, '1019': 3, '1028': 1, '1039': 3, '1040': 1, '1045': 1, '1046': 1, '1049': 2, '1051': 1, '1062': 3, '1066': 4, '1069': 1, '1070': 1, '1074': 3, '1075': 3, '1076': 1, '1078': 1, '1080': 1, '1081': 1, '1082': 1, '1083': 1, '1092': 1, '1097': 3, '1098': 2, '1110': 1, '1112': 1, '1118': 2, '1122': 2, '1125': 1, '1127': 1, '1145': 1, '1146': 1, '1151': 1, '1153': 1, '1155': 2, '1156': 3, '1158': 1, '1159': 2, '1160': 2, '1161': 2, '1167': 2, '1171': 1, '1172': 1, '1177': 1, '1185': 1, '1186': 1, '1187': 1, '1192': 1, '1195': 1, '1196': 2, '1198': 1, '1199': 1, '1204': 3, '1205': 1, '1209': 3, '1212': 1, '1213': 2, '1214': 3, '1216': 1, '1218': 2, '1220': 1, '1222': 1, '1225': 3, '1227': 1, '1228': 1, '1230': 1, '1231': 1, '1234': 1, '1237': 1, '1261': 1, '1262': 1, '1263': 2, '1264': 2, '1268': 1, '1269': 2, '1277': 2, '1290': 1, '1298': 1, 
+    '1302': 2, '1310': 1, '1314': 2, '1317': 1, '1319': 1, '1324': 1, '1337': 3, '1338': 2, '1339': 1, '1341': 1, '1352': 2, '1363': 2, '1364': 2, '1369': 1, '1372': 1, '1374': 1, '1378': 1, '1384': 1, '1390': 1, '1392': 1, '1396': 1, '1397': 1}
+    dictTest_bifurc = {'957': 1, '1232': 1}
+
+    filePath = "src/CranfieldDataset/cran.all"
+    fileName = "src/Data/Test.json"
+    fileNameO = "src/Data/TestPickle"        
+    #filePath = "./CranfieldDataset/cran.all"
+    #fileName = "./Data/tempFile.json"
     invertedIndexer = InvertedIndex()
     data = CranFile(filePath)
     for doc in data.docs:
         invertedIndexer.indexDoc(doc)
 
-    
+ 
     
     #TF-IDF TEST
     TEMP = invertedIndexer.idf("experiment")
     Temp1 = invertedIndexer.idf("opportun")
     t = str(TEMP)
     t2 = str(Temp1)
-    assert t == "0.6198"  ," Wrong tf-idf."
-    assert t2 == "2.8451" ," Wrong tf-idf."
+    assert t == "0.6172"  ," Wrong idf."
+    assert t2 == "2.8451" ," Wrong idf."
 
-    assert len(invertedIndexer.find("experiment").get_posting_list()) == 336, "Worng Lenght for experiment term find does not work."
+    assert len(invertedIndexer.find("experiment").get_posting_list()) == 338, "Worng Lenght for experiment term find does not work."
     assert invertedIndexer.get_total_number_Doc() == 1400, "Worng total nubmer of Doc in Corpus"
+    
+
+    for docID, post in invertedIndexer.find("experiment").get_posting_list().items():
+        assert  docID in dictTest_experiment and post.term_freq() == dictTest_experiment[docID], "For Term experiment wrong value"
+    
+    dictTest_bifurc = {'957': 1, '1232': 1}
+    for docID, post in invertedIndexer.find("bifurc").get_posting_list().items():
+        assert  docID in dictTest_bifurc and post.term_freq() == dictTest_bifurc[docID], "For Term experiment wrong value"
+    
 
     invertedIndexer.save(fileName)
     assert path.exists(fileName), "error in saving json data."
 
+    invertedIndexer.storeData(fileNameO)
+    assert path.exists(fileNameO), "error in saving json data."
+    Temp = invertedIndexer.loadData(fileNameO)
+    idfScore = Temp.idf("experiment")
+    assert str(idfScore) == "0.6172"  ," Error in Load the picle file."
 
+    print("test Passed")
 ##
 #   @brief     This method is the driver program for launching the Python script
 #   @return        None
@@ -602,8 +624,8 @@ def indexingCranfield():
    
 #python index.py CranfieldDataset/cran.all Data/tempFile
 if __name__ == '__main__':
-    #test()
-    indexingCranfield()
+    test()
+    #indexingCranfield()
     
 
 
