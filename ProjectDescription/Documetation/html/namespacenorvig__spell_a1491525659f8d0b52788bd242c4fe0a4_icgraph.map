@@ -1,7 +1,8 @@
 <map id="norvig_spell.known" name="norvig_spell.known">
-<area shape="rect" id="node1" title=" " alt="" coords="845,20,976,47"/>
-<area shape="rect" id="node2" href="$namespacenorvig__spell.html#a2dfd503005f0a75330d65d4353e7212f" title=" " alt="" coords="641,20,797,47"/>
-<area shape="rect" id="node3" href="$namespacenorvig__spell.html#ab3fe726d83e3b3ab3cce8b1265428c00" title=" " alt="" coords="443,20,593,47"/>
-<area shape="rect" id="node4" href="$classutil_1_1_tokenizer.html#ac42030241df0aee456a733e858a380bf" title="This method will spell correct all token words." alt="" coords="264,13,395,54"/>
+<area shape="rect" id="node1" title=" " alt="" coords="867,53,997,80"/>
+<area shape="rect" id="node2" href="$namespacenorvig__spell.html#a2dfd503005f0a75330d65d4353e7212f" title=" " alt="" coords="663,53,819,80"/>
+<area shape="rect" id="node3" href="$namespacenorvig__spell.html#ab3fe726d83e3b3ab3cce8b1265428c00" title=" " alt="" coords="464,53,615,80"/>
+<area shape="rect" id="node4" href="$classutil_1_1_tokenizer.html#a2719bfee18c306c1dd3b50cf38c7e426" title="This method is used for tokenizer queries." alt="" coords="264,13,416,54"/>
+<area shape="rect" id="node6" href="$classutil_1_1_tokenizer.html#ac42030241df0aee456a733e858a380bf" title="This method will spell correct all token words." alt="" coords="275,78,405,119"/>
 <area shape="rect" id="node5" href="$classutil_1_1_tokenizer.html#ab51be094bd88ca6386046c36a9157dff" title="This method receives a document and turns each word into a token, fixes spelling mistakes,..." alt="" coords="5,5,216,61"/>
 </map>

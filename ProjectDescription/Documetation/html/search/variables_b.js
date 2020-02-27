@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['words',['WORDS',['../namespacenorvig__spell.html#a1e7d34440add94b8d18ab60c3c1dd62c',1,'norvig_spell']]]
+  ['test_5fon',['test_on',['../namespacebatch__eval.html#afde2806bab30a6d0fcafdbff9a268631',1,'batch_eval']]],
+  ['text',['text',['../classcranqry_1_1_cran_qry.html#a113b31bc5ae603d1e308ef85e4ca702a',1,'cranqry::CranQry']]],
+  ['title',['title',['../classdoc_1_1_document.html#a11b828e1128e4276440eca6515cbfe62',1,'doc::Document']]],
+  ['tokenizer',['tokenizer',['../classquery_1_1_query_processor.html#a53254e5ed74ed3c7fdcea9346c60a163',1,'query::QueryProcessor']]]
 ];

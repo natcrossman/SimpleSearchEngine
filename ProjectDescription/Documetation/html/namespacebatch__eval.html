@@ -63,7 +63,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">batch_eval Namespace Reference</div>  </div>
 </div><!--header-->
@@ -80,15 +81,20 @@ Functions</h2></td></tr>
 <tr class="memitem:af4b745010e2a489ac90c00076f4b5e3c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebatch__eval.html#af4b745010e2a489ac90c00076f4b5e3c">getRandomQuery</a> (queryFile, numberOfQueries)</td></tr>
 <tr class="memdesc:af4b745010e2a489ac90c00076f4b5e3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method generates a list of random queries to be an analyzed.  <a href="#af4b745010e2a489ac90c00076f4b5e3c">More...</a><br /></td></tr>
 <tr class="separator:af4b745010e2a489ac90c00076f4b5e3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5845e9f08f671317a99606a04e3726ed"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebatch__eval.html#a5845e9f08f671317a99606a04e3726ed">getAllDataItems</a> (queryFile)</td></tr>
+<tr class="separator:a5845e9f08f671317a99606a04e3726ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5e3b1212227b7f91e7cb60a416dfc43"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebatch__eval.html#ad5e3b1212227b7f91e7cb60a416dfc43">getResultsFrom_QrelsFile</a> (listOfQueryRelsMaping, dictOfQuery)</td></tr>
 <tr class="memdesc:ad5e3b1212227b7f91e7cb60a416dfc43"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method gets the appropriate results for the randomly chosen queries.  <a href="#ad5e3b1212227b7f91e7cb60a416dfc43">More...</a><br /></td></tr>
 <tr class="separator:ad5e3b1212227b7f91e7cb60a416dfc43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9b96e6dfe72a685f3e689aa446ce786"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebatch__eval.html#ad9b96e6dfe72a685f3e689aa446ce786">eval</a> ()</td></tr>
-<tr class="memdesc:ad9b96e6dfe72a685f3e689aa446ce786"><td class="mdescLeft">&#160;</td><td class="mdescRight">Right now this method is used as the driver for the evaluation program.  <a href="#ad9b96e6dfe72a685f3e689aa446ce786">More...</a><br /></td></tr>
-<tr class="separator:ad9b96e6dfe72a685f3e689aa446ce786"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bc79b19957901a906e2278e7b3455be"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebatch__eval.html#a9bc79b19957901a906e2278e7b3455be">test</a> ()</td></tr>
-<tr class="memdesc:a9bc79b19957901a906e2278e7b3455be"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is needed for testing.  <a href="#a9bc79b19957901a906e2278e7b3455be">More...</a><br /></td></tr>
-<tr class="separator:a9bc79b19957901a906e2278e7b3455be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a121b38733e1e0afcf9bf4bcae2b58d7a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebatch__eval.html#a121b38733e1e0afcf9bf4bcae2b58d7a">eval</a> (testOn)</td></tr>
+<tr class="memdesc:a121b38733e1e0afcf9bf4bcae2b58d7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Right now this method is used as the driver for the evaluation program.  <a href="#a121b38733e1e0afcf9bf4bcae2b58d7a">More...</a><br /></td></tr>
+<tr class="separator:a121b38733e1e0afcf9bf4bcae2b58d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:afde2806bab30a6d0fcafdbff9a268631"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebatch__eval.html#afde2806bab30a6d0fcafdbff9a268631">test_on</a> = False</td></tr>
+<tr class="memdesc:afde2806bab30a6d0fcafdbff9a268631"><td class="mdescLeft">&#160;</td><td class="mdescRight">I manually tested 22 queries.  <a href="#afde2806bab30a6d0fcafdbff9a268631">More...</a><br /></td></tr>
+<tr class="separator:afde2806bab30a6d0fcafdbff9a268631"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">a program for evaluating the quality of search algorithms using the vector model
@@ -138,14 +144,14 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="namespacebatch__eval_a85a6dbd2ac74170b333487af1920d637_icgraph.png" border="0" usemap="#namespacebatch__eval_a85a6dbd2ac74170b333487af1920d637_icgraph" alt=""/></div>
 <map name="namespacebatch__eval_a85a6dbd2ac74170b333487af1920d637_icgraph" id="namespacebatch__eval_a85a6dbd2ac74170b333487af1920d637_icgraph">
 <area shape="rect"  title="This method return the Average for NDCGS values." alt="" coords="163,5,269,32"/>
-<area shape="rect"  href="namespacebatch__eval.html#ad9b96e6dfe72a685f3e689aa446ce786" title="Right now this method is used as the driver for the evaluation program." alt="" coords="5,5,115,32"/>
+<area shape="rect"  href="namespacebatch__eval.html#a121b38733e1e0afcf9bf4bcae2b58d7a" title="Right now this method is used as the driver for the evaluation program." alt="" coords="5,5,115,32"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="ad9b96e6dfe72a685f3e689aa446ce786"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9b96e6dfe72a685f3e689aa446ce786">&#9670;&nbsp;</a></span>eval()</h2>
+<a id="a121b38733e1e0afcf9bf4bcae2b58d7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a121b38733e1e0afcf9bf4bcae2b58d7a">&#9670;&nbsp;</a></span>eval()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -153,7 +159,8 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">def batch_eval.eval </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>testOn</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -172,8 +179,8 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="namespacebatch__eval_ad9b96e6dfe72a685f3e689aa446ce786_cgraph.png" border="0" usemap="#namespacebatch__eval_ad9b96e6dfe72a685f3e689aa446ce786_cgraph" alt=""/></div>
-<map name="namespacebatch__eval_ad9b96e6dfe72a685f3e689aa446ce786_cgraph" id="namespacebatch__eval_ad9b96e6dfe72a685f3e689aa446ce786_cgraph">
+<div class="center"><img src="namespacebatch__eval_a121b38733e1e0afcf9bf4bcae2b58d7a_cgraph.png" border="0" usemap="#namespacebatch__eval_a121b38733e1e0afcf9bf4bcae2b58d7a_cgraph" alt=""/></div>
+<map name="namespacebatch__eval_a121b38733e1e0afcf9bf4bcae2b58d7a_cgraph" id="namespacebatch__eval_a121b38733e1e0afcf9bf4bcae2b58d7a_cgraph">
 <area shape="rect"  title="Right now this method is used as the driver for the evaluation program." alt="" coords="5,136,115,163"/>
 <area shape="rect"  href="namespacebatch__eval.html#ade70bbef42d2e1c829e4918df549c8d0" title="This method reads a file and return a array." alt="" coords="190,5,323,32"/>
 <area shape="rect"  href="namespacecranqry.html#aeb9d83bb02e3f1d313e210f3cab2af2f" title=" " alt="" coords="186,56,327,83"/>
@@ -184,6 +191,24 @@ Here is the call graph for this function:</div>
 <area shape="rect"  href="namespacemetrics.html#abd14cb9563c435479fe78918c94a97ec" title=" " alt="" coords="399,224,528,251"/>
 </map>
 </div>
+
+</div>
+</div>
+<a id="a5845e9f08f671317a99606a04e3726ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5845e9f08f671317a99606a04e3726ed">&#9670;&nbsp;</a></span>getAllDataItems()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def batch_eval.getAllDataItems </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>queryFile</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -234,7 +259,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="namespacebatch__eval_af4b745010e2a489ac90c00076f4b5e3c_icgraph.png" border="0" usemap="#namespacebatch__eval_af4b745010e2a489ac90c00076f4b5e3c_icgraph" alt=""/></div>
 <map name="namespacebatch__eval_af4b745010e2a489ac90c00076f4b5e3c_icgraph" id="namespacebatch__eval_af4b745010e2a489ac90c00076f4b5e3c_icgraph">
 <area shape="rect"  title="This method generates a list of random queries to be an analyzed." alt="" coords="163,5,351,32"/>
-<area shape="rect"  href="namespacebatch__eval.html#ad9b96e6dfe72a685f3e689aa446ce786" title="Right now this method is used as the driver for the evaluation program." alt="" coords="5,5,115,32"/>
+<area shape="rect"  href="namespacebatch__eval.html#a121b38733e1e0afcf9bf4bcae2b58d7a" title="Right now this method is used as the driver for the evaluation program." alt="" coords="5,5,115,32"/>
 </map>
 </div>
 
@@ -287,7 +312,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="namespacebatch__eval_ad5e3b1212227b7f91e7cb60a416dfc43_icgraph.png" border="0" usemap="#namespacebatch__eval_ad5e3b1212227b7f91e7cb60a416dfc43_icgraph" alt=""/></div>
 <map name="namespacebatch__eval_ad5e3b1212227b7f91e7cb60a416dfc43_icgraph" id="namespacebatch__eval_ad5e3b1212227b7f91e7cb60a416dfc43_icgraph">
 <area shape="rect"  title="This method gets the appropriate results for the randomly chosen queries." alt="" coords="163,5,341,47"/>
-<area shape="rect"  href="namespacebatch__eval.html#ad9b96e6dfe72a685f3e689aa446ce786" title="Right now this method is used as the driver for the evaluation program." alt="" coords="5,13,115,39"/>
+<area shape="rect"  href="namespacebatch__eval.html#a121b38733e1e0afcf9bf4bcae2b58d7a" title="Right now this method is used as the driver for the evaluation program." alt="" coords="5,13,115,39"/>
 </map>
 </div>
 
@@ -329,36 +354,30 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="namespacebatch__eval_ade70bbef42d2e1c829e4918df549c8d0_icgraph.png" border="0" usemap="#namespacebatch__eval_ade70bbef42d2e1c829e4918df549c8d0_icgraph" alt=""/></div>
 <map name="namespacebatch__eval_ade70bbef42d2e1c829e4918df549c8d0_icgraph" id="namespacebatch__eval_ade70bbef42d2e1c829e4918df549c8d0_icgraph">
 <area shape="rect"  title="This method reads a file and return a array." alt="" coords="163,5,296,32"/>
-<area shape="rect"  href="namespacebatch__eval.html#ad9b96e6dfe72a685f3e689aa446ce786" title="Right now this method is used as the driver for the evaluation program." alt="" coords="5,5,115,32"/>
+<area shape="rect"  href="namespacebatch__eval.html#a121b38733e1e0afcf9bf4bcae2b58d7a" title="Right now this method is used as the driver for the evaluation program." alt="" coords="5,5,115,32"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a9bc79b19957901a906e2278e7b3455be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9bc79b19957901a906e2278e7b3455be">&#9670;&nbsp;</a></span>test()</h2>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="afde2806bab30a6d0fcafdbff9a268631"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afde2806bab30a6d0fcafdbff9a268631">&#9670;&nbsp;</a></span>test_on</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">def batch_eval.test </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td class="memname">bool batch_eval.test_on = False</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>This is needed for testing. </p>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">None</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="bug"><dt><b><a class="el" href="bug.html#_bug000002">Bug:</a></b></dt><dd></dd></dl>
+<p>I manually tested 22 queries. </p>
+<p>I created a small document and queries and tested them to make sure system works rightly I compared my results to four other students Below is an example of test results and passing QID = 066 Query = "are there any theoretical methods for predicting base pressure" Testing results: Bool ['186', '283', '294', '522', '952', '1352'] [('952', 0.9899332313032174), ('294', 0.975691374849368), ('365', 0.9646073339833242), ('522', 0.9583289368881192), ('283', 0.9531819194740156), ('606', 0.9507909403809899), ('329', 0.9481591424735003), ('830', 0.9377375913195166), ('947', 0.9295955325157395), ('564', 0.9248125671293725)]</p>
+<p>QID 112 Query = experimental results on hypersonic viscous interaction . Bool ['25', '304', '329', '540', '572'] vector [('540', 0.9769142340672038), ('572', 0.9747987666977254), ('25', 0.9738168255445173), ('304', 0.9605645089312159), ('525', 0.940946870156558), ('305', 0.9350462305102516), ('625', 0.9338542084077105), ('1395', 0.9305869355637617), ('63', 0.9303970912780767), ('323', 0.9224028113813276)]</p>
+<p>QID 142 Query = what is the theoretical heat transfer rate at the stagnation point of a blunt body . Bool ['84', '283', '329', '1104', '1393'] vector [('540', 0.9769142340672038), ('572', 0.9747987666977254), ('25', 0.9738168255445173), ('304', 0.9605645089312159), ('525', 0.940946870156558), ('305', 0.9350462305102516), ('625', 0.9338542084077105), ('1395', 0.9305869355637617), ('63', 0.9303970912780767), ('323', 0.9224028113813276)]</p>
+<p>QID 273 Query how does scale height vary with altitude in an atmosphere . Bool ['548'] vector [('548', 0.9686877096080251), ('617', 0.9237003752563703), ('616', 0.8480085077827825), ('1324', 0.8322838916230021), ('622', 0.8225965994945199), ('1391', 0.8013511009161928), ('1040', 0.740041371703577), ('1000', 0.7104424924454831), ('621', 0.7037552592541315), ('799', 0.6873864734294)] </p>
 
 </div>
 </div>

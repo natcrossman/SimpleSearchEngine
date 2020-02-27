@@ -1,0 +1,10 @@
+<map id="batch_eval.eval" name="batch_eval.eval">
+<area shape="rect" id="node1" title="Right now this method is used as the driver for the evaluation program." alt="" coords="5,136,115,163"/>
+<area shape="rect" id="node2" href="$namespacebatch__eval.html#ade70bbef42d2e1c829e4918df549c8d0" title="This method reads a file and return a array." alt="" coords="190,5,323,32"/>
+<area shape="rect" id="node3" href="$namespacecranqry.html#aeb9d83bb02e3f1d313e210f3cab2af2f" title=" " alt="" coords="186,56,327,83"/>
+<area shape="rect" id="node4" href="$namespacebatch__eval.html#af4b745010e2a489ac90c00076f4b5e3c" title="This method generates a list of random queries to be an analyzed." alt="" coords="163,107,351,133"/>
+<area shape="rect" id="node5" href="$namespacebatch__eval.html#ad5e3b1212227b7f91e7cb60a416dfc43" title="This method gets the appropriate results for the randomly chosen queries." alt="" coords="167,158,346,199"/>
+<area shape="rect" id="node6" href="$namespacemetrics.html#a45724b4700dc89e133a5db456bf43b45" title=" " alt="" coords="189,224,325,251"/>
+<area shape="rect" id="node8" href="$namespacebatch__eval.html#a85a6dbd2ac74170b333487af1920d637" title="This method return the Average for NDCGS values." alt="" coords="203,275,310,301"/>
+<area shape="rect" id="node7" href="$namespacemetrics.html#abd14cb9563c435479fe78918c94a97ec" title=" " alt="" coords="399,224,528,251"/>
+</map>

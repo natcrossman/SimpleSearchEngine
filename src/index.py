@@ -600,7 +600,7 @@ def indexingCranfield():
     invertedIndexer.storeData(fileName)
     print("Done")
    
-
+#python index.py CranfieldDataset/cran.all Data/tempFile
 if __name__ == '__main__':
     #test()
     indexingCranfield()

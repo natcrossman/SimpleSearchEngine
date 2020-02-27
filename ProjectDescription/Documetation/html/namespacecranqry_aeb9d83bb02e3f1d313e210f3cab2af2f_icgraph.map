@@ -1,5 +1,6 @@
 <map id="cranqry.loadCranQry" name="cranqry.loadCranQry">
-<area shape="rect" id="node1" title=" " alt="" coords="163,31,304,57"/>
-<area shape="rect" id="node2" href="$namespacebatch__eval.html#ad9b96e6dfe72a685f3e689aa446ce786" title="Right now this method is used as the driver for the evaluation program." alt="" coords="5,5,115,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="163,56,304,83"/>
+<area shape="rect" id="node2" href="$namespacebatch__eval.html#a121b38733e1e0afcf9bf4bcae2b58d7a" title="Right now this method is used as the driver for the evaluation program." alt="" coords="5,5,115,32"/>
 <area shape="rect" id="node3" href="$namespacecranqry.html#a78b22f3a058d36689089dbb2de56a26d" title=" " alt="" coords="15,56,105,83"/>
+<area shape="rect" id="node4" href="$namespacequery.html#aa217aee424f9e7476ab6efc156dfa97d" title=" " alt="" coords="15,107,105,133"/>
 </map>

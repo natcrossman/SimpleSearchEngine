@@ -1,9 +1,8 @@
 <map id="util.Tokenizer.transpose_document_tokenized_stemmed_spelling" name="util.Tokenizer.transpose_document_tokenized_stemmed_spelling">
-<area shape="rect" id="node1" title="This method receives a document and turns each word into a token, fixes spelling mistakes,..." alt="" coords="5,83,216,139"/>
+<area shape="rect" id="node1" title="This method receives a document and turns each word into a token, fixes spelling mistakes,..." alt="" coords="5,49,216,105"/>
 <area shape="rect" id="node2" href="$classutil_1_1_tokenizer.html#aa54577ccc43be0ad8fc446e7087dd99c" title="This method will properly stand in entire tokenized list." alt="" coords="264,5,448,32"/>
 <area shape="rect" id="node4" href="$classutil_1_1_tokenizer.html#aeffc71e5194dff177a1831564b38a379" title="This method removes all stopwords from a tokenized list." alt="" coords="284,57,428,98"/>
-<area shape="rect" id="node6" href="$classutil_1_1_tokenizer.html#ac42030241df0aee456a733e858a380bf" title="This method will spell correct all token words." alt="" coords="291,122,421,163"/>
-<area shape="rect" id="node12" href="$classutil_1_1_tokenizer.html#aeec2ecba621123bea8deca2e0951d470" title=" " alt="" coords="265,188,447,215"/>
+<area shape="rect" id="node6" href="$classutil_1_1_tokenizer.html#a2719bfee18c306c1dd3b50cf38c7e426" title="This method is used for tokenizer queries." alt="" coords="280,122,432,163"/>
 <area shape="rect" id="node3" href="$classutil_1_1_tokenizer.html#a4fc9145ff048f6e288433222b47d3a06" title="This method return the stem worked using the SnowballStemmer NLTK stemmer." alt="" coords="501,5,661,32"/>
 <area shape="rect" id="node5" href="$classutil_1_1_tokenizer.html#a5eb5132d3f26a13f814ffe7fa8341bbc" title="This method check to see if a word is a stopword." alt="" coords="496,64,667,91"/>
 <area shape="rect" id="node7" href="$namespacenorvig__spell.html#ab3fe726d83e3b3ab3cce8b1265428c00" title=" " alt="" coords="506,129,657,156"/>

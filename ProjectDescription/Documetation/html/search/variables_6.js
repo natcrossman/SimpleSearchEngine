@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['processed_5fquery',['processed_query',['../classquery_1_1_query_processor.html#a509a0194bf63b225d3fc3732755a291d',1,'query::QueryProcessor']]]
+  ['known_5fwords',['known_words',['../classutil_1_1_tokenizer.html#a3152fd38240ec7dcb5ccf8b4ef2b6fd0',1,'util::Tokenizer']]]
 ];

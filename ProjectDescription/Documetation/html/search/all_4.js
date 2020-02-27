@@ -1,6 +1,7 @@
 var searchData=
 [
   ['dcg_5fscore',['dcg_score',['../namespacemetrics.html#abd14cb9563c435479fe78918c94a97ec',1,'metrics']]],
+  ['dd',['dd',['../namespacenorvig__spell.html#a2a1dbe71716139449822fe19ed4a2067',1,'norvig_spell']]],
   ['doc',['doc',['../namespacedoc.html',1,'']]],
   ['doc_2epy',['doc.py',['../doc_8py.html',1,'']]],
   ['docid',['docID',['../classdoc_1_1_document.html#aeee413b8534592ab638afc53463e4216',1,'doc::Document']]],

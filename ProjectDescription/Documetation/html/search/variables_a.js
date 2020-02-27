@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['text',['text',['../classcranqry_1_1_cran_qry.html#a113b31bc5ae603d1e308ef85e4ca702a',1,'cranqry::CranQry']]],
-  ['title',['title',['../classdoc_1_1_document.html#a11b828e1128e4276440eca6515cbfe62',1,'doc::Document']]],
-  ['tokenizer',['tokenizer',['../classquery_1_1_query_processor.html#a53254e5ed74ed3c7fdcea9346c60a163',1,'query::QueryProcessor']]]
+  ['stemmer',['stemmer',['../classutil_1_1_tokenizer.html#ad7975fbac2005144b7646ee11c5d74e3',1,'util::Tokenizer']]],
+  ['stopword_5flist',['stopword_list',['../classutil_1_1_tokenizer.html#a08377b68902647e6ae8bc8e7e8756bef',1,'util::Tokenizer']]]
 ];
