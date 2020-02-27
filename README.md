@@ -86,7 +86,7 @@ The query processing component contains the following steps.
 Your standard query processing program should be run as follows
 
 ```
-python query.py index_file model_selection query.text query_id
+python query.py Data/tempFile 0 CranfieldDataset/query.text 226
 ```
 
 where mode_selection has: 0 - Boolean, 1 - vector, 2 - batch evaluation, query.text contains the sample queries (included in the Cranfield dataset), and in mode 0 or 1 qid_or_n is the specific query_id you choose and in mode 2 qid_or_n represent randomly selecting n queries for batch evaluation. cranqry.py has been provided for reading the special format used by query.text. In mode=0 or 1 The output will be a list of document IDs for the Boolean model, and the top 3 ranked results for the vector model. For vector model, choose one of the TFIDF scoring methods, e.g., lnc.ltc, mentioned in Figure 6.15 at the page 118 of the textbook (or the same Figure in slides "scoring_idf.ppt").
@@ -107,7 +107,7 @@ to get the p-value for comparison (i.e., whether one ranking result is
 /statistically-significantly/ better than the other).
 
 ```
-python batch_eval.py index_file query.text qrels.text n
+python batch_eval.py Data/tempFile CranfieldDataset/query.text CranfieldDataset/qrels.text 100
 ```
 
 	
