@@ -15,8 +15,8 @@ def words(text): return re.findall(r'\w+', text.lower())
 #WORDS = Counter(words(open('src/Data/big.txt').read()))
 #WORDS = Counter(words(open('./Data/big.txt').read()))
 
-# WORDS = Counter(words(open('src/CranfieldDataset/cran.all').read()))
 WORDS = Counter(words(open('./CranfieldDataset/cran.all').read()))
+#WORDS = Counter(words(open('./CranfieldDataset/cran.all').read()))
 
 def P(word, N=sum(WORDS.values())):
     "Probability of `word`."

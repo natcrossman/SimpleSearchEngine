@@ -97,123 +97,132 @@ def getResultsFrom_QrelsFile(listOfQueryRelsMaping,dictOfQuery):
 #   @bug           This has not been Thoroughly tested yet. Only use synthetic data need your cope
 ##         
 def eval(testOn):
-    k               = 10 # k the number of top k pairs of (docID, similarity) to get from vectorQuery
-    dictQ_ID        = []
-    indexFile       = sys.argv[1] #v "src/Data/tempFile"
-    queryText       = sys.argv[2]
-    qrelsText       = sys.argv[3]
-    dictOfQuery     = {}
-    dictQrelsText   = {}
-    docCollection   = CranFile('CranfieldDataset/cran.all')
-    NDCGScoreBool   = []
-    numberOfQueries = int(sys.argv[4])
-    NDCGScoreVector = []
+    k                    = 10 # k the number of top k pairs of (docID, similarity) to get from vectorQuery
+    dictQ_ID             = []
+    indexFile            = sys.argv[1] #v "src/Data/tempFile"
+    queryText            = sys.argv[2]
+    qrelsText            = sys.argv[3]
+    dictOfQuery          = {}
+    dictQrelsText        = {}
+    docCollection        = CranFile('./CranfieldDataset/cran.all')
+    NDCGScoreBool        = []
+    numberOfQueries      = int(sys.argv[4])
+    NDCGScoreVector      = []
+    #indexFile           = "src/Data/tempFile"
+    #queryText           = 'src/CranfieldDataset/query.text'
+    #qrelsText           = 'src/CranfieldDataset/qrels.text'
+    #numberOfQueries     = 50
+    numberOfTimeToLoop   = 5
 
-    #indexFile       = "src/Data/tempFile"
-    #queryText       = 'src/CranfieldDataset/query.text'
-    #qrelsText       = 'src/CranfieldDataset/qrels.text'
-    #numberOfQueries = 221
-    
     #Loads Files 
-    listOfQueryRelsMaping   = readFile(qrelsText)
-    queryFile   = loadCranQry(queryText)
+    listOfQueryRelsMaping = readFile(qrelsText)
+    queryFile             = loadCranQry(queryText)
 
     #Data Need
-    dictOfQuery = getRandomQuery(queryFile,numberOfQueries)
-    if testOn:
-       assert len(dictOfQuery) == numberOfQueries, "Error are getting random query"
+    for i in range(numberOfTimeToLoop):
 
-    # Return all query     
-    # dictOfQuery = getAllDataItems(queryFile)
-    # if testOn:
-    #     assert len(dictOfQuery) == 225, "Error are getting random query"
-
-    dictQrelsText =  getResultsFrom_QrelsFile(listOfQueryRelsMaping, dictOfQuery)
-    if testOn:
-       assert len(dictQrelsText) == numberOfQueries, "Error number Of Queries to large"
-
-    start = timer()
-    queryProcessor = QueryProcessor("",indexFile,docCollection.docs) # This is an extremely expensive process\
-    end = timer()
-    if testOn:
-        print("Time for creating QueryProcessor:" , end - start) 
-    countDoc = 0
-    start = timer()
-    for qid, queryText in dictOfQuery.items():
-        countDoc +=1
-        dictQ_ID.append(qid)
-
+        #Get random Queiry
+        dictOfQuery = getRandomQuery(queryFile,numberOfQueries)
         if testOn:
-            print("QID:",qid)
+            assert len(dictOfQuery) == numberOfQueries, "Error are getting random query"
+
+        # Return all query     
+        # dictOfQuery = getAllDataItems(queryFile)
+        # if testOn:
+        #     assert len(dictOfQuery) == 225, "Error are getting random query"
+
+        #get list of Query result from qrel.txt
+        dictQrelsText =  getResultsFrom_QrelsFile(listOfQueryRelsMaping, dictOfQuery)
+        if testOn:
+            assert len(dictQrelsText) == numberOfQueries, "Error number Of Queries to large"
+
         start = timer()
-        queryProcessor.loadQuery(queryText)
+        queryProcessor = QueryProcessor("",indexFile,docCollection.docs) # This is an extremely expensive process\
         end = timer()
-        if testOn:
-            print("Time for Load:" , end - start) 
-            print("qrels: ",dictQrelsText[qid])
 
-        start = timer()
-        docIDs = queryProcessor.booleanQuery() # data would need to be like this [12, 14, 78, 141, 486, 746, 172, 573, 1003]
-        #docIDs_1 = queryProcessor.booleanQuery_1()
-        end = timer()
         if testOn:
-            print("Time for booleanQuery:" , end - start) 
-        
+            print("Time for creating QueryProcessor:" , end - start) 
+        countDoc = 0
         start = timer()
-        listOfDocIDAndSimilarity = queryProcessor.vectorQuery(k) # data need to look like k=3 [[625,0.8737006126353902],[401,0.8697643788341478],[943,0.8424991316663082]]
-        #vectorQueryDict[qid] = dictOfDocIDAndSimilarity
-        end = timer()
-        if testOn:
-            print("Time for vectorQuery:", end - start) 
-            print("booleanQuery:", docIDs)
+ 
+        dictQ_ID = []
+        for qid, queryText in dictOfQuery.items():
+            countDoc +=1
+            
+            dictQ_ID.append(qid)
 
-        #For Boolean part
-        start = timer()
-        yTrue           = []
-        yScore          = []
-        for docID in docIDs:
-            yScore.append(1)
-            if docID in dictQrelsText[qid]:
-                yTrue.append(1)
-            else:
-                yTrue.append(0)
-        yTrue.sort(reverse=True)   
-        score = metrics.ndcg_score(yTrue,yScore, 10, "exponential")
-        if math.isnan(score):     
-            NDCGScoreBool.append(0)
-        else:
-            NDCGScoreBool.append(score)
-        end = timer()
-        if testOn:
-            print("Time for  Boolean ndcg:", end - start) 
+            if testOn:
+                print("QID:",qid)
+            start = timer()
+            queryProcessor.loadQuery(queryText)
+            end = timer()
+            if testOn:
+                print("Time for Load:" , end - start) 
+                print("qrels: ",dictQrelsText[qid])
 
-        #For Vector part
-        start = timer()
-        yTrue           = []
-        yScore          = []
-        if testOn:
-            print("vectorQuery:",listOfDocIDAndSimilarity)
-        for docID_Score in listOfDocIDAndSimilarity:
-            yScore.append(float(docID_Score[1]))
-            if docID_Score[0] in dictQrelsText[qid]:
+            start = timer()
+            docIDs = queryProcessor.booleanQuery() # data would need to be like this [12, 14, 78, 141, 486, 746, 172, 573, 1003]
+            #docIDs_1 = queryProcessor.booleanQuery_1()
+            end = timer()
+            if testOn:
+                print("Time for booleanQuery:" , end - start) 
+            
+            start = timer()
+            listOfDocIDAndSimilarity = queryProcessor.vectorQuery(k) # data need to look like k=3 [[625,0.8737006126353902],[401,0.8697643788341478],[943,0.8424991316663082]]
+            #vectorQueryDict[qid] = dictOfDocIDAndSimilarity
+            end = timer()
+            if testOn:
+                print("Time for vectorQuery:", end - start) 
+                print("booleanQuery:", docIDs)
+
+            #For Boolean part
+            start = timer()
+            yTrue           = []
+            yScore          = []
+            for docID in docIDs:
+                yScore.append(1)
+                if docID in dictQrelsText[qid]:
                     yTrue.append(1)
-            else:
+                else:
                     yTrue.append(0)
-        yTrue.sort(reverse=True) 
-        score = metrics.ndcg_score(yTrue,yScore, 10, "exponential")
-        if math.isnan(score):     
-            NDCGScoreVector.append(0)
-        else:
-            NDCGScoreVector.append(score)
-        end = timer()
+            yTrue.sort(reverse=True)   
+            score = metrics.ndcg_score(yTrue[:k],yScore[:k], k, "exponential")
+            if math.isnan(score):     
+                NDCGScoreBool.append(0)
+            else:
+                NDCGScoreBool.append(score)
+            end = timer()
+            if testOn:
+                print("Time for  Boolean ndcg:", end - start) 
+
+            #For Vector part
+            start = timer()
+            yTrue           = []
+            yScore          = []
+            if testOn:
+                print("vectorQuery:",listOfDocIDAndSimilarity)
+            for docID_Score in listOfDocIDAndSimilarity:
+                yScore.append(float(docID_Score[1]))
+                if docID_Score[0] in dictQrelsText[qid]:
+                        yTrue.append(1)
+                else:
+                        yTrue.append(0)
+            yTrue.sort(reverse=True) 
+            score = metrics.ndcg_score(yTrue[:k],yScore[:k], k, "exponential")
+            if math.isnan(score):     
+                NDCGScoreVector.append(0)
+            else:
+                NDCGScoreVector.append(score)
+            end = timer()
+            if testOn:
+                print("Time for  Vector ndcg:", end - start) 
+        print("\nRunning Querys iteration:(", str(i+1), ")\n", dictQ_ID)
+
         if testOn:
-            print("Time for  Vector ndcg:", end - start) 
+            for QID, boolScore, vectorScore in zip(dictQ_ID, NDCGScoreBool,NDCGScoreVector):
+                print("QID", QID, "Boolean Model:", boolScore,"Vector Model", vectorScore)
 
-    if testOn:
-        for QID, boolScore, vectorScore in zip(dictQ_ID, NDCGScoreBool,NDCGScoreVector):
-            print("QID", QID, "Boolean Model:", boolScore,"Vector Model", vectorScore)
-
-    print("\nQuerys Run:\n", dictQ_ID)
+        
     print("\nThe Length Of Both NDCG Score is: ", len(NDCGScoreBool),"==",len(NDCGScoreVector))
 
     print('\nThe Avg NDCG Score')
@@ -223,7 +232,7 @@ def eval(testOn):
     end = timer()
     if testOn:
         print("\n\nTime for running ",countDoc ," queries:" , end - start) 
-    
+
     print('\nThe P-Value')
     p_va_ttest = stats.ttest_ind(NDCGScoreBool,NDCGScoreVector)
     p_va_wilcoxon = stats.wilcoxon(NDCGScoreBool,NDCGScoreVector)
