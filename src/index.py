@@ -442,7 +442,10 @@ class InvertedIndex:
         termData = self.__items[term]
         N = self.get_total_number_Doc()
         df = len(termData.get_posting_list())
+        #inverse document frequency 
         idf = round(math.log10(N/(float(df))), 4)
+        #probabilistic inverse document frequency from  
+        #idf = round(math.log10(N - df /(float(df))), 4)
         return idf
       
     ##
