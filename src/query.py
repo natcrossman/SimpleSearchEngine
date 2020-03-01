@@ -159,9 +159,9 @@ class QueryProcessor:
         # You can use term frequency or TFIDF to construct the vectors
         if len(self.processed_query) == 0:
             all_docids = set()
-            for k,v in self.index.get_items_inverted().items():
+            for _,v in self.index.get_items_inverted().items():
                 all_docids.update(v.get_posting_list().keys())
-            return {str(id):0 for id in sorted(list(map(int,all_docids)))[:k]}
+            return [(str(id),0) for id in sorted(list(map(int,all_docids)))[:k]]
 
         query_words = list(set(self.processed_query))
         idfs= [self.index.idf(w) for w in query_words]
@@ -179,9 +179,9 @@ class QueryProcessor:
         # if you used google and got 0 cosine it would return 0 documents even if you wanted the 50 most relevant
         if set(idfs) == {0}: 
             all_docids = set()
-            for k,v in self.index.get_items_inverted().items():
+            for _,v in self.index.get_items_inverted().items():
                 all_docids.update(v.get_posting_list().keys())
-            return {str(id):0 for id in sorted(list(map(int,all_docids)))[:k]}
+            return [(str(id),0) for id in sorted(list(map(int,all_docids)))[:k]]
 
         # removes any words that have 0 idf as that means they didn't appear in the corpus, means save memory
         # probably not necessary to turn it into lists, and may actually be more appropriate to leave as tuples
@@ -219,19 +219,18 @@ class QueryProcessor:
         scores = sorted(list(set(cosines.values())),reverse=True)
         ret = []
         for s in scores:
-            docs_with_score_s = sorted([int(k) for k,v in cosines.items() if v == s])
+            docs_with_score_s = sorted([int(d) for d,v in cosines.items() if v == s])
             if len(docs_with_score_s) >= temp_k:
-                temp_k = 0
                 docs_with_score_s = docs_with_score_s[:temp_k]
                 ret.extend([(str(d),s) for d in docs_with_score_s])
+                temp_k=0
                 break
             else:
                 temp_k = temp_k-len(docs_with_score_s)
                 ret.extend([(str(d),s) for d in docs_with_score_s])
         if not temp_k == 0:
-            import pdb; pdb.set_trace()
             all_docids = set()
-            for k,v in self.index.get_items_inverted().items():
+            for _,v in self.index.get_items_inverted().items():
                 all_docids.update(v.get_posting_list().keys())
 
             ret.extend([(str(j),0) for j in sorted(list(map(int,all_docids.difference({i[0] for i in ret}))))[:temp_k]])
@@ -273,6 +272,8 @@ def test():
     ## PTEST 2: word stemming "experiment"
     qp.loadQuery(ptest_queries[3])
     assert stem_control == qp.booleanQuery()
+    print("Preprocessing Tests: PASSED")
+    print()
 
     print("Boolean Tests")
     ## BOOLEAN TESTS
@@ -367,7 +368,11 @@ def test():
     qp.loadQuery(btest_queries[16])
     assert len(qp.booleanQuery()) == 0
 
+    print("Boolean Tests: PASSED")
+    print()
+
     ## VECTOR TESTS
+    print("Vector Tests")
     vtest_queries=[
         "bifurc",
         "doooooog",
@@ -380,21 +385,20 @@ def test():
         "investig investig downwash experi",
         "investig investig investig investig investig investig investig investig investig investig investig investig investig investig investig investig investig investig investig investig investig investig investig investig investig investig downwash experiment",
     ]
-    import pdb; pdb.set_trace()
     ## VTEST 1: 1 word query in index & no stopwords
     qp.loadQuery(vtest_queries[0])
     vtest1 = qp.vectorQuery(3)
-    assert len(vtest1) == 3 and vtest1[0] == 1 and vtest1[1] == 1 and vtest1[2] == 0
+    assert len(vtest1) == 3 and vtest1[0][1] == 1 and vtest1[1][1] == 1 and vtest1[2][1] == 0
 
     ## VTEST 2: 1 word query NOT in index & no stopwords
     qp.loadQuery(vtest_queries[1])
     vtest2 = qp.vectorQuery(3)
-    assert len(vtest2) == 0
+    assert vtest2[0][0] == '1' and vtest2[1][0] == '2' and vtest2[2][0] == '3' and len(vtest2)==3
 
     ## VTEST 3: 1 word query of stopword
     qp.loadQuery(vtest_queries[2])
     vtest3 = qp.vectorQuery(3)
-    assert len(vtest3) == 0
+    assert vtest3[0][0] == '1' and vtest3[1][0] == '2' and vtest3[2][0] == '3' and len(vtest3)==3
 
     ## VTEST 4: multiword query of in index & no stopwords & all unique
     qp.loadQuery(vtest_queries[3])
@@ -404,7 +408,7 @@ def test():
     ## VTEST 5: multiword query of NOT in index & no stopwords & all unique
     qp.loadQuery(vtest_queries[4])
     vtest5 = qp.vectorQuery(3)
-    assert len(vtest5) == 0
+    assert vtest5[0][0] == '1' and vtest5[1][0] == '2' and vtest5[2][0] == '3' and len(vtest5)==3
 
     ## VTEST 6: multiword query of in index &  & NOT in index & no stopwords & all unique
     qp.loadQuery(vtest_queries[5])
@@ -414,7 +418,7 @@ def test():
     ## VTEST 7: multiword query ALL stopwords & all unique
     qp.loadQuery(vtest_queries[6])
     vtest7 = qp.vectorQuery(3)
-    assert len(vtest7) == 0
+    assert vtest7[0][0] == '1' and vtest7[1][0] == '2' and vtest7[2][0] == '3' and len(vtest7)==3
 
     ## VTEST 8: multiword query of in index & stopwords & all unique
     qp.loadQuery(vtest_queries[7])
@@ -426,11 +430,11 @@ def test():
     vtest9 = qp.vectorQuery(3)
     assert not vtest9 == vtest8 
 
-    import pdb; pdb.set_trace()
     ## VTEST 10: multiword query of NOT in index & no stopwords & duplicates
     qp.loadQuery(vtest_queries[9])
     vtest10 = qp.vectorQuery(3)
     assert not vtest10 == vtest9 and not vtest10[1][1] == 704
+    print("Vector Tests: PASSED")
 
 #needed
 def query():
