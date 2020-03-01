@@ -160,7 +160,10 @@ class QueryProcessor:
         #ToDo: return top k pairs of (docID, similarity), ranked by their cosine similarity with the query in the descending order
         # You can use term frequency or TFIDF to construct the vectors
         if len(self.processed_query) == 0:
-            return {}
+            all_docids = set()
+            for k,v in self.index.get_items_inverted().items():
+                all_docids.update(v.get_posting_list().keys())
+            return {str(id):0 for id in sorted(list(map(int,all_docids)))[:k]}
 
         query_words = list(set(self.processed_query))
         idfs= [self.index.idf(w) for w in query_words]
@@ -171,13 +174,16 @@ class QueryProcessor:
                 raise ValueError('k is greater than number of documents') 
         except ValueError as err:
             print(err.args)
-            return
+            return 
 
         # below we define behavior if none of the words in the query are in any documents
         # this behavior was not defined in instructions so no documents seems most appropriate
         # if you used google and got 0 cosine it would return 0 documents even if you wanted the 50 most relevant
         if set(idfs) == {0}: 
-            return{}
+            all_docids = set()
+            for k,v in self.index.get_items_inverted().items():
+                all_docids.update(v.get_posting_list().keys())
+            return {str(id):0 for id in sorted(list(map(int,all_docids)))[:k]}
 
         # removes any words that have 0 idf as that means they didn't appear in the corpus, means save memory
         # probably not necessary to turn it into lists, and may actually be more appropriate to leave as tuples
@@ -225,12 +231,20 @@ class QueryProcessor:
         for s in scores:
             docs_with_score_s = sorted([int(k) for k,v in cosines.items() if v == s])
             if len(docs_with_score_s) >= temp_k:
+                temp_k = 0
                 docs_with_score_s = docs_with_score_s[:temp_k]
                 ret.extend([(str(d),s) for d in docs_with_score_s])
                 break
             else:
                 temp_k = temp_k-len(docs_with_score_s)
                 ret.extend([(str(d),s) for d in docs_with_score_s])
+        if not temp_k == 0:
+            import pdb; pdb.set_trace()
+            all_docids = set()
+            for k,v in self.index.get_items_inverted().items():
+                all_docids.update(v.get_posting_list().keys())
+
+            ret.extend([(str(j),0) for j in sorted(list(map(int,all_docids.difference({i[0] for i in ret}))))[:temp_k]])
         return ret
 
     
@@ -380,7 +394,7 @@ def test():
     ## VTEST 1: 1 word query in index & no stopwords
     qp.loadQuery(vtest_queries[0])
     vtest1 = qp.vectorQuery(3)
-    assert len(vtest1) == 2 and {i[1] for i in vtest1} == {1.0}
+    assert len(vtest1) == 3 and vtest1[0] == 1 and vtest1[1] == 1 and vtest1[2] == 0
 
     ## VTEST 2: 1 word query NOT in index & no stopwords
     qp.loadQuery(vtest_queries[1])
