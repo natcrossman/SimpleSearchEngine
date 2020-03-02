@@ -441,7 +441,7 @@ def test():
     assert len(vtest9) == 3 and vtest9[0][0]=='1166' and vtest9[0][1] == .9704 and vtest9[1][0]=='673' and vtest9[1][1]==.9036 and vtest9[2][0]=='894' and vtest9[2][1]==.8948
 
 
-    ## VTEST 10: multiword query of NOT in index & no stopwords & duplicates
+    ## VTEST 10: multiword query to check the correctness of tfidf calculation
     qp.loadQuery(vtest_queries[9])
     vtest10 = qp.vectorQuery(3)
     assert not vtest10 == vtest9 and not vtest10[1][1] == 704

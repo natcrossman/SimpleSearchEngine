@@ -147,7 +147,7 @@ class Tokenizer:
         temp=  [correction(item) for item in list_token]
         return temp
        
-# Technically all above methods could be private
+    # Technically all above methods could be private
 
     ##
     #   @brief   This method receives a document and turns each word into a token.
