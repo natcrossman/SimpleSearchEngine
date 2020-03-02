@@ -480,7 +480,7 @@ def query():
     if model_selection == "0":
         docIDs = queryProcessor.booleanQuery()
         print("Boolean")
-        print("Total number of documents is:", str(len(docIDs)) + "\nThier DocIDs our:" + str(docIDs))
+        print("Total number of documents is:", str(len(docIDs)) + "\nTheir DocIDs our:" + str(docIDs))
 
     elif model_selection == "1":
         print("Vector")
@@ -493,14 +493,14 @@ def query():
         bresults=[]
         vresults=[]
         #Data Need
-        for i in range(numberOfTimeToLoop):
+        for _ in range(numberOfTimeToLoop):
             #get list of Query result from qrel.txt
             
             dictOfQuery = getRandomQuery(queryFile,numberOfQueries)
             queryProcessor = QueryProcessor("",indexFile,docCollection.docs) # This is an extremely expensive process\
             
             start = timer()
-            for qid, queryText in dictOfQuery.items():
+            for __, queryText in dictOfQuery.items():
                 queryProcessor.loadQuery(queryText)
                 #docIDs = queryProcessor.booleanQuery()
                 queryProcessor.booleanQuery()
@@ -508,7 +508,7 @@ def query():
  #           print("Run:",i+1, "\nTime for boolean model on Query (",numberOfQueries,") \nTime:", end - start, "\n") 
             bresults.append(end-start)
             start = timer()
-            for qid, queryText in dictOfQuery.items():    
+            for __, queryText in dictOfQuery.items():    
                 #listOfDocIDAndSimilarity = queryProcessor.vectorQuery(k)
                 queryProcessor.vectorQuery(k)
             end = timer()
@@ -555,5 +555,5 @@ def getAllDataItems(queryFile):
 
 #Running python query.py Data/tempFile 0 CranfieldDataset/query.text 226
 if __name__ == '__main__':
-    test()
-    #query()
+    #test()
+    query()
