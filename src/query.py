@@ -19,6 +19,8 @@ import math
 import sys
 import os
 import numpy as np
+import random
+from timeit import default_timer as timer
 
 class QueryProcessor:
     ##
@@ -191,6 +193,11 @@ class QueryProcessor:
         query_term_counter = Counter(self.processed_query)
         query_tf_vector = [round(math.log10(query_term_counter[w]+1),4) for w in query_words] 
 
+        #Other way of doing tf
+        #query_tf_vector = [round(1 + math.log10(query_term_counter[w]),4) if query_term_counter[w] > 0 else 0 for w in query_words]
+    
+
+
         ### NCC change if a term in a quiry does not appear in our inverted index Forget/Discount term 
         #### postings should be a list of lists which contains word postings
 
@@ -201,7 +208,10 @@ class QueryProcessor:
 
         for inx, term in enumerate(postings):
             for document_id, posting in term.items():
+                #log normalization
                 document_tfs[document_id][inx] = math.log10(posting.term_freq()+1)
+                
+                #Other
                 # tf = posting.term_freq()
                 # if tf > 0 :
                 #     tf = 1 + math.log10(tf)
@@ -455,7 +465,7 @@ def query():
     model_selection = sys.argv[2]
     queryText       = sys.argv[3]
     query_id        = sys.argv[4]
-
+    query_id        =  str(query_id).zfill(3) # need for number 001 or 050
     queryTest = ""
     queryFile   = loadCranQry(queryText)
 
@@ -475,7 +485,62 @@ def query():
         print("Vector")
         print(queryProcessor.vectorQuery(3))
 
+    elif model_selection == "2":
+        numberOfTimeToLoop  = 5
+        numberOfQueries = int(query_id)
+        k = 10
+        #Data Need
+        for i in range(numberOfTimeToLoop):
+            #get list of Query result from qrel.txt
+            
+            dictOfQuery = getRandomQuery(queryFile,numberOfQueries)
+            queryProcessor = QueryProcessor("",indexFile,docCollection.docs) # This is an extremely expensive process\
+            
+            start = timer()
+            for qid, queryText in dictOfQuery.items():
+                queryProcessor.loadQuery(queryText)
+                docIDs = queryProcessor.booleanQuery()
+            end = timer()    
+            print("Run:",i+1, "\nTime for boolean model on Query (",numberOfQueries,") \nTime:", end - start, "\n") 
+            
+            start = timer()
+            for qid, queryText in dictOfQuery.items():    
+                listOfDocIDAndSimilarity = queryProcessor.vectorQuery(k)
+            end = timer()
+            print("Run:",i+1, "\nTime for Vector model on Query (",numberOfQueries,") \nTime:", end - start, "\n") 
+
+               
+
+
+
+
+##
+#   @brief         This method generates a list of random queries to be an analyzed.
+#                  The number of queries to be gotten is determined by the numberOfQueries value the user enters
+#   @param         queryFile
+#   @param         numberOfQueries
+#   @return        dictOfQueryID: {qID:text,qID:text }
+#   @exception     None
+## 
+def getRandomQuery(queryFile,numberOfQueries):
+    assert numberOfQueries < 222, "Error number Of Queries to large"
+
+    dictOfQueryID = {}
+    dictQuery = random.sample(queryFile.items(), k=numberOfQueries)
+    for queryTuple in dictQuery:
+        dictOfQueryID[queryTuple[1].qid] = queryTuple[1].text
+
+    return dictOfQueryID #{queryFile["226"].qid:queryFile["226"].text} #{queryFile["204"].qid:queryFile["204"].text} 
+    #return {queryFile["273"].qid:queryFile["273"].text} 
+
+def getAllDataItems(queryFile):
+    dictOfQueryID = {}
+    for k, queryTuple in queryFile.items():
+        dictOfQueryID[k] = queryTuple.text
+    return dictOfQueryID 
+
+
 #Running python query.py Data/tempFile 0 CranfieldDataset/query.text 226
 if __name__ == '__main__':
-    test()
-    #query()
+    #test()
+    query()
