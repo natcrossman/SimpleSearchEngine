@@ -153,7 +153,7 @@ class QueryProcessor:
     #   @param         k
     #   @return        cosines: dict{docID: score}
     #   @bug           Fixed
-    #   @exception     None
+    #   @exception     ValueError
     ## 
     def vectorQuery(self, k):
         ''' vector query processing, using the cosine similarity. '''
@@ -403,22 +403,22 @@ def test():
     ## VTEST 2: 1 word query NOT in index & no stopwords
     qp.loadQuery(vtest_queries[1])
     vtest2 = qp.vectorQuery(3)
-    assert vtest2[0][0] == '1' and vtest2[1][0] == '2' and vtest2[2][0] == '3' and len(vtest2)==3
+    assert vtest2[0][0] == '1' and vtest2[1][0] == '2' and vtest2[2][0] == '3' and len(vtest2)==3 and vtest2[0][1]+vtest2[1][1]+vtest2[2][1] == 0
 
     ## VTEST 3: 1 word query of stopword
     qp.loadQuery(vtest_queries[2])
     vtest3 = qp.vectorQuery(3)
-    assert vtest3[0][0] == '1' and vtest3[1][0] == '2' and vtest3[2][0] == '3' and len(vtest3)==3
+    assert vtest3[0][0] == '1' and vtest3[1][0] == '2' and vtest3[2][0] == '3' and len(vtest3)==3 and vtest3[0][1]+vtest3[1][1]+vtest3[2][1] == 0
 
     ## VTEST 4: multiword query of in index & no stopwords & all unique
     qp.loadQuery(vtest_queries[3])
     vtest4 = qp.vectorQuery(3)
-    assert len(vtest4) == 3 and vtest4[0][0]=='1166'
+    assert len(vtest4) == 3 and vtest4[0][0]=='1166' and vtest4[0][1] == .9763 and vtest4[1][0]=='704' and vtest4[1][1]==.9378 and vtest4[2][0]=='894' and vtest4[2][1]==.8952
 
     ## VTEST 5: multiword query of NOT in index & no stopwords & all unique
     qp.loadQuery(vtest_queries[4])
     vtest5 = qp.vectorQuery(3)
-    assert vtest5[0][0] == '1' and vtest5[1][0] == '2' and vtest5[2][0] == '3' and len(vtest5)==3
+    assert vtest5[0][0] == '1' and vtest5[1][0] == '2' and vtest5[2][0] == '3' and len(vtest5)==3 and vtest5[0][1]+vtest5[1][1]+vtest5[2][1] == 0
 
     ## VTEST 6: multiword query of in index &  & NOT in index & no stopwords & all unique
     qp.loadQuery(vtest_queries[5])
@@ -428,7 +428,7 @@ def test():
     ## VTEST 7: multiword query ALL stopwords & all unique
     qp.loadQuery(vtest_queries[6])
     vtest7 = qp.vectorQuery(3)
-    assert vtest7[0][0] == '1' and vtest7[1][0] == '2' and vtest7[2][0] == '3' and len(vtest7)==3
+    assert vtest7[0][0] == '1' and vtest7[1][0] == '2' and vtest7[2][0] == '3' and len(vtest7)==3 and vtest7[0][1]+vtest7[1][1]+vtest7[2][1] == 0
 
     ## VTEST 8: multiword query of in index & stopwords & all unique
     qp.loadQuery(vtest_queries[7])
@@ -438,7 +438,8 @@ def test():
     ## VTEST 9: multiword query of in index & no stopwords & duplicates
     qp.loadQuery(vtest_queries[8])
     vtest9 = qp.vectorQuery(3)
-    assert not vtest9 == vtest8 
+    assert len(vtest9) == 3 and vtest9[0][0]=='1166' and vtest9[0][1] == .9704 and vtest9[1][0]=='673' and vtest9[1][1]==.9036 and vtest9[2][0]=='894' and vtest9[2][1]==.8948
+
 
     ## VTEST 10: multiword query of NOT in index & no stopwords & duplicates
     qp.loadQuery(vtest_queries[9])
@@ -459,7 +460,6 @@ def query():
     #model_selection = "0"
     #queryText       = 'src/CranfieldDataset/query.text'
     #query_id        = "226"
-
     docCollection   = CranFile('CranfieldDataset/cran.all')
     indexFile       = sys.argv[1]
     model_selection = sys.argv[2]
@@ -470,10 +470,11 @@ def query():
     queryFile   = loadCranQry(queryText)
 
     #Data Need
-    queryTuple = queryFile[query_id]
+    if not model_selection == '2':
+        queryTuple = queryFile[query_id]
 
-    if query_id == queryTuple.qid:
-        queryTest = queryTuple.text
+        if query_id == queryTuple.qid:
+            queryTest = queryTuple.text
 
     queryProcessor = QueryProcessor(queryTest,indexFile,docCollection.docs)
     if model_selection == "0":
@@ -489,6 +490,8 @@ def query():
         numberOfTimeToLoop  = 5
         numberOfQueries = int(query_id)
         k = 10
+        bresults=[]
+        vresults=[]
         #Data Need
         for i in range(numberOfTimeToLoop):
             #get list of Query result from qrel.txt
@@ -499,16 +502,26 @@ def query():
             start = timer()
             for qid, queryText in dictOfQuery.items():
                 queryProcessor.loadQuery(queryText)
-                docIDs = queryProcessor.booleanQuery()
+                #docIDs = queryProcessor.booleanQuery()
+                queryProcessor.booleanQuery()
             end = timer()    
-            print("Run:",i+1, "\nTime for boolean model on Query (",numberOfQueries,") \nTime:", end - start, "\n") 
-            
+ #           print("Run:",i+1, "\nTime for boolean model on Query (",numberOfQueries,") \nTime:", end - start, "\n") 
+            bresults.append(end-start)
             start = timer()
             for qid, queryText in dictOfQuery.items():    
-                listOfDocIDAndSimilarity = queryProcessor.vectorQuery(k)
+                #listOfDocIDAndSimilarity = queryProcessor.vectorQuery(k)
+                queryProcessor.vectorQuery(k)
             end = timer()
-            print("Run:",i+1, "\nTime for Vector model on Query (",numberOfQueries,") \nTime:", end - start, "\n") 
+#            print("Run:",i+1, "\nTime for Vector model on Query (",numberOfQueries,") \nTime:", end - start, "\n") 
+            vresults.append(end-start)
 
+            
+        print("Model\t\tRun:"+'\t\t\tRun:'.join(map(str,range(numberOfTimeToLoop+1)[1:])))
+        print()
+        print("Boolean Model: \t"+'\t'.join(map(str,bresults)))
+        print()
+        print("Vector Model: \t"+'\t'.join(map(str,vresults)))
+        print()
                
 
 
@@ -542,5 +555,5 @@ def getAllDataItems(queryFile):
 
 #Running python query.py Data/tempFile 0 CranfieldDataset/query.text 226
 if __name__ == '__main__':
-    #test()
-    query()
+    test()
+    #query()

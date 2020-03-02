@@ -627,8 +627,8 @@ def indexingCranfield():
    
 #python index.py CranfieldDataset/cran.all Data/tempFile
 if __name__ == '__main__':
-    test()
-    #indexingCranfield()
+    #test()
+    indexingCranfield()
     
 
 
